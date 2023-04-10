@@ -1,0 +1,10 @@
+<?php
+$this->getMessage()->getSession()->start();
+if (isset($_SESSION['message'])) {
+	$messages = $this->getMessage()->getMessages();
+	foreach ($messages as $type => $message) {
+		echo "<p class='alert bg-".$type." text-white fw-bold'>".$message."</p>	";
+	}
+	$this->getMessage()->clearMessages();
+}
+?>

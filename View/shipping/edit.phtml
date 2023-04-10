@@ -1,0 +1,47 @@
+<?php 
+$shipping = $this->getShipping();
+$mode = ($shipping->shipping_method_id) ? 'Edit' : 'Add';
+
+?>
+<div align="center" class="w-100 container">
+	<form method="POST" action="<?php echo $this->getUrl('save'); ?>">
+	<div class="w-50 align-items-center d-flex row">
+		<div align="left" class="col-8">
+			<h2><?php echo $mode." Shipping method"; ?></h2>
+		</div>
+		<div align="right" class="col-2">
+			<a href="<?php echo $this->getUrl('grid',null,[],true); ?>" class="btn btn-danger">Cancel</a>
+		</div>
+		<div align="right" class="col-2">
+			<button class="btn btn-primary" name="submit">Save</button>
+		</div>
+	</div>
+	<div class="w-50 mt-2">
+		<table class="table table-striped table-hover">
+			<tr>
+				<th colspan="2">Shipping Method information</th>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td><input type="text" name="shipping[name]" class="form-control" value="<?php echo $shipping->name; ?>"></td>
+			</tr>
+			<tr>
+				<td>Amount</td>
+				<td><input type="number" name="shipping[amount]" class="form-control" value="<?php echo $shipping->amount; ?>"></td>
+			</tr>
+			<tr>
+				<td>Status</td>
+				<td>
+					<select name="shipping[status]" class="form-control">
+						<?php foreach ($shipping->getStatusOptions() as $key => $value): 
+							$selected = ($key == $shipping->getStatus()) ? 'selected' : '';
+						?>
+						<option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $value; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
