@@ -1,0 +1,88 @@
+<?php 
+$medias = $this->getMedias();
+?>
+<div align="center" class="w-100 container">
+	<div class="container">
+		<h2>Manage Media</h2>
+	</div>
+</div>
+<?php require_once 'View/html/message.phtml'; ?>
+<form action="<?php echo $this->getUrl('media'); ?>" method="POST">
+<div align="center" class="w-100 container mt-3">
+	<div class="align-items-center container row">
+		<div align="left" class="col-md-2">
+			<a href="<?php echo $this->getUrl('add'); ?>" class="btn btn-primary">Add media</a>
+		</div>
+		<div align="left" class="col-md-4">
+			<a href="<?php echo $this->getUrl('grid','product',[],true); ?>" class="btn btn-danger">Back</a>
+		</div>
+		<div align="right" class="col-md-4">
+			<input type="submit" name="operation" value="Delete selected" class="btn btn-primary">
+		</div>
+		<div align="right" class="col-md-2">
+			<input type="submit" name="operation" value="Update" class="btn btn-primary">
+		</div>
+	</div>
+	<div class="w-80 mt-3 container">
+		<table class="table table-striped table-hover text-center">
+			<?php if ($medias) { ?>
+			<tr class="table-dark">
+				<th>Media id</th>
+				<th>Name</th>
+				<th>Image</th>
+				<th>Status</th>
+				<th>Small</th>
+				<th>Thumbnail</th>
+				<th>Base</th>
+				<th>Gallery</th>
+				<th>Delete</th>
+			</tr>
+			<?php foreach($medias->getData() as $media): ?>
+			<tr>
+				<td><?php echo $media->media_id; ?></td>
+				<td><?php echo $media->name; ?></td>
+				<td><img src="Resources/images/<?php echo $media->image; ?>" style="height: 100px;"></td>
+				<td><?php echo $media->getStatusText(); ?></td>
+				<td><input type="radio" name="product_media[small]" value="<?php echo $media->media_id; ?>"
+					<?php 
+						if ($media->small == 1) {
+							echo "checked";
+						}
+					?>>
+				</td>
+				<td><input type="radio" name="product_media[thumb]" value="<?php echo $media->media_id; ?>"
+					<?php 
+						if ($media->thumb == 1) {
+							echo "checked";
+						}
+					?>>
+				</td>
+				<td><input type="radio" name="product_media[base]" value="<?php echo $media->media_id; ?>"
+					<?php 
+						if ($media->base == 1) {
+							echo "checked";
+						}
+					?>>
+				</td>
+				<td><input type="checkbox" name="product_media[gallery][]" value="<?php echo $media->media_id; ?>"
+					<?php 
+						if ($media->gallery == 1) {
+							echo "checked";
+						}
+					?>>
+				</td>
+				<td><input type="checkbox" name="product_media[delete][]" value="<?php echo $media->media_id; ?>">
+				</td>
+			</tr>
+		<?php endforeach; }
+		else{ ?>
+		<tr>
+			<td colspan="9">
+				<h3>There is no record</h3>
+			</td>
+		</tr>
+		<?php } ?>
+		</table>
+	</div>
+</div>
+</form>

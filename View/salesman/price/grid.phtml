@@ -1,0 +1,78 @@
+<?php 
+$this->fetchData();
+$salesmanNames = $this->getSalesmanNames();
+$salesmanPrices = $this->getSalesmanPrices();
+$id = $this->getRequest()->getParam('id');
+?>
+<script type="text/javascript">
+	function display() {
+		var id = document.getElementById('id').value;
+		location.href = "?a=grid&c=salesman_price&id="+id;
+	}
+</script>
+<div align="center" class="w-100">
+	<form action="<?php echo $this->getUrl('operation'); ?>" method="POST">
+	<div class="w-80 d-flex align-items-center row">
+		<div align="left" class="col-2"><h5>Select Salesman:</h5></div>
+		<div align="left" class="col-6">&nbsp&nbsp
+			<select name="salesmanName" onchange="display()" id="id">
+				<?php foreach($salesmanNames->getData() as $salesmanName): ?>
+				<option value="<?php echo $salesmanName->salesman_id; ?>"
+					<?php 
+					if ($salesmanName->salesman_id == $id) {
+						echo "selected";
+					}
+					?>>
+					<?php echo $salesmanName->first_name; ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div align="right" class="col-2">
+			<a href="<?php echo $this->getUrl('grid','salesman', null,true); ?>" class="btn btn-danger">Cancel</a>
+		</div>
+		<div align="right" class="col-1">
+			<button name="submit" value="Update" class="btn btn-primary">Update</button>
+		</div>
+		<div align="right" class="col-1">
+			<button name="submit" class="btn btn-primary" value="Delete">Delete</button> 
+		</div>
+	</div>
+	<div class="w-80 mt-2">
+		 <table class="table table-striped table-hover text-center">
+		 	<?php if($salesmanPrices){ ?>
+		 	<tr class="table-dark">
+		 		<th>Product ID</th>
+		 		<th>Name</th>
+		 		<th>Sku</th>
+		 		<th>Cost</th>
+		 		<th>Price</th>
+		 		<th>Salesman Price</th>
+		 		<th>Remove</th>
+		 	</tr>
+		 	<?php foreach($salesmanPrices->getData() as $salesmanPrice): 
+		 		if ($salesmanPrice->status == Model_Salesman_Price::STATUS_ACTIVE) {
+		 		?>
+		 	<tr>
+		 		<td><?php echo $salesmanPrice->product_id; ?></td>
+		 		<td><?php echo $salesmanPrice->name; ?></td>
+		 		<td><?php echo $salesmanPrice->sku; ?></td>
+		 		<td><?php echo $salesmanPrice->cost; ?></td>
+		 		<td><?php echo $salesmanPrice->price; ?></td>
+		 		<td>
+		 			<input type="number" name="salesman_prices[<?php echo $salesmanPrice->product_id; ?>]" value="<?php echo $salesmanPrice->salesman_price; ?>" class="form-control">
+		 		</td>
+		 		<td><input type="checkbox" name="remove[]" value="<?php echo $salesmanPrice->entity_id; ?>"></td>
+		 	</tr>
+		 <?php } endforeach; } 
+		 else{ ?>
+		 <tr>
+		 	<td colspan="7">
+		 		<h3>There is no record</h3>
+		 	</td>
+		 </tr>
+		 <?php } ?>
+		 </table>
+	</div>
+	</form>
+</div>
+	

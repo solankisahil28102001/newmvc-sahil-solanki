@@ -1,0 +1,57 @@
+<?php 
+$attributes = $this->getAttributes();
+?>
+<div align="center" class="container">
+	<div class="d-flex align-items-center row">
+		<div align="left" class="col-6">
+			<h2>Manage Eav Attributes</h2>
+		</div>
+		<div align="right" class="col-6">
+			<a href="<?php echo $this->getUrl('add'); ?>">
+				<button class="btn btn-primary">Add Attribute</button>
+			</a>
+		</div>
+	</div>	
+	<div class="w-100 mt-2">
+		<table class="table table-striped table-hover">
+			<?php if ($attributes) { ?>
+			<tr class="table-dark">
+				<th>Attribute ID</th>
+				<th>Entity type ID</th>
+				<th>Code</th>
+				<th>Backend type</th>
+				<th>Name</th>
+				<th>Status</th>
+				<th>Backend_Model</th>
+				<th>Input type</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+			<?php 
+			foreach ($attributes->getData() as $attribute):
+			?>
+			<tr>
+				<td><?php echo $attribute->attribute_id; ?></td>
+				<td><?php echo $attribute->entity_type_id; ?></td>
+				<td><?php echo $attribute->code; ?></td>
+				<td><?php echo $attribute->backend_type; ?></td>
+				<td><?php echo $attribute->name; ?></td>
+				<td><?php echo $attribute->getStatusText(); ?></td>
+				<td><?php echo $attribute->backend_model; ?></td>
+				<td><?php echo $attribute->input_type; ?></td>
+				<td><a href="<?php echo $this->getUrl('edit',null,['id'=>$attribute->getId()]); ?>"><img style="height: 25px;" src="Resources/images/edit.png"></a></td>
+				<td><a href="<?php echo $this->getUrl('delete',null,['id'=>$attribute->getId()]); ?>"><img style="height: 25px;" src="Resources/images/delete.png"></a></td>
+			</tr>
+			<?php 
+			endforeach; }
+			else{
+			?>
+			<tr>
+				<td colspan="10">
+					<h3>There is no record</h3>
+				</td>
+			</tr>
+			<?php } ?>
+		</table>
+	</div>
+</div>
