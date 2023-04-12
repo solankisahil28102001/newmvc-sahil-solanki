@@ -1,0 +1,46 @@
+<?php
+$rows = $this->getCollection();
+?>
+<div align="center" class="w-100 container">
+	<div class="w-90 d-flex align-items-center row">
+		<div align="left" class="col-6">
+			<h2><?php echo $this->getTitle(); ?></h2>
+		</div>
+		<div align="right" class="col-6">
+			<?php foreach ($this->getButtons() as $key => $button) : ?>
+				<a href="<?php echo $button['url']; ?>" class="btn btn-primary"><?php echo $button['title']; ?></a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<div class="w-90 mt-2">
+		<table class="table table-striped table-hover">
+			<?php if(!$rows): ?>
+			<tr>
+				<td align="center" colspan="7"><h3>There is no record</h3></td>
+			</tr>
+			<?php else: ?>
+			<tr class="table-dark">
+				<?php foreach ($this->getColumns() as $key => $column) : ?>
+					<th><?php echo $column['title']; ?></th>
+				<?php endforeach; ?>
+
+				<?php foreach ($this->getActions() as $key => $action) : ?>
+					<th><?php echo $action['title']; ?></th>
+				<?php endforeach; ?>
+			</tr>
+			<?php foreach($rows->getData() as $row): ?>
+			<tr>
+				<?php foreach ($this->getColumns() as $key => $column) : ?>
+					<td><?php echo $this->getColumnValue($row, $key); ?></td>
+				<?php endforeach; ?>
+
+				<?php foreach ($this->getActions() as $key => $action) : ?>
+				<td><a href="<?php $method = $action['method']; echo $this->$method($row, $key); ?>"><img style="height: 25px;" src="Resources/images/<?php echo $key; ?>.png"></a></td>
+				<?php endforeach; ?>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
+		</table>
+	</div>
+</div>
+	
