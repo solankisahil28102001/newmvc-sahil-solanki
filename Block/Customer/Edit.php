@@ -14,8 +14,13 @@ class Block_Customer_Edit extends Block_Core_Template
 		return $this->customer;
 	}
 
-	public function getCustomerAddress()
+	public function getShippingAddress()
 	{
-		return $this->customerAddress;
+		return $this->shippingAddress;
+	}
+
+	public function getBillingAddress()
+	{
+		return $this->billingAddress;
 	}
 }

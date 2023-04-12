@@ -26,6 +26,9 @@ $products = $this->getProducts();
 				<th>Status</th>
 				<th>Color</th>
 				<th>Material</th>
+				<th>Small</th>
+				<th>Thumb</th>
+				<th>Base</th>
 				<th>Created at</th>
 				<th>Updated at</th>
 				<th>Media</th>
@@ -58,6 +61,9 @@ $products = $this->getProducts();
 					 	}
 					 } ?>
 				</td>
+				<td><?php echo $product->small_id; ?></td>
+				<td><?php echo $product->thumb_id; ?></td>
+				<td><?php echo $product->base_id; ?></td>
 				<td>
 					<?php 
 					if ($product->created_at == NULL) {

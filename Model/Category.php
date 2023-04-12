@@ -61,6 +61,7 @@ class Model_Category extends Model_Core_Table
 			$this->path = $parent->path."-".$this->getId();
 		}
 
+		unset($this->updated_at);
 		$this->save();
 
 		$query = "UPDATE `category` SET `path` = REPLACE(`path`, '{$oldPath}-', '{$this->path}-') WHERE `path` LIKE '{$oldPath}-%'";

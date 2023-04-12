@@ -11,13 +11,7 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$customerAddress = Ccc::getModel('Customer');
-			$customerAddress->getResource()->setTableName('customer_address');
-			if (!$customerAddress) {
-				throw new Exception("Invalid request.", 1);
-			}
-
-			$edit->setData(['customer' => $customer, 'customerAddress' => $customerAddress]);
+			$edit->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer]);
 			$layout->getChild('content')->addChild('edit', $edit);
 			$layout->render();
 		} catch (Exception $e) {
@@ -40,13 +34,15 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$customerAddress = Ccc::getModel('Customer');
-			$customerAddress->getResource()->setTableName('customer_address');
-			if (!$customerAddress->load($id)) {
+			if (!$shippingAddress = $customer->getShippingAddress()) {
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['customer' => $customer, 'customerAddress' => $customerAddress]);
+			if (!$billingAddress = $customer->getBillingAddress()) {
+				throw new Exception("Invalid Id.", 1);
+			}
+
+			$edit->setData(['customer' => $customer, 'shippingAddress' => $shippingAddress, 'billingAddress' => $billingAddress]);
 			$layout->getChild('content')->addChild('edit', $edit);
 			$layout->render();
 		} catch (Exception $e) {
@@ -78,9 +74,14 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("No data posted.", 1);
 			}
 
-			if (!$postData2 = $this->getRequest()->getPost('customerAddress')) {
+			if (!$postData2 = $this->getRequest()->getPost('billingAddress')) {
 				throw new Exception("No data posted.", 1);
 			}
+
+			if (!$postData3 = $this->getRequest()->getPost('shippingAddress')) {
+				throw new Exception("No data posted.", 1);
+			}
+
 
 			if ($id = (int)$this->getRequest()->getParam('id')) {
 				if (!$customer = Ccc::getModel('Customer')->load($id)) {
@@ -99,21 +100,52 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("Unable to save customer", 1);
 			}
 
-			$customerAddress = Ccc::getModel('Customer');
-			$customerAddress->getResource()->setTableName('customer_address');
-			if ($id = (int)$this->getRequest()->getParam('id')) {
-				if (!$customerAddress->load($id)) {
+			$billingAddress = Ccc::getModel('Customer');
+			$billingAddress->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
+			if ($id = $customer->billing_address_id) {
+				if (!$billingAddress->load($id)) {
 					throw new Exception("Invalid Id.", 1);
+				}
+				$billingAddress->setData($postData2);
+				if (!$billingAddressId = $billingAddress->save()) {
+					throw new Exception("Unable to save billingAddress", 1);
 				}
 			}
 			else{
-				$customerAddress->customer_id = $customer->customer_id;
-				$customerAddress->getResource()->setPrimaryKey('address_id');
+				$billingAddress->customer_id = $customer->customer_id;
+				$billingAddress->getResource()->setPrimaryKey('address_id');
+				$billingAddress->setData($postData2);
+				if (!$billingAddressId = $billingAddress->save()) {
+					throw new Exception("Unable to save billingAddress", 1);
+				}
+				$customer->billing_address_id = $billingAddressId;
+			}
+			
+			$shippingAddress = Ccc::getModel('Customer');
+			$shippingAddress->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
+			if ($id = $customer->shipping_address_id) {
+				if (!$shippingAddress->load($id)) {
+					throw new Exception("Invalid Id.", 1);
+				}
+				$shippingAddress->setData($postData3);
+				if (!$shippingAddressId = $shippingAddress->save()) {
+					throw new Exception("Unable to save shippingAddress", 1);
+				}
+			}
+			else{
+				$shippingAddress->customer_id = $customer->customer_id;
+				$shippingAddress->getResource()->setPrimaryKey('address_id');
+				$shippingAddress->setData($postData3);
+				if (!$shippingAddressId = $shippingAddress->save()) {
+					throw new Exception("Unable to save shippingAddress", 1);
+				}
+				$customer->shipping_address_id = $shippingAddressId;
+				
 			}
 
-			$customerAddress->setData($postData2);
-			if (!$customerAddress->save()) {
-				throw new Exception("Unable to save customerAddress", 1);
+			unset($customer->updated_at);
+			if (!$customer->save()){
+				throw new Exception("Unable to save customer", 1);
 			}
 
 			$this->getMessage()->addMessage('Customer saved successfully.');

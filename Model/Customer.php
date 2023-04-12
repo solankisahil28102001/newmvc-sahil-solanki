@@ -39,4 +39,23 @@ class Model_Customer extends Model_Core_Table
 		return self::STATUS_DEFAULT;
 	}
 
+	public function getShippingAddress()
+	{
+		$customer = Ccc::getModel('Customer');
+		$customer->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
+		if (!$shippingAddress = $customer->load($this->shipping_address_id)){
+			return false;	
+		}
+		return $shippingAddress;
+	}
+
+	public function getBillingAddress()
+	{
+		$customer = Ccc::getModel('Customer');
+		$customer->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
+		if (!$billingAddress = $customer->load($this->billing_address_id)){
+			return false;
+		}
+		return $billingAddress;
+	}
 }
