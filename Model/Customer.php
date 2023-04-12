@@ -41,9 +41,8 @@ class Model_Customer extends Model_Core_Table
 
 	public function getShippingAddress()
 	{
-		$customer = Ccc::getModel('Customer');
-		$customer->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
-		if (!$shippingAddress = $customer->load($this->shipping_address_id)){
+		$customerAddress = Ccc::getModel('Customer_Address');
+		if (!$shippingAddress = $customerAddress->load($this->shipping_address_id)){
 			return false;	
 		}
 		return $shippingAddress;
@@ -51,9 +50,8 @@ class Model_Customer extends Model_Core_Table
 
 	public function getBillingAddress()
 	{
-		$customer = Ccc::getModel('Customer');
-		$customer->getResource()->setTableName('customer_address')->setPrimaryKey('address_id');
-		if (!$billingAddress = $customer->load($this->billing_address_id)){
+		$customerAddress = Ccc::getModel('Customer_Address');
+		if (!$billingAddress = $customerAddress->load($this->billing_address_id)){
 			return false;
 		}
 		return $billingAddress;
