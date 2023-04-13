@@ -1,8 +1,8 @@
 <?php
 $rows = $this->getCollection();
 ?>
-<div align="center" class="w-100 container">
-	<div class="w-90 d-flex align-items-center row">
+<div align="center" class="container" style="width: 100%;">
+	<div class="d-flex align-items-center row" style="width: 90%">
 		<div align="left" class="col-6">
 			<h2><?php echo $this->getTitle(); ?></h2>
 		</div>
@@ -12,7 +12,7 @@ $rows = $this->getCollection();
 			<?php endforeach; ?>
 		</div>
 	</div>
-	<div class="w-90 mt-2">
+	<div class="mt-2" style="width: 90%">
 		<table class="table table-striped table-hover">
 			<?php if(!$rows): ?>
 			<tr>
