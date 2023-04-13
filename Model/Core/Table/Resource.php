@@ -101,6 +101,8 @@ class Model_Core_Table_Resource
 		$keyValue = rtrim($str, ",");
 
 		$query = "UPDATE `{$this->getTableName()}` SET $keyValue WHERE $condition";
+		echo $query;
+		echo '<br>';
 		return $this->getAdapter()->update($query);
 	}
 

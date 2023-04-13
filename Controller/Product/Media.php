@@ -11,7 +11,6 @@ class Controller_Product_Media extends Controller_Core_Action{
 			if (!$productId = $this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
-			Ccc::register('product_id', $productId);
 
 			$layout->getChild('content')->addChild('grid', $grid);
 			$layout->render();
@@ -98,38 +97,45 @@ class Controller_Product_Media extends Controller_Core_Action{
 				throw new Exception("No data posted.", 1);
 			}
 
+			if (!$productId = $this->getRequest()->getParam('id')) {
+				throw new Exception("Invalid request.", 1);
+			}
+
 			$gallery = (array_key_exists('gallery', $product_media)) ? $product_media['gallery'] : [];
+			$strGallery = implode("," ,$gallery);
 			$delete = (array_key_exists('delete', $product_media)) ? $product_media['delete'] : [];
-			$strGallery = implode(",", $gallery);
 			$small = (array_key_exists('small', $product_media)) ? (int)$product_media['small'] : null;
 			$thumb = (array_key_exists('thumb', $product_media)) ? (int)$product_media['thumb'] : null;
 			$base = (array_key_exists('base', $product_media)) ? (int)$product_media['base'] : null;
 
-			$radioData = [$small,$thumb,$base];
-			foreach ($radioData as $key => $value) {
-				if ($radioData[$key] == null) {
-					unset($radioData[$key]);
-				}
-			}
-			$radioData = implode(",", $radioData);
-			if (!$productId = $this->getRequest()->getParam('id')) {
-				throw new Exception("Invalid request.", 1);
-			}
-			
+			// $radioData = [$small,$thumb,$base];
+			// foreach ($radioData as $key => $value) {
+			// 	if ($radioData[$key] == null) {
+			// 		unset($radioData[$key]);
+			// 	}
+			// }
+			// $radioData = implode(",", $radioData);
+			// if (!$productId = $this->getRequest()->getParam('id')) {
+			// 	throw new Exception("Invalid request.", 1);
+			// }
+				
 			if ($operation == 'Update') {
-				if (!$result = Ccc::getModel('Product_Media')->setData(['small'=>0,'thumb'=>0,'base'=>0,'gallery'=>0, 'media_id'=>[ltrim("$radioData,$strGallery",",")]])->save()) {
+				$media = Ccc::getModel('Product_Media');
+				$media->getResource()->setPrimaryKey('product_id');
+				if (!$media->setData(['gallery'=>0, 'product_id'=>$productId])->save()) {
 					throw new Exception("Unable to update Media.", 1);
 				}
 
-				$updateData = [
-					['small'=>1, 'media_id'=>$small],
-					['thumb'=>1, 'media_id'=>$thumb],
-					['base'=>1, 'media_id'=>$base],
-					['gallery'=>1, 'media_id'=>$gallery],
-				];
+				if (!$result = Ccc::getModel('Product')->setData(['small_id'=>$small, 'thumb_id'=>$thumb, 'base_id'=>$base, 'product_id'=>$productId])->save()){
+					throw new Exception("Unable to update product data.", 1);
+				}
 
-				foreach ($updateData as $row) {
-					Ccc::getModel('Product_Media')->setData($row)->save();
+				if (!$gallery) {
+					$this->redirect('grid');
+				}
+
+				if (!$result = Ccc::getModel('Product_Media')->setData(['gallery'=>1, 'media_id'=>[$strGallery]])->save()){
+					throw new Exception("Unable to update gallery.", 1);
 				}
 
 				$this->getMessage()->addMessage("Media updated successfully.");

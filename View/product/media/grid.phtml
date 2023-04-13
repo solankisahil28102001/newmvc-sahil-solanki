@@ -1,5 +1,8 @@
 <?php 
 $medias = $this->getMedias();
+$small_id = $this->getSmall();
+$thumb_id = $this->getThumb();
+$base_id = $this->getBase();
 ?>
 <div align="center" class="w-100 container">
 	<div class="container">
@@ -45,21 +48,21 @@ $medias = $this->getMedias();
 				<td><?php echo $media->getStatusText(); ?></td>
 				<td><input type="radio" name="product_media[small]" value="<?php echo $media->media_id; ?>"
 					<?php 
-						if ($media->small == 1) {
+						if ($media->media_id == $small_id) {
 							echo "checked";
 						}
 					?>>
 				</td>
 				<td><input type="radio" name="product_media[thumb]" value="<?php echo $media->media_id; ?>"
 					<?php 
-						if ($media->thumb == 1) {
+						if ($media->media_id == $thumb_id) {
 							echo "checked";
 						}
 					?>>
 				</td>
 				<td><input type="radio" name="product_media[base]" value="<?php echo $media->media_id; ?>"
 					<?php 
-						if ($media->base == 1) {
+						if ($media->media_id == $base_id) {
 							echo "checked";
 						}
 					?>>

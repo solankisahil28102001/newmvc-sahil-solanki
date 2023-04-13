@@ -194,6 +194,9 @@ class Model_Core_Table
 
 	public function load($id, $column=null)
 	{
+		if ($id == null) {
+			return null;
+		}
 		if ($column == null) {
 			$column = $this->getPrimaryKey();
 		}
