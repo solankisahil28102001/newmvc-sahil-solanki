@@ -1,0 +1,3 @@
+<?php $attribute = $this->getAttribute(); ?>
+<?php $row = $this->getRow(); ?>
+<textarea name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>]" class="form-control"><?php echo $row->getAttributeValue($attribute); ?></textarea>

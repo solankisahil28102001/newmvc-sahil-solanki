@@ -9,7 +9,7 @@ class Block_Core_Grid extends Block_Core_Template
 
 	function __construct()
 	{
-		parent::__construct();
+		parent::__construct();	
 		$this->setTemplate('core/grid.phtml');
 		$this->_prepareActions();
 		$this->_prepareButtons();
@@ -68,6 +68,16 @@ class Block_Core_Grid extends Block_Core_Template
 		if ($key == 'status') {
 			return $row->getStatusText();
 		}
+
+		if ($row instanceof Model_Category) {
+			if ($key == 'name') {
+				$pathCategories = $row->preparePathCategories();
+				if (array_key_exists($row->category_id, $pathCategories)) {
+					return $pathCategories[$row->category_id];
+				}
+				return null;
+			}
+		}
 		return $row->$key;
 	}
 
@@ -110,6 +120,16 @@ class Block_Core_Grid extends Block_Core_Template
 	public function getDeleteUrl($row, $key)
 	{
 		return $this->getUrl($key, null, ['id' => $row->getId()], true);
+	}
+
+	public function getPriceUrl($row, $key)
+	{
+		return $this->getUrl($key, 'salesman_price', ['id' => $row->getId()], true);
+	}
+
+	public function getMediaUrl($row, $key)
+	{
+		return $this->getUrl($key, 'product_media', ['id' => $row->getId()], true);
 	}
 
 	protected function _prepareActions()

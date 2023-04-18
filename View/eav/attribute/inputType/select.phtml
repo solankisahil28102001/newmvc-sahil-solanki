@@ -1,0 +1,11 @@
+<?php 
+$attribute = $this->getAttribute();
+$options = $attribute->getOptions();
+$row = $this->getRow();  
+?>
+<select name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>][]" class="form-select">
+	<?php foreach ($options->getData() as $key => $option): ?>
+	<?php $selected = ($option->option_id == $row->getAttributeValue($attribute)) ? 'selected' : ''; ?>
+	<option value="<?php echo $option->option_id; ?>" <?php echo $selected; ?>><?php echo $option->name; ?></option>
+	<?php endforeach; ?>
+</select>

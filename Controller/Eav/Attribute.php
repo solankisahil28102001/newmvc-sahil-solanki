@@ -64,7 +64,6 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			if (!$postData = $this->getRequest()->getPost('attribute')) {
 				throw new Exception("No data posted.", 1);
 			}
-
 			if ($id = (int)$this->getRequest()->getParam('id')) {
 				if (!$attribute = Ccc::getModel('Eav_Attribute')->load($id)) {
 					throw new Exception("Invalid Id.", 1);
@@ -75,17 +74,29 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			}
 
 			$attribute->setData($postData);
-			$attribute->entity_type_id = 2;
 			if (!$attribute->save()) {
 				throw new Exception("Unable to save attribute", 1);
 			}
 
 			if (!$options = $this->getRequest()->getPost('option')){
 				$options = [];
+			}
+			else{
+				if (!array_key_exists('exist', $options)) {
+					$options['exist'] = [];
+				}
+			}	
+
+			if (!$positions = $this->getRequest()->getPost('position')){
+				$positions = [];
+			}
+			else{
+				if (!array_key_exists('exist', $positions)) {
+					$positions['exist'] = [];
+				}
 			}			
 
-			$optionsObj = Ccc::getModel('Eav_Attribute');
-			$optionsObj->getResource()->setTableName('eav_attribute_option')->setPrimaryKey('option_id');
+			$optionsObj = Ccc::getModel('Eav_Attribute_Option');
 			$query = "SELECT * FROM `eav_attribute_option` WHERE  `attribute_id` = '{$id}'";
 			if ($data = $optionsObj->fetchAll($query)){
 				foreach ($data->getData() as $row) {
@@ -99,13 +110,12 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			}
 
 			
-			if ($options = $this->getRequest()->getPost('option')){
+			if ($options){
 				if (array_key_exists('exist', $options)) {
-					if ($exists = $options['exist']) {
-						foreach ($exists as $optionId => $name) {
-							$attributeOption = Ccc::getModel('Eav_Attribute');
-							$attributeOption->getResource()->setTableName('eav_attribute_option')->setPrimaryKey('option_id');
-							$attributeOption->setData(['option_id' => $optionId, 'name' => $name]);
+					if ($exist = $options['exist']) {
+						foreach ($exist as $optionId => $name) {
+							$attributeOption = Ccc::getModel('Eav_Attribute_Option');
+							$attributeOption->setData(['option_id' => $optionId, 'name' => $exist[$optionId]]);
 							if (!$attributeOption->save()) {
 								throw new Exception("Unable to update data.", 1);
 							}
@@ -114,16 +124,30 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				}
 				
 				if (array_key_exists('new', $options)) {
-					if ($new = $options['new']) {
-						foreach ($new as $value) {
-							$attributeOption = Ccc::getModel('Eav_Attribute');
-							$attributeOption->getResource()->setTableName('eav_attribute_option')->setPrimaryKey('option_id');
-							$attributeOption->setData(['name' => $value, 'attribute_id' => $attribute->attribute_id, 'position' => rand(1,10)]);
+					if ($newOption = $options['new']) {
+						$newPosition = $positions['new'];
+						foreach ($newOption as $optionId => $name) {
+							$attributeOption = Ccc::getModel('Eav_Attribute_Option');
+							$attributeOption->setData(['attribute_id' => $attribute->attribute_id,'name' => $newOption[$optionId], 'position' => $newPosition[$optionId]]);
 							if (!$attributeOption->save()) {
 								throw new Exception("Unable to insert data.", 1);
 							}
 						}
 					}				
+				}
+			}
+
+			if ($positions){
+				if (array_key_exists('exist', $positions)) {
+					if ($exist = $positions['exist']) {
+						foreach ($exist as $optionId => $position) {
+							$attributeOption = Ccc::getModel('Eav_Attribute_Option');
+							$attributeOption->setData(['option_id' => $optionId, 'position' => $exist[$optionId]]);
+							if (!$attributeOption->save()) {
+								throw new Exception("Unable to update data.", 1);
+							}
+						}
+					}
 				}
 			}
 

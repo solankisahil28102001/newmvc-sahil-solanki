@@ -2,11 +2,11 @@
 
 class Model_Core_Table
 {
-	protected $resource = null;
+	protected $data = [];
 	protected $resourceClass = 'Model_Core_Table_Resource';
 	protected $collectionClass = 'Model_Core_Table_Collection';
+	protected $resource = null;
 	protected $collection = null;
-	protected $data = [];
 
 	public function __construct()
 	{
@@ -169,13 +169,12 @@ class Model_Core_Table
 			return false;
 		}
 
-		foreach ($result as &$row) {
-			$row = (new $this)->setData($row)
-				->setResource($this->getResource())
-				->setCollection($this->getCollection());
+		$rows = [];
+		foreach ($result as $key => $row) {
+			$rows[$key] = (new $this)->setData($row)->setResource($this->getResource())->setCollection($this->getCollection());
 		}
 
-		$collection = $this->getCollection()->setData($result);
+		$collection = $this->getCollection()->setData($rows);
 		return $collection;
 	}
 

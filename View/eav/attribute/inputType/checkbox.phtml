@@ -1,0 +1,11 @@
+<?php 
+$attribute = $this->getAttribute();
+$options = $attribute->getOptions();
+$row = $this->getRow(); 
+$valueArray = explode(",", $row->getAttributeValue($attribute));
+?>
+<?php foreach ($options->getData() as $key => $option): ?>
+	<?php $checked = (in_array($option->option_id, $valueArray)) ? 'checked' : ''; ?>
+<input type="checkbox" name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>][]" value="<?php echo $option->option_id; ?>" id="checkbox" <?php echo $checked; ?>>
+<label for="checkbox"><?php echo $option->name; ?></label>
+<?php endforeach; ?>

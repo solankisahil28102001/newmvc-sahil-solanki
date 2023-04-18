@@ -1,0 +1,14 @@
+<?php 
+$attribute = $this->getAttribute();
+$options = $attribute->getOptions(); 
+$row = $this->getRow(); 
+?>
+<ul class="list-group">
+	<?php foreach($options->getData() as $key => $option): ?>
+	<?php $checked = ($option->option_id == $row->getAttributeValue($attribute)) ? 'checked' : ''; ?>
+ 	<li class="list-group-item">
+	    <input class="form-check-input me-1" type="radio" name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>][]" value="<?php echo $option->option_id; ?>" id="firstRadio" <?php echo $checked; ?>>
+	    <label class="form-check-label" for="firstRadio"><?php echo $option->name; ?></label>
+  	</li>
+  <?php endforeach; ?>
+</ul>

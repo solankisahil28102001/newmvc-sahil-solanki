@@ -37,7 +37,7 @@ $mode = ($admin->admin_id) ? 'Edit' : 'Add';
 			<tr>
 				<td>Status</td>
 				<td>
-					<select name="admin[status]" class="form-control">
+					<select name="admin[status]" class="form-select">
 						<?php foreach($admin->getStatusOptions() as $key => $value): 
 						$selected = ($key == $admin->getStatus()) ? 'selected' : '';
 						?>

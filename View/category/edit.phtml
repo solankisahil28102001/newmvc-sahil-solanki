@@ -37,7 +37,7 @@ $mode = ($category->category_id) ? 'Edit' : 'Add';
 				Parent category
 			</td>
 			<td>
-				<select name="category[parent_id]" class="form-control">
+				<select name="category[parent_id]" class="form-select">
 					<option value="1">Root</option>
 					<?php foreach ($categories as $key => $value): 
 						if (array_key_exists($key, $pathCategories)): ?>
@@ -57,7 +57,7 @@ $mode = ($category->category_id) ? 'Edit' : 'Add';
 				Status
 			</td>
 			<td>
-				<select name="category[status]" class="form-control">
+				<select name="category[status]" class="form-select">
 						<?php foreach ($category->getStatusOptions() as $key => $value): 
 							$selected = ($key == $category->getStatus()) ? 'selected' : '';
 						?>

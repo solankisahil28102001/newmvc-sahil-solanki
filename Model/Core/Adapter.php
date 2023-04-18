@@ -101,4 +101,10 @@ class Model_Core_Adapter
 		return false;
 	}
 
+	public function query($query)
+	{
+		$connect = $this->connect();
+		return mysqli_query($connect, $query);
+	}
+
 }

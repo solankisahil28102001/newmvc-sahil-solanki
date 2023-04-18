@@ -1,33 +1,75 @@
 <?php 
 
-class Block_Category_Grid extends Block_Core_Template
+class Block_Category_Grid extends Block_Core_Grid
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate('category/grid.phtml');
+		$this->setTitle('Manage Categories');
 	}
 
-	public function fetchData()
+	public function getCollection()
 	{
 		$category = Ccc::getModel('Category');
 		$query = "SELECT * FROM `category` WHERE `category_id` > 1 ORDER BY `path`";
 		$categories = $category->fetchAll($query);
-		$pathCategories = $category->preparePathCategories();
-		$this->setData(['categories' => $categories, 'pathCategories' => $pathCategories]);
-		return $this;
+		return $categories;
 	}
 
-	public function getCategories()
+	protected function _prepareColumns()
 	{
-		return $this->categories;
+		$this->addColumn('category_id', [
+			'title' => 'Category Id'
+		]);
+
+
+		$this->addColumn('name', [
+			'title' => 'Name'
+		]);
+
+		$this->addColumn('status', [
+			'title' => 'Status',
+		]);
+
+		$this->addColumn('description', [
+			'title' => 'Description',
+		]);
+
+		$this->addColumn('created_at', [
+			'title' => 'Created At'
+		]);
+
+		$this->addColumn('updated_at', [
+			'title' => 'Updated At'
+		]);
+
+		return parent::_prepareColumns();
 	}
 
-	public function getPathCategories()
+	protected function _prepareActions()
 	{
-		return $this->pathCategories;
+
+		$this->addAction('edit', [
+			'title' => 'Edit',
+			'method' => 'getEditUrl'
+		]);
+
+		$this->addAction('delete', [
+			'title' => 'Delete',
+			'method' => 'getDeleteUrl'
+		]);
+
+		return parent::_prepareActions();
 	}
 
+	protected function _prepareButtons()
+	{
+		$this->addButton('add_category', [
+			'title' => 'Add New',
+			'url' => $this->getUrl('add')
+		]);
+		return parent::_prepareButtons();
+	}
 	
 }

@@ -44,6 +44,20 @@ class Ccc{
 		return null;
 	}
 
+	public static function log($data, $filename = 'system.log', $newFile = false)
+	{
+		self::getSingleton('Core_Log')->log($data, $filename, $newFile);
+	}
+
+	public static function getBaseDir($subDir = null)
+	{
+		$dir = getcwd();
+		if ($subDir) {
+			$dir = $dir.$subDir;
+		}
+		return $dir;
+	}
+
 }
 
 Ccc::init();

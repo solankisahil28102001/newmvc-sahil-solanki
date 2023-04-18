@@ -113,4 +113,6 @@ class Model_Category extends Model_Core_Table
 
 		return $pathCategories;
 	}
+
 }
+

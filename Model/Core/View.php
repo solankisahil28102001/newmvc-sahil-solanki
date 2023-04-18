@@ -82,7 +82,7 @@ class Model_Core_View
 
 	public function render()
 	{
-		require_once "View".DS.$this->getTemplate();
+		require "View".DS.$this->getTemplate();
 	}
 
 }

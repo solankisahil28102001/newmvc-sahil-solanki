@@ -116,4 +116,5 @@ class Controller_Category extends Controller_Core_Action
 		}
 		$this->redirect('grid',null,[],true);
 	}
+
 }

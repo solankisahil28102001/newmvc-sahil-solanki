@@ -1,0 +1,12 @@
+<?php 
+$attribute = $this->getAttribute();
+$options = $attribute->getOptions(); 
+$row = $this->getRow(); 
+$valueArray = explode(",", $row->getAttributeValue($attribute));
+?>
+<select name="attribute[<?php echo $attribute->backend_type ;?>][<?php echo $attribute->getId(); ?>][]" class="form-select" multiple>
+	<?php foreach ($options->getData() as $key => $option): ?>
+		<?php $selected = (in_array($option->option_id, $valueArray)) ? 'selected' : ''; ?>
+	<option value="<?php echo $option->option_id; ?>" <?php echo $selected; ?>><?php echo $option->name; ?></option>
+	<?php endforeach; ?>
+</select>
