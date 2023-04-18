@@ -61,8 +61,12 @@ class Model_Eav_Attribute extends Model_Core_Table
 	
 	public function getOptions()
 	{
+		$sourceModel = $this->source_model;
+		if (!$sourceModel) {
+			$sourceModel = 'Eav_Attribute_Option_Source';
+		}
 		$query = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = '".$this->attribute_id."' ORDER BY `position`";
-		return Ccc::getModel('Eav_Attribute_Option')->fetchAll($query);
+		return Ccc::getModel($sourceModel)->setAttribute($this)->getOptions();
 	}
 
 	
