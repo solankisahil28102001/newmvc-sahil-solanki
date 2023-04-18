@@ -13,7 +13,7 @@ class Controller_Brand extends Controller_Core_Action
 
 			$edit->setRow($brand);
 			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			echo $layout->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('grid', null, null, true);
@@ -35,7 +35,7 @@ class Controller_Brand extends Controller_Core_Action
 			
 			$edit->setRow($brand);
 			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			echo $layout->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('grid', null, null, true);
@@ -48,7 +48,7 @@ class Controller_Brand extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$grid = $layout->createBlock('Brand_Grid');
 			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			echo $layout->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
