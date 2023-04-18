@@ -49,10 +49,5 @@ class Block_Core_Layout extends Block_Core_Template
 		return $block;
 	}
 
-	public function getBlock()
-	{
-		
-	}
-
 }
 

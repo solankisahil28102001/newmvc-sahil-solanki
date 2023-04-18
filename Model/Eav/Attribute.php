@@ -10,6 +10,7 @@ class Model_Eav_Attribute extends Model_Core_Table
 	
 	function __construct()
 	{
+		parent::__construct();
 		$this->setResourceClass('Model_Eav_Attribute_Resource');
 		$this->setCollectionClass('Model_Eav_Attribute_Collection');
 	}
@@ -41,4 +42,28 @@ class Model_Eav_Attribute extends Model_Core_Table
 		return self::STATUS_DEFAULT;
 	}
 
+	public function getEntityName()
+	{
+		if ($row = Ccc::getModel('EntityType')->load($this->entity_type_id)){
+			return $row->name;
+		}
+		return null;
+	}
+
+	public function getEntityNames()
+	{
+		$query = "SELECT `entity_type_id`,`name` FROM `entity_type` ORDER BY `name`";
+		if (!$row = $this->getResource()->getAdapter()->fetchPairs($query)) {
+			return null;
+		}
+		return $row;
+	}
+	
+	public function getOptions()
+	{
+		$query = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = '".$this->attribute_id."' ORDER BY `position`";
+		return Ccc::getModel('Eav_Attribute_Option')->fetchAll($query);
+	}
+
+	
 }

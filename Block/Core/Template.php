@@ -12,7 +12,7 @@ class Block_Core_Template extends Model_Core_View
 	}
 
 	public function getLayout()
-	{
+	{	
 		return  $this->layout;
 	}
 

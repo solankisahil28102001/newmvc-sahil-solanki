@@ -75,7 +75,7 @@ $mode = ($product->product_id) ? 'Edit' : 'Add';
 					Status
 				</td>
 				<td>
-					<select name="product[status]" class="form-control">
+					<select name="product[status]" class="form-select">
 						<?php foreach ($product->getStatusOptions() as $key => $value): 
 							$selected = ($key == $product->getStatus()) ? 'selected' : '';
 						?>
@@ -90,7 +90,7 @@ $mode = ($product->product_id) ? 'Edit' : 'Add';
 				</td>
 				<td>
 					<?php $color = ['1'=>'Brown','2'=>'Black','3'=>'White','4'=>'Red','5'=>'Silver','6'=>'Blue','7'=>'Green']; ?>
-					<select name="product[color]" class="form-control">
+					<select name="product[color]" class="form-select">
 						<?php foreach ($color as $key => $value): ?>
 						<option value="<?php echo $key; ?>"
 						<?php 
@@ -109,7 +109,7 @@ $mode = ($product->product_id) ? 'Edit' : 'Add';
 				</td>
 				<td>
 					<?php $material = ['1'=>'Plastic','2'=>'Glass','3'=>'Metals','4'=>'Wood','5'=>'Paper','6'=>'Fibers','7'=>'Ceramic'] ?>
-					<select name="product[material]" class="form-control">
+					<select name="product[material]" class="form-select">
 						<?php foreach ($material as $key => $value): ?>
 						<option value="<?php echo $key; ?>"
 						<?php 

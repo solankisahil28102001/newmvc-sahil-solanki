@@ -1,0 +1,3 @@
+<?php $attribute = $this->getAttribute(); ?>
+<?php $row = $this->getRow(); ?>
+<input type="<?php echo $attribute->input_type; ?>" name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>]" class="form-control" value="<?php echo $row->attributeValue(); ?>">

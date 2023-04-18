@@ -68,6 +68,23 @@ class Model_Core_Table_Resource
 		return $this->getAdapter()->insert($query);
 	}
 
+	public function insertUpdateOnDuplicate($arrayData, $uniqueColumns)
+	{
+		$keyString = "`".implode('`,`', array_keys($arrayData))."`";
+		$values = "'".implode("','", array_values($arrayData))."'";
+
+		$keys = array_keys($uniqueColumns);
+
+		$keyValue = "";
+		for ($i=0; $i < count($uniqueColumns); $i++) { 
+			$keyValue .= "`".$keys[$i]."`="."'".$uniqueColumns[$keys[$i]]."',";
+		}
+		$keyValue = rtrim($keyValue, ",");
+		
+		$query = "INSERT INTO `{$this->getTableName()}` ($keyString) VALUES ($values) ON DUPLICATE KEY UPDATE $keyValue ";
+		return $this->getAdapter()->query($query);
+	}
+
 	public function update($data,$conditions)
 	{
 		$condition = "";
@@ -101,8 +118,6 @@ class Model_Core_Table_Resource
 		$keyValue = rtrim($str, ",");
 
 		$query = "UPDATE `{$this->getTableName()}` SET $keyValue WHERE $condition";
-		echo $query;
-		echo '<br>';
 		return $this->getAdapter()->update($query);
 	}
 
