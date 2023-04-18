@@ -4,18 +4,18 @@
 <body>
 	<table width="100%" cellpadding="4">
 		<tr height="70px">
-			<td colspan="3" class="bg-black sticky-sm-top"><?php $this->getChild('header')->render(); ?></td>
+			<td colspan="3" class="bg-black sticky-sm-top"><?php echo $this->getChildHtml('header'); ?></td>
 		</tr>
 		<tr height="50px">
-			<td colspan="3" align="center"><?php $this->getChild('message')->render(); ?></td>
+			<td colspan="3" align="center"><?php echo $this->getChildHtml('message'); ?></td>
 		</tr>
 		<tr height="200px">
-			<td width="10%"><?php $this->getChild('left')->render(); ?></td>
-			<td width="80%"><?php $this->getChild('content')->render(); ?></td>
-			<td width="10%"><?php $this->getChild('right')->render(); ?></td>
+			<td width="10%"><?php echo $this->getChildHtml('left'); ?></td>
+			<td width="80%"><?php echo $this->getChildHtml('content'); ?></td>
+			<td width="10%"><?php echo $this->getChildHtml('right'); ?></td>
 		</tr>
 		<tr height="80px">
-			<td colspan="3" class="fixed-bottom bg-secondary-subtle"><?php $this->getChild('footer')->render(); ?></td>
+			<td colspan="3" class="fixed-bottom bg-secondary-subtle"><?php echo $this->getChildHtml('footer'); ?></td>
 		</tr>
 	</table>
 </body>

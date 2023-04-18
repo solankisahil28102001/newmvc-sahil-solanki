@@ -32,6 +32,22 @@ class Block_Core_Template extends Model_Core_View
 		return $this->children;
 	}
 
+	public function getChildHtml($key)
+	{
+		if (!$child = $this->getChild($key)) {
+			return null;
+		}
+		return $child->toHtml();
+	}
+
+	public function toHtml()
+	{
+		ob_start();
+		$this->render();
+		$content = ob_get_clean();
+		return $content;
+	}
+
 	public function addChild($key, $value)
 	{
 		$this->children[$key] = $value;
