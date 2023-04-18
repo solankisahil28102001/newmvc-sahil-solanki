@@ -6,7 +6,7 @@ class Block_Core_Layout extends Block_Core_Template
 	public function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate("core/layout/3columns.phtml");
+		$this->setTemplate("core/layout/1column.phtml");
 		$this->prepareChildren();
 	}
 

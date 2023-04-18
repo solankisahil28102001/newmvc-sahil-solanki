@@ -4,7 +4,7 @@ $categories = $this->getCategories();
 $pathCategories = $this->getPathCategories();	
 ?>
 <div align="center" class="container">
-	<div class="w-90 d-flex align-items-center row">
+	<div class="w-100 d-flex align-items-center row">
 		<div align="left" class="col-6">
 			<h2>Manage Categories</h2>
 		</div>
@@ -12,7 +12,7 @@ $pathCategories = $this->getPathCategories();
 			<a href="<?php echo $this->getUrl('add'); ?>"><button class="btn btn-primary">Add category</button></a>
 		</div>
 	</div>
-	<div class="w-90 mt-2">
+	<div class="w-100 mt-2">
 		<table class="table table-striped table-hover text-center">
 			<?php if ($categories) { ?>
 			<tr class="table-dark">
