@@ -46,4 +46,9 @@ class Model_Core_Session
 		return false;;
 	}
 
+	public function getId()
+	{
+		return session_id();
+	}
+
 }
