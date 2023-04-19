@@ -1,5 +1,6 @@
 <?php 
 $product = $this->getProduct();
+$attributes = $this->getAttributes();
 $mode = ($product->product_id) ? 'Edit' : 'Add';
 ?>
 <form action="<?php echo $this->getUrl('save'); ?>" method="POST">
@@ -122,6 +123,18 @@ $mode = ($product->product_id) ? 'Edit' : 'Add';
 					</select>
 				</td>
 			</tr>
+			<?php if ($attributes) : ?>
+			<?php foreach($attributes->getData() as $key => $attribute): ?>
+			<tr>
+				<td>
+					<?php echo $attribute->name; ?>
+				</td>
+				<td>
+					<?php $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($product)->render(); ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <?php 
 $shipping = $this->getShipping();
+$attributes = $this->getAttributes();
 $mode = ($shipping->shipping_method_id) ? 'Edit' : 'Add';
-
 ?>
 <div align="center" class="w-100 container">
 	<form method="POST" action="<?php echo $this->getUrl('save'); ?>">
@@ -41,6 +41,19 @@ $mode = ($shipping->shipping_method_id) ? 'Edit' : 'Add';
 					</select>
 				</td>
 			</tr>
+			
+			<?php if ($attributes) : ?>
+			<?php foreach($attributes->getData() as $key => $attribute): ?>
+			<tr>
+				<td>
+					<?php echo $attribute->name; ?>
+				</td>
+				<td>
+					<?php $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($shipping)->render(); ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 	</div>
 	</form>

@@ -18,12 +18,13 @@ $attributes = $this->getAttributes();
 			<tr class="table-dark">
 				<th>Attribute ID</th>
 				<th>Entity type</th>
-				<th>Code</th>
-				<th>Backend type</th>
 				<th>Name</th>
+				<th>Code</th>
+				<th>Input type</th>
+				<th>Backend type</th>
 				<th>Status</th>
 				<th>Backend_Model</th>
-				<th>Input type</th>
+				<th>Source_Model</th>
 				<th>Edit</th>
 				<th>Delete</th>
 			</tr>
@@ -33,12 +34,13 @@ $attributes = $this->getAttributes();
 			<tr>
 				<td><?php echo $attribute->attribute_id; ?></td>
 				<td><?php echo $attribute->getEntityName(); ?></td>
-				<td><?php echo $attribute->code; ?></td>
-				<td><?php echo $attribute->backend_type; ?></td>
 				<td><?php echo $attribute->name; ?></td>
+				<td><?php echo $attribute->code; ?></td>
+				<td><?php echo $attribute->input_type; ?></td>
+				<td><?php echo $attribute->backend_type; ?></td>
 				<td><?php echo $attribute->getStatusText(); ?></td>
 				<td><?php echo $attribute->backend_model; ?></td>
-				<td><?php echo $attribute->input_type; ?></td>
+				<td><?php echo $attribute->source_model; ?></td>
 				<td><a href="<?php echo $this->getUrl('edit',null,['id'=>$attribute->getId()]); ?>"><img style="height: 25px;" src="Resources/images/edit.png"></a></td>
 				<td><a href="<?php echo $this->getUrl('delete',null,['id'=>$attribute->getId()]); ?>"><img style="height: 25px;" src="Resources/images/delete.png"></a></td>
 			</tr>

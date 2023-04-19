@@ -39,4 +39,16 @@ class Model_Product extends Model_Core_Table
 		}
 		return self::STATUS_DEFAULT;
 	}
+
+	public function getAttributes()
+	{
+		$query = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 2 AND `status` = '".self::STATUS_ACTIVE."'";
+		return Ccc::getModel('Eav_Attribute')->fetchAll($query);
+	}
+
+	public function getAttributeValue($attribute)
+	{
+		$query = "SELECT `value` FROM `product_{$attribute->backend_type}` WHERE `entity_id` = '{$this->getId()}' AND `attribute_id` = '{$attribute->getId()}'";
+		return $this->getResource()->getAdapter()->fetchOne($query);
+	}
 }

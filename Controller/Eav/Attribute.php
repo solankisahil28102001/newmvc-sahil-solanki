@@ -77,9 +77,10 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			if (!$attribute->save()) {
 				throw new Exception("Unable to save attribute", 1);
 			}
-
+			
 			if (!$options = $this->getRequest()->getPost('option')){
 				$options = [];
+				$options['exist'] = [];
 			}
 			else{
 				if (!array_key_exists('exist', $options)) {

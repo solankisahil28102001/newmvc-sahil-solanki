@@ -19,4 +19,9 @@ class Block_Category_Edit extends Block_Core_Template
 		return $this->pathCategories;
 	}
 
+	public function getAttributes()
+	{
+		return Ccc::getModel('Category')->getAttributes();
+	}
+
 }

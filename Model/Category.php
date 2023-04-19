@@ -114,5 +114,17 @@ class Model_Category extends Model_Core_Table
 		return $pathCategories;
 	}
 
+	public function getAttributes()
+	{
+		$query = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 6 AND `status` = '".self::STATUS_ACTIVE."'";
+		return Ccc::getModel('Eav_Attribute')->fetchAll($query);
+	}
+
+	public function getAttributeValue($attribute)
+	{
+		$query = "SELECT `value` FROM `category_{$attribute->backend_type}` WHERE `attribute_id` = '{$attribute->attribute_id}' AND `entity_id` = '{$this->getId()}'";
+		return $this->getResource()->getAdapter()->fetchOne($query);
+	}
+
 }
 

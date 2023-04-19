@@ -13,4 +13,9 @@ class Block_Payment_Edit extends Block_Core_Template
 		return $this->payment;
 	}
 
+	public function getAttributes()
+	{
+		return Ccc::getModel('Payment')->getAttributes();
+	}
+
 }

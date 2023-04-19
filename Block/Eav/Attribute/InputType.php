@@ -22,7 +22,7 @@ class Block_Eav_Attribute_InputType extends Block_Core_Template
 		return $this->_attribute;
 	}
 
-	public function setRow(Model_Item $row)
+	public function setRow($row)
 	{
 		$this->_row = $row;
 		return $this;

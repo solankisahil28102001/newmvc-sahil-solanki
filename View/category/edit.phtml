@@ -2,6 +2,7 @@
 $category = $this->getCategory();
 $categories = $category->getParentCategories();
 $pathCategories = $this->getPathCategories();
+$attributes = $this->getAttributes();
 $mode = ($category->category_id) ? 'Edit' : 'Add';
 ?>
 <div align="center" class="w-100 container">
@@ -74,6 +75,18 @@ $mode = ($category->category_id) ? 'Edit' : 'Add';
 				<textarea class="form-control" name="category[description]" style="height:50px"><?php echo $category->description; ?></textarea>
 			</td>
 		</tr>
+		<?php if ($attributes) : ?>
+		<?php foreach ($attributes->getData() as $key => $attribute) : ?>
+		<tr>
+			<td>
+				<?php echo $attribute->name; ?>
+			</td>
+			<td>
+				<?php $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($category)->render(); ?>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+		<?php endif; ?>
 	</table>
 	</div>
 	</form>

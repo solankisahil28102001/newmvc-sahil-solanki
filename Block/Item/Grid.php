@@ -13,9 +13,9 @@ class Block_Item_Grid extends Block_Core_Grid
 	{
 		$query = "SELECT I.*, IDPrice.`value` as price, IDCost.`value` as cost, IDName.`value` as name  
 		FROM `item` I
-		LEFT JOIN `item_decimal` IDPrice ON I.`entity_id` = IDPrice.`entity_id` AND IDPrice.`attribute_id` = '15' 
-		LEFT JOIN `item_decimal` IDCost ON I.`entity_id` = IDCost.`entity_id` AND IDCost.`attribute_id` = '16' 
-		LEFT JOIN `item_varchar` IDName ON I.`entity_id` = IDName.`entity_id` AND IDName.`attribute_id` = '6' 
+		LEFT JOIN `item_decimal` IDPrice ON I.`entity_id` = IDPrice.`entity_id` AND IDPrice.`attribute_id` = '22' 
+		LEFT JOIN `item_decimal` IDCost ON I.`entity_id` = IDCost.`entity_id` AND IDCost.`attribute_id` = '23	' 
+		LEFT JOIN `item_varchar` IDName ON I.`entity_id` = IDName.`entity_id` AND IDName.`attribute_id` = '21' 
 		ORDER BY `entity_id` DESC";
 		$items = Ccc::getModel('Item')->fetchAll($query);
 		return $items;

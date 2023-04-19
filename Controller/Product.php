@@ -84,6 +84,23 @@ class Controller_Product extends Controller_Core_Action
 				throw new Exception("Unable to save product", 1);
 			}
 
+			if ($attributes = $this->getRequest()->getPost('attribute')) {
+				foreach($attributes as $backendType => $value){
+					foreach ($value as $attributeId => $v) {
+						if (is_array($v)) {
+							$v = implode(",", $v);
+						}
+
+						$model = Ccc::getModel('Core_Table');
+						$model->getResource()->setTableName("product_{$backendType}")->setPrimaryKey('value_id');
+						$arrayData = ['entity_id' => $product->getId(),'attribute_id' => $attributeId,'value' => $v];
+						$uniqueColumns = ['value' => $v];
+						if (!$result = $model->getResource()->insertUpdateOnDuplicate($arrayData, $uniqueColumns)) {
+							throw new Exception("Unable to save product_{backendType}", 1);
+						}
+					}
+				}
+			}
 			$this->getMessage()->addMessage('Product saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);

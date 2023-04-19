@@ -41,7 +41,7 @@ class Model_Core_Adapter
 	{
 		$connect = $this->connect();
 		$result = mysqli_query($connect, $query);
-		if (!$result) {
+		if (!$result->num_rows > 0) {
 			return false;
 		}
 		$data = $result->fetch_all();
