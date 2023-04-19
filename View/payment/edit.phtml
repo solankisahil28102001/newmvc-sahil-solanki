@@ -1,5 +1,6 @@
 <?php 
 $payment = $this->getPayment();
+$attributes = $this->getAttributes();
 $mode = ($payment->payment_method_id) ? 'Edit' : 'Add';
 ?>
 <div align="center" class="w-100 container">
@@ -36,6 +37,16 @@ $mode = ($payment->payment_method_id) ? 'Edit' : 'Add';
 					</select>
 				</td>
 			</tr>
+			<?php if($attributes): ?>
+			<?php foreach ($attributes->getData() as $attribute) : ?>
+				<tr>
+					<td><?php echo $attribute->name; ?></td>
+					<td>
+						<?php $inputType = $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($payment)->render(); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 	</div>
 	</form>

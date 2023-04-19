@@ -87,6 +87,26 @@ class Controller_Category extends Controller_Core_Action
             }
 
             $category->updatePath();
+            if ($attributeData = $this->getRequest()->getPost('attribute')) {
+				foreach ($attributeData as $backendType => $value) {
+					foreach ($value as $attributeId => $v) {
+						if ($v) {
+							if (is_array($v)) {
+								$v = implode(",", $v);
+							}
+
+							$model = Ccc::getModel('Core_Table');
+							$resource = $model->getResource()->setTableName("category_{$backendType}")->setPrimaryKey("value_id");
+							
+							$arrayData = ['entity_id' => $category->getId(), 'attribute_id' => $attributeId, 'value' => $v];
+							$uniqueColumns = ['value' => $v];
+							if (!$id = $model->getResource()->insertUpdateOnDuplicate($arrayData, $uniqueColumns)){
+								throw new Exception("Unable to save category_{$backendType}", 1);
+							}
+						}
+					}
+				}
+			}
             $this->getMessage()->addMessage("Data saved successfully.");
 		} 
 		catch (Exception $e) {
