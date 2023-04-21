@@ -7,7 +7,7 @@ class Block_Quote_Address extends Block_Core_Template
 		parent::__construct();
 		$this->setTemplate('quote/address.phtml');
 	}
-	
+		
 	public function getShippingAddress()
 	{
 		if ($customer = $this->getCustomer()) {

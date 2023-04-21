@@ -1,7 +1,7 @@
 <?php $billingAddress = $this->getBillingAddress(); ?>
 <?php $shippingAddress = $this->getShippingAddress(); ?>
 
-<form action="<?php echo $this->getUrl('saveAddress',null, null,true); ?>">
+<form action="<?php echo $this->getUrl('saveAddress'); ?>" method="post">
 	<div class="row" align="center">
 		<div class="col-6">
 			<div class="card" style="width: 70%;margin: 10px;">
@@ -33,7 +33,7 @@
 					<tr>
 						<td colspan="2">
 							<div class="form-check">
-								<input type="checkbox" name="billingAddress[checkbox]" id="billingAddressBook">
+								<input type="checkbox" name="billingAddressBook" id="billingAddressBook">
 								<label for="billingAddressBook">save to address book</label>
 							</div>
 						</td>
@@ -41,7 +41,7 @@
 					<tr>
 						<td colspan="2">
 							<div class="form-check">
-								<input type="checkbox" name="billingAddress[checkbox]" id="sameShippingAddress">
+								<input type="checkbox" name="markAsShipping" id="sameShippingAddress">
 								<label for="sameShippingAddress">mark as shipping</label>
 							</div>
 						</td>
@@ -84,7 +84,7 @@
 					<tr>
 						<td colspan="2">
 							<div class="form-check">
-								<input type="checkbox" name="shippingAddress[checkbox]" id="shippingAddressBook">
+								<input type="checkbox" name="shippingAddressBook" id="shippingAddressBook">
 								<label for="shippingAddressBook">save to address book</label>
 							</div>
 						</td>
