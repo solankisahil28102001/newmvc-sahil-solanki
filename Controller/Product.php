@@ -48,7 +48,7 @@ class Controller_Product extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Product_Grid');
+				$grid = $layout->createBlock('Product_Grid');
 			$layout->getChild('content')->addChild('grid', $grid);
 			$layout->render();
 		} catch (Exception $e) {

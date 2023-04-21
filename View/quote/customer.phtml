@@ -1,0 +1,17 @@
+<?php $customers = $this->getCustomers(); ?>
+<div align="right">
+<select class="form-select mb-3" style="width: 30%" name="customer" id="changeCustomer">
+	<option value="0">select customer</option>
+	<?php foreach($customers->getData() as $key => $customer): ?>
+	<option value="<?php echo $customer->customer_id; ?>"><?php echo $customer->first_name."-".$customer->customer_id; ?></option>
+	<?php endforeach; ?>
+</select>
+</div>
+
+<script type="text/javascript">
+
+$("#changeCustomer").change(function() {
+	location.href = "?a=quote&c=quote&customerId="+$(this).val();
+});
+
+</script>

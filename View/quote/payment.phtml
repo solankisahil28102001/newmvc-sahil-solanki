@@ -1,0 +1,23 @@
+<?php $payment_methods = $this->getPaymentMethods(); ?>
+
+<form action="<?php echo $this->getUrl('savePayment'); ?>" method="post">
+<div class="card" style="width: 70%;margin: 10px;">
+  <div class="card-header bg-dark text-white">
+    Payment Method
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+    	<ul class="list-group" align="left">
+			<?php if ($payment_methods) : ?>
+			<?php foreach ($payment_methods->getData() as $payment_method) : ?>
+		 	<li class="list-group-item">
+			    <input class="form-check-input me-1" type="radio" name="payment[method]" value="<?php echo $payment_method->payment_method_id; ?>"><?php echo $payment_method->name ?>
+		  	</li>
+		  	<?php endforeach; ?>
+		  	<?php endif; ?>
+		</ul>
+    </p>
+    <button class="btn btn-primary">Update</button>
+  </div>
+</div>
+</form>

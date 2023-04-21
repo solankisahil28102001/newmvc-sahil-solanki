@@ -1,6 +1,6 @@
 <?php
 
-class Model_Customer extends Model_Core_Table
+class Model_Quote extends Model_Core_Table
 {
 	const STATUS_ACTIVE = 1;
 	const STATUS_INACTIVE = 2;
@@ -11,9 +11,9 @@ class Model_Customer extends Model_Core_Table
 	public function __construct()
 	{	
 		parent::__construct();
-		$this->setResourceClass('Model_Customer_Resource');
+		$this->setResourceClass('Model_Quote_Resource');
 	}
-
+	
 	public function getStatusOptions()
 	{
 		return [
@@ -37,29 +37,5 @@ class Model_Customer extends Model_Core_Table
 			return $this->status;
 		}
 		return self::STATUS_DEFAULT;
-	}
-
-	public function getShippingAddress()
-	{
-		$customerAddress = Ccc::getModel('Customer_Address');
-		if (!$shippingAddress = $customerAddress->load($this->shipping_address_id)){
-			return false;	
-		}
-		return $shippingAddress;
-	}
-
-	public function getBillingAddress()
-	{
-		$customerAddress = Ccc::getModel('Customer_Address');
-		if (!$billingAddress = $customerAddress->load($this->billing_address_id)){
-			return false;
-		}
-		return $billingAddress;
-	}
-
-	public function getCustomers()
-	{
-		$query = "SELECT * FROM `customer` ORDER BY `first_name`";
-		return $this->fetchAll($query);
 	}
 }

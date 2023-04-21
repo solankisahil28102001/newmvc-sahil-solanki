@@ -1,0 +1,22 @@
+<?php $shippingMethods = $this->getShippingMethods(); ?>
+<form action="<?php echo $this->getUrl('saveShipping'); ?>" method="post">
+<div class="card mt-3 mb-2" style="width: 70%">
+  <div class="card-header bg-dark text-white">
+    Shipping Method
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+    	<ul class="list-group" align="left">
+			<?php if ($shippingMethods) : ?>
+			<?php foreach ($shippingMethods->getData() as $shippingMethod) : ?>
+		 	<li class="list-group-item">
+			    <input class="form-check-input me-1" type="radio" name="payment[method]" value="<?php echo $shippingMethod->shipping_method_id; ?>"><?php echo $shippingMethod->name." - ".$shippingMethod->amount; ?>
+		  	</li>
+		  	<?php endforeach; ?>
+			<?php endif; ?>
+		</ul>
+    </p>
+    <button class="btn btn-primary">Update</button>
+  </div>
+</div>
+</form>

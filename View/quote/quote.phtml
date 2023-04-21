@@ -1,0 +1,23 @@
+<div style="width:90%">
+	<table cellspacing="20px" class="table" cellpadding="20px">
+		<tr>
+			<td colspan="2">
+				<?php echo $this->getChildHtml('customer'); ?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><?php echo $this->getChildHtml('address'); ?></td>
+		</tr>
+		<tr>
+			<td style="width: 50%" align="center"><?php echo $this->getChildHtml('payment'); ?></td>
+			<td align="center"><?php echo $this->getChildHtml('shipping'); ?></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><?php echo $this->getChildHtml('items'); ?></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right" width="40%"><?php echo $this->getChildHtml('total'); ?></td>
+		</tr>
+	</table>
+</div>
+
