@@ -2,13 +2,25 @@
 
 class Controller_Category extends Controller_Core_Action
 {
+	public function indexAction()
+	{
+		try {
+			$layout = $this->getLayout();
+			$index = $layout->createBlock('Category_Index');
+			$layout->getChild('content')->addChild('index', $index);
+			$layout->render();
+		} catch (Exception $e) {
+			
+		}
+	}
+
 	public function gridAction()
 	{
 		try {
 			$layout = $this->getLayout();
 			$grid = $layout->createBlock('Category_Grid');
 			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			echo $grid->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -26,7 +38,7 @@ class Controller_Category extends Controller_Core_Action
 			$edit->setData(['category' => $category,'pathCategories' => $pathCategories]);
 
 			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			echo $edit->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('grid');
@@ -51,7 +63,7 @@ class Controller_Category extends Controller_Core_Action
 			$edit->setData(['category' => $category,'pathCategories' => $pathCategories]);
 
 			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			echo $edit->toHtml();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('grid',null,[],true);
@@ -112,7 +124,7 @@ class Controller_Category extends Controller_Core_Action
 		catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
 		}
-		$this->redirect('grid',null,[],true);
+		$this->redirect('index',null,[],true);
 	}
 
 

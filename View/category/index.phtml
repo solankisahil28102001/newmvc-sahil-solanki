@@ -1,0 +1,33 @@
+<script type="text/javascript">
+	var ajax = {
+		method : 'post',
+		url : '',
+		param : {},
+		getUrl : function() {
+			return this.url;
+		},
+
+		setUrl : function(url) {
+			this.url = url;
+			return this;
+		},
+
+		call : function(){
+			let self = this;
+			$.ajax({
+				url : self.getUrl(),
+			}).done(function(html) {
+				$("#content").html(html);
+			});
+		}
+
+	};
+
+	$(document).ready(function() {
+		ajax.setUrl("<?php echo $this->getUrl('grid', null, null, true); ?>").call();
+	});
+
+</script>
+<button class="btn btn-primary" onclick="ajax.setUrl('<?php echo $this->getUrl('grid', null, null, true); ?>').call()">Show grid</button>
+<button class="btn btn-primary" onclick="ajax.setUrl('<?php echo $this->getUrl('add', null, null, true); ?>').call()">Show Add</button>
+<div id="content"></div>
