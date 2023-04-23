@@ -59,8 +59,8 @@ $pathCategories = $this->getPathCategories();
 					 }
 					?>
 				</td>
-				<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $category->category_id]); ?>"><img style="height: 25px;" src="Resources/images/edit.png"></a></td>
-				<td><a href="<?php echo $this->getUrl('delete', null, ['id' => $category->category_id]); ?>"><img style="height: 25px;" src="Resources/images/delete.png"></a></td>
+				<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $category->category_id]); ?>">Edit</a></td>
+				<td><a href="<?php echo $this->getUrl('delete', null, ['id' => $category->category_id]); ?>">Delete</a></td>
 			</tr>
 		<?php endforeach; } 
 		else{

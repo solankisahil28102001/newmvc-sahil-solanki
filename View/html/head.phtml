@@ -1,8 +1,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Layout</title>
+	<title><?php echo $this->getTitle(); ?></title>
 	<link rel="stylesheet" type="text/css" href="Skin/css/bootstrap.min.css">
 	<script type="text/javascript" src="Skin/js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript" src="Skin/js/jquery-3.6.4.min.js"></script>
+	<script type="text/javascript" src="Skin/js/ajax.js"></script>
+	<?php foreach ($this->getAllJs() as $src) : ?>
+	<script type="text/javascript" src="<?php echo $src; ?>"></script>
+	<?php endforeach; ?>
 </head>
