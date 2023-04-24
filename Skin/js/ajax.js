@@ -61,8 +61,8 @@ var ajax = {
 			dataType: 'json'
 		}).done(function(response) {
 			$('#' + response.element).html(response.html);
-			if (response.message !== undefined) {
-				$('#message').html(response.message).addClass('alert bg-success text-white fw-bold');
+			if (response.messageBlockHtml !== undefined) {
+				$('#message-html').html(response.messageBlockHtml);
 			}
 			self.resetRequestParams();
 		});
