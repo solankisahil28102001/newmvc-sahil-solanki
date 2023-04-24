@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2023 at 04:49 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 5.6.39
+-- Generation Time: Apr 24, 2023 at 06:46 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -36,7 +35,7 @@ CREATE TABLE `admin` (
   `status` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
@@ -45,6 +44,28 @@ CREATE TABLE `admin` (
 INSERT INTO `admin` (`admin_id`, `name`, `email`, `password`, `status`, `created_at`, `updated_at`) VALUES
 (7, 'sahil', 's@khksa.as', '121222', 1, '2023-04-01 17:23:40', '2023-04-03 15:12:11'),
 (9, 'manoj', 'm@gmail.om', '122121n', 2, '2023-04-03 15:11:58', '2023-04-03 15:12:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `brand`
+--
+
+CREATE TABLE `brand` (
+  `brand_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`brand_id`, `name`, `description`, `image`, `created_at`, `updated_at`) VALUES
+(4, 'sas', '1212', '', '2023-04-18 16:05:29', '2023-04-19 14:29:24');
 
 -- --------------------------------------------------------
 
@@ -58,7 +79,7 @@ CREATE TABLE `cart` (
   `shipping_amount` decimal(10,2) NOT NULL,
   `tax_percent` int(2) NOT NULL,
   `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -72,7 +93,7 @@ CREATE TABLE `cart_item` (
   `sku` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -89,7 +110,7 @@ CREATE TABLE `category` (
   `description` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `category`
@@ -97,10 +118,20 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `parent_id`, `path`, `name`, `status`, `description`, `created_at`, `updated_at`) VALUES
 (1, 0, '1', 'Root', 1, '', '2023-04-03 00:00:00', NULL),
-(8, 1, '1-8', 'bedrooms', 2, '', '2023-04-09 13:37:28', NULL),
-(9, 8, '1-8-9', 'beds', 1, '', '2023-04-09 13:38:27', NULL),
-(10, 9, '1-8-9-10', 'Panel Beds', 1, '', '2023-04-10 19:51:28', NULL),
-(15, 1, '1-15', 'Livind room', 2, '', '2023-04-10 20:00:07', '0000-00-00 00:00:00');
+(157, 1, '1-157', 'p1', 2, '', '2023-04-23 17:58:07', '2023-04-23 18:12:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_varchar`
+--
+
+CREATE TABLE `category_varchar` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -116,16 +147,20 @@ CREATE TABLE `customer` (
   `gender` tinyint(4) NOT NULL,
   `mobile` bigint(10) NOT NULL,
   `status` tinyint(4) NOT NULL,
+  `shipping_address_id` int(11) DEFAULT NULL,
+  `billing_address_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `created_at`, `updated_at`) VALUES
-(52, 'jay', 'virja', 'j@gmail.com', 1, 9029109210, 1, '2023-04-03 15:29:23', '2023-04-10 19:59:44');
+INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `shipping_address_id`, `billing_address_id`, `created_at`, `updated_at`) VALUES
+(53, 'Customer2', 'asas', 'asa@asasa', 1, 2121212, 2, 19, 20, '2023-04-11 17:28:38', '2023-04-20 14:45:55'),
+(70, 'customer1', 'sas', 'sasas@sas', 0, 0, 2, 45, 44, '2023-04-12 14:54:37', '2023-04-20 14:45:49'),
+(109, 'sahil', '', '', 0, 0, 2, 81, 80, '2023-04-21 09:45:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -140,15 +175,22 @@ CREATE TABLE `customer_address` (
   `city` varchar(255) NOT NULL,
   `state` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
-  `zip_code` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `zip_code` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `customer_address`
 --
 
-INSERT INTO `customer_address` (`address_id`, `customer_id`, `address`, `city`, `state`, `country`, `zip_code`) VALUES
-(18, 52, 'jayraj society', 'ahmedabad', 'gujarat', 'india', 380061);
+INSERT INTO `customer_address` (`address_id`, `customer_id`, `address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`) VALUES
+(19, 53, '2', '2', '2', '2', 2, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
+(20, 53, '1', '1', '1', '1', 1, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
+(44, 70, '1', '1', '11', '66666', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
+(45, 70, '1', '1', '11', '55555', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
+(80, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06'),
+(81, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06');
 
 -- --------------------------------------------------------
 
@@ -164,17 +206,30 @@ CREATE TABLE `eav_attribute` (
   `name` varchar(50) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `backend_model` varchar(255) NOT NULL,
-  `input_type` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `input_type` varchar(20) NOT NULL,
+  `source_model` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `eav_attribute`
 --
 
-INSERT INTO `eav_attribute` (`attribute_id`, `entity_type_id`, `code`, `backend_type`, `name`, `status`, `backend_model`, `input_type`) VALUES
-(3, 2, 'style', 'int', 'Style', 2, '', 'select'),
-(4, 2, 'short_desc', 'varchar', 'Short description', 2, '', 'textarea'),
-(5, 2, 'gender', 'int', 'Gender', 1, '', 'radio');
+INSERT INTO `eav_attribute` (`attribute_id`, `entity_type_id`, `code`, `backend_type`, `name`, `status`, `backend_model`, `input_type`, `source_model`) VALUES
+(3, 2, 'style', 'int', 'Style', 1, '', 'select', ''),
+(4, 2, 'short_desc', 'text', 'Short description', 1, '', 'textarea', ''),
+(5, 2, 'gender', 'int', 'Gender', 1, '', 'radio', ''),
+(17, 6, 'name', 'varchar', 'Name', 1, '', 'text', 'Eav_Attribute_Option_Source'),
+(18, 7, 'color', 'int', 'Color', 1, '', 'select', 'Eav_Attribute_Option_Source'),
+(19, 7, 'style', 'varchar', 'Style', 1, '', 'multiselect', ''),
+(20, 7, 'gender', 'int', 'Gender', 1, '', 'radio', ''),
+(21, 7, 'name', 'varchar', 'Name', 1, '', 'text', ''),
+(22, 7, 'price', 'decimal', 'Price', 1, '', 'text', ''),
+(23, 7, 'cost', 'decimal', 'Cost', 1, '', 'text', ''),
+(24, 7, 'description', 'text', 'Description', 1, '', 'textarea', ''),
+(25, 2, 'n', 'varchar', 'N', 1, '', 'text', ''),
+(26, 7, 'checkbox', 'varchar', 'Checkbox', 1, '', 'checkbox', ''),
+(27, 8, 'name', 'varchar', 'Name', 1, '', 'text', ''),
+(28, 9, 'name', 'varchar', 'Name', 1, '', 'text', '');
 
 -- --------------------------------------------------------
 
@@ -187,19 +242,26 @@ CREATE TABLE `eav_attribute_option` (
   `name` varchar(20) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `position` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `eav_attribute_option`
 --
 
 INSERT INTO `eav_attribute_option` (`option_id`, `name`, `attribute_id`, `position`) VALUES
-(38, 'Modern', 3, 4),
-(41, 'Traditional', 3, 8),
-(48, 'Contemprory', 3, 2),
-(49, 'Female', 5, 7),
-(50, 'Male', 5, 8),
-(53, 'Electric', 3, 5);
+(50, 'Male', 5, 1),
+(55, 'Female', 5, 2),
+(73, '1', 3, 1),
+(86, 'Green', 18, 2),
+(87, 'Red', 18, 1),
+(88, 'Blue', 18, 3),
+(89, 'Traditional', 19, 3),
+(90, 'Electric', 19, 2),
+(91, 'Contemprory', 19, 1),
+(92, 'Male', 20, 1),
+(93, 'Female', 20, 2),
+(94, 'checkbox2', 26, 2),
+(95, 'checkbox1', 26, 1);
 
 -- --------------------------------------------------------
 
@@ -211,7 +273,7 @@ CREATE TABLE `entity_type` (
   `entity_type_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `entity_model` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `entity_type`
@@ -222,7 +284,180 @@ INSERT INTO `entity_type` (`entity_type_id`, `name`, `entity_model`) VALUES
 (3, 'customer', ''),
 (4, 'vendor', ''),
 (5, 'salesman', ''),
-(6, 'category', '');
+(6, 'category', ''),
+(7, 'item', ''),
+(8, 'shipping', ''),
+(9, 'payment', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item`
+--
+
+CREATE TABLE `item` (
+  `entity_id` int(11) NOT NULL,
+  `entity_type_id` int(11) NOT NULL DEFAULT 7,
+  `sku` varchar(11) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`entity_id`, `entity_type_id`, `sku`, `status`, `created_at`, `updated_at`) VALUES
+(26, 7, '3', 1, '2023-04-17 23:50:50', '2023-04-19 00:55:05'),
+(27, 7, '4', 1, '2023-04-18 09:44:26', '2023-04-19 00:52:45'),
+(29, 7, '12', 2, '2023-04-19 00:56:44', '2023-04-19 11:53:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_decimal`
+--
+
+CREATE TABLE `item_decimal` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `item_decimal`
+--
+
+INSERT INTO `item_decimal` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(34, 27, 22, 200.00),
+(35, 27, 23, 50.00),
+(38, 26, 22, 233.00),
+(39, 26, 23, 50.00),
+(40, 29, 22, 121.00),
+(41, 29, 23, 11.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_int`
+--
+
+CREATE TABLE `item_int` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `item_int`
+--
+
+INSERT INTO `item_int` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(91, 27, 18, 88),
+(94, 27, 20, 93),
+(97, 26, 18, 86),
+(98, 26, 20, 93),
+(99, 29, 18, 88),
+(105, 29, 20, 93);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_text`
+--
+
+CREATE TABLE `item_text` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `item_text`
+--
+
+INSERT INTO `item_text` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(40, 29, 24, 'sahil');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_varchar`
+--
+
+CREATE TABLE `item_varchar` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `item_varchar`
+--
+
+INSERT INTO `item_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(112, 26, 17, '13'),
+(114, 27, 19, '89,90'),
+(115, 27, 21, 'item 4'),
+(118, 26, 19, '90,91'),
+(119, 26, 21, 'item 3'),
+(121, 29, 21, 'sasas'),
+(122, 27, 17, ''),
+(139, 29, 17, '12'),
+(147, 29, 26, '94,95'),
+(148, 29, 19, '89,90');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_email` varchar(255) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_mobile_no` int(10) NOT NULL,
+  `order_total` decimal(10,2) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
+  `shipping_method_id` int(11) NOT NULL,
+  `shipping_amount` decimal(10,2) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_decimal`
+--
+
+CREATE TABLE `payment_decimal` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_int`
+--
+
+CREATE TABLE `payment_int` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -236,7 +471,7 @@ CREATE TABLE `payment_method` (
   `status` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `payment_method`
@@ -244,7 +479,40 @@ CREATE TABLE `payment_method` (
 
 INSERT INTO `payment_method` (`payment_method_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'P1', 2, '2023-04-09 14:02:46', '2023-04-10 19:58:24'),
-(2, 'P2', 1, '2023-04-09 14:02:52', '2023-04-10 19:58:19');
+(2, 'P2', 1, '2023-04-09 14:02:52', '2023-04-19 13:56:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_text`
+--
+
+CREATE TABLE `payment_text` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_varchar`
+--
+
+CREATE TABLE `payment_varchar` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payment_varchar`
+--
+
+INSERT INTO `payment_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(1, 2, 28, '');
 
 -- --------------------------------------------------------
 
@@ -258,22 +526,38 @@ CREATE TABLE `product` (
   `sku` varchar(50) NOT NULL,
   `cost` decimal(10,2) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `quantity` int(5) NOT NULL DEFAULT '100',
+  `quantity` int(5) NOT NULL DEFAULT 100,
   `description` varchar(255) NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '2',
+  `status` tinyint(4) NOT NULL DEFAULT 2,
   `color` tinyint(4) NOT NULL,
   `material` tinyint(4) NOT NULL,
+  `small_id` int(11) DEFAULT NULL,
+  `thumb_id` int(11) DEFAULT NULL,
+  `base_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `name`, `sku`, `cost`, `price`, `quantity`, `description`, `status`, `color`, `material`, `created_at`, `updated_at`) VALUES
-(1, 'Pen', 'p1', '10.00', '20.00', 110, 'good pen', 1, 5, 3, '2023-03-27 12:28:18', '2023-04-10 20:14:08'),
-(2, 'product 2', 'p2', '120.00', '200.00', 1000, 'good product', 1, 1, 1, '2023-03-27 12:35:05', '2023-04-10 11:48:11');
+INSERT INTO `product` (`product_id`, `name`, `sku`, `cost`, `price`, `quantity`, `description`, `status`, `color`, `material`, `small_id`, `thumb_id`, `base_id`, `created_at`, `updated_at`) VALUES
+(4, '111', 'sa', 21.00, 212.00, 12, '121', 2, 1, 1, 16, 11, 16, '2023-04-12 12:23:17', '2023-04-19 13:20:35'),
+(9, 'Pen', 'p1', 10.00, 20.00, 100, 'good product', 1, 4, 1, 0, 0, 0, '2023-04-15 00:11:02', '2023-04-19 13:19:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_decimal`
+--
+
+CREATE TABLE `product_decimal` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -286,7 +570,17 @@ CREATE TABLE `product_int` (
   `entity_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `value` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `product_int`
+--
+
+INSERT INTO `product_int` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(7, 9, 3, 73),
+(8, 9, 5, 55),
+(9, 4, 3, 73),
+(10, 4, 5, 50);
 
 -- --------------------------------------------------------
 
@@ -299,21 +593,134 @@ CREATE TABLE `product_media` (
   `product_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '2',
-  `small` tinyint(4) NOT NULL,
-  `thumb` tinyint(4) NOT NULL,
-  `base` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 2,
   `gallery` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `product_media`
 --
 
-INSERT INTO `product_media` (`media_id`, `product_id`, `name`, `image`, `status`, `small`, `thumb`, `base`, `gallery`, `created_at`) VALUES
-(8, 1, 'Pic 1', '8.jpg', 2, 0, 1, 0, 1, '2023-04-10 20:13:15'),
-(9, 1, 'Pic 2', '9.jpg', 1, 1, 0, 1, 0, '2023-04-10 20:13:31');
+INSERT INTO `product_media` (`media_id`, `product_id`, `name`, `image`, `status`, `gallery`, `created_at`) VALUES
+(11, 4, 'saas', '11.jpg', 2, 0, '2023-04-12 12:23:38'),
+(16, 4, 'pic 2', '16.jpg', 1, 1, '2023-04-14 23:58:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_text`
+--
+
+CREATE TABLE `product_text` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `product_text`
+--
+
+INSERT INTO `product_text` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(1, 9, 4, '11'),
+(2, 4, 4, '12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_varchar`
+--
+
+CREATE TABLE `product_varchar` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `product_varchar`
+--
+
+INSERT INTO `product_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(1, 9, 4, '11'),
+(3, 9, 25, '11'),
+(4, 4, 25, '21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote`
+--
+
+CREATE TABLE `quote` (
+  `order_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `order_total` decimal(10,2) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
+  `shipping_method_id` int(11) NOT NULL,
+  `shipping_amount` decimal(10,2) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quote`
+--
+
+INSERT INTO `quote` (`order_id`, `customer_id`, `order_total`, `status`, `payment_method_id`, `shipping_method_id`, `shipping_amount`, `created_at`, `updated_at`) VALUES
+(2, 70, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 53, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 0, 0.00, 0, 0, 5, 1222.00, '0000-00-00 00:00:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_address`
+--
+
+CREATE TABLE `quote_address` (
+  `address_id` int(11) NOT NULL,
+  `customer_address_id` int(11) NOT NULL,
+  `address` text NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `zip_code` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quote_address`
+--
+
+INSERT INTO `quote_address` (`address_id`, `customer_address_id`, `address`, `city`, `state`, `country`, `zip_code`) VALUES
+(30, 44, '1', '1', '11', '66666', 1),
+(31, 45, '1', '1', '11', '55555', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_item`
+--
+
+CREATE TABLE `quote_item` (
+  `item_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(3) NOT NULL,
+  `discount` int(3) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quote_item`
+--
+
+INSERT INTO `quote_item` (`item_id`, `product_id`, `quantity`, `discount`, `price`) VALUES
+(22, 4, 12, 0, 212.00),
+(23, 9, 12, 0, 20.00);
 
 -- --------------------------------------------------------
 
@@ -332,7 +739,7 @@ CREATE TABLE `salesman` (
   `company` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `salesman`
@@ -356,7 +763,7 @@ CREATE TABLE `salesman_address` (
   `state` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
   `zip_code` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `salesman_address`
@@ -377,16 +784,40 @@ CREATE TABLE `salesman_price` (
   `salesman_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `salesman_price` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `salesman_price`
 --
 
 INSERT INTO `salesman_price` (`entity_id`, `salesman_id`, `product_id`, `salesman_price`) VALUES
-(19, 1, 2, 12),
-(21, 1, 1, 11),
-(22, 2, 1, 11);
+(23, 1, 9, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipping_decimal`
+--
+
+CREATE TABLE `shipping_decimal` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipping_int`
+--
+
+CREATE TABLE `shipping_int` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -401,15 +832,49 @@ CREATE TABLE `shipping_method` (
   `status` tinyint(4) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `shipping_method`
 --
 
 INSERT INTO `shipping_method` (`shipping_method_id`, `name`, `amount`, `status`, `created_at`, `updated_at`) VALUES
-(3, 'S1', '12121.00', 1, '2023-04-09 12:41:39', '2023-04-10 19:58:31'),
-(4, 'S2', '12121.00', 2, '2023-04-09 12:41:43', '2023-04-10 19:58:36');
+(5, 'S1', 1222.00, 1, '2023-04-12 23:42:24', '2023-04-19 13:46:54'),
+(6, 's2', 0.00, 2, '2023-04-23 22:42:56', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipping_text`
+--
+
+CREATE TABLE `shipping_text` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipping_varchar`
+--
+
+CREATE TABLE `shipping_varchar` (
+  `value_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shipping_varchar`
+--
+
+INSERT INTO `shipping_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+(1, 5, 27, '11'),
+(3, 6, 27, '');
 
 -- --------------------------------------------------------
 
@@ -428,7 +893,7 @@ CREATE TABLE `vendor` (
   `company` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `vendor`
@@ -451,7 +916,7 @@ CREATE TABLE `vendor_address` (
   `state` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
   `zip_code` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `vendor_address`
@@ -469,6 +934,12 @@ INSERT INTO `vendor_address` (`address_id`, `vendor_id`, `address`, `city`, `sta
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`admin_id`);
+
+--
+-- Indexes for table `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`brand_id`);
 
 --
 -- Indexes for table `cart`
@@ -491,10 +962,20 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `category_varchar`
+--
+ALTER TABLE `category_varchar`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customer_id`);
+  ADD PRIMARY KEY (`customer_id`),
+  ADD KEY `customer_ibfk_1` (`shipping_address_id`),
+  ADD KEY `customer_ibfk_2` (`billing_address_id`);
 
 --
 -- Indexes for table `customer_address`
@@ -524,10 +1005,86 @@ ALTER TABLE `entity_type`
   ADD PRIMARY KEY (`entity_type_id`);
 
 --
+-- Indexes for table `item`
+--
+ALTER TABLE `item`
+  ADD PRIMARY KEY (`entity_id`);
+
+--
+-- Indexes for table `item_decimal`
+--
+ALTER TABLE `item_decimal`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `item_int`
+--
+ALTER TABLE `item_int`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `item_text`
+--
+ALTER TABLE `item_text`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `item_varchar`
+--
+ALTER TABLE `item_varchar`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `payment_decimal`
+--
+ALTER TABLE `payment_decimal`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `payment_int`
+--
+ALTER TABLE `payment_int`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `payment_method`
 --
 ALTER TABLE `payment_method`
   ADD PRIMARY KEY (`payment_method_id`);
+
+--
+-- Indexes for table `payment_text`
+--
+ALTER TABLE `payment_text`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `payment_varchar`
+--
+ALTER TABLE `payment_varchar`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
 
 --
 -- Indexes for table `product`
@@ -536,11 +1093,19 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`);
 
 --
+-- Indexes for table `product_decimal`
+--
+ALTER TABLE `product_decimal`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `product_int`
 --
 ALTER TABLE `product_int`
   ADD PRIMARY KEY (`value_id`),
-  ADD KEY `entity_id` (`entity_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
   ADD KEY `attribute_id` (`attribute_id`);
 
 --
@@ -549,6 +1114,40 @@ ALTER TABLE `product_int`
 ALTER TABLE `product_media`
   ADD PRIMARY KEY (`media_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_text`
+--
+ALTER TABLE `product_text`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `product_varchar`
+--
+ALTER TABLE `product_varchar`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `quote`
+--
+ALTER TABLE `quote`
+  ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `quote_address`
+--
+ALTER TABLE `quote_address`
+  ADD PRIMARY KEY (`address_id`);
+
+--
+-- Indexes for table `quote_item`
+--
+ALTER TABLE `quote_item`
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Indexes for table `salesman`
@@ -572,10 +1171,42 @@ ALTER TABLE `salesman_price`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `shipping_decimal`
+--
+ALTER TABLE `shipping_decimal`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `shipping_int`
+--
+ALTER TABLE `shipping_int`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
 -- Indexes for table `shipping_method`
 --
 ALTER TABLE `shipping_method`
   ADD PRIMARY KEY (`shipping_method_id`);
+
+--
+-- Indexes for table `shipping_text`
+--
+ALTER TABLE `shipping_text`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `shipping_varchar`
+--
+ALTER TABLE `shipping_varchar`
+  ADD PRIMARY KEY (`value_id`),
+  ADD UNIQUE KEY `entity_id` (`entity_id`,`attribute_id`),
+  ADD KEY `attribute_id` (`attribute_id`);
 
 --
 -- Indexes for table `vendor`
@@ -598,7 +1229,13 @@ ALTER TABLE `vendor_address`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -616,85 +1253,205 @@ ALTER TABLE `cart_item`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+
+--
+-- AUTO_INCREMENT for table `category_varchar`
+--
+ALTER TABLE `category_varchar`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `eav_attribute`
 --
 ALTER TABLE `eav_attribute`
-  MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `eav_attribute_option`
 --
 ALTER TABLE `eav_attribute_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `entity_type`
 --
 ALTER TABLE `entity_type`
-  MODIFY `entity_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `entity_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `item`
+--
+ALTER TABLE `item`
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `item_decimal`
+--
+ALTER TABLE `item_decimal`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
+--
+-- AUTO_INCREMENT for table `item_int`
+--
+ALTER TABLE `item_int`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+
+--
+-- AUTO_INCREMENT for table `item_text`
+--
+ALTER TABLE `item_text`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `item_varchar`
+--
+ALTER TABLE `item_varchar`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+
+--
+-- AUTO_INCREMENT for table `payment_decimal`
+--
+ALTER TABLE `payment_decimal`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payment_int`
+--
+ALTER TABLE `payment_int`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_method`
 --
 ALTER TABLE `payment_method`
-  MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `payment_text`
+--
+ALTER TABLE `payment_text`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payment_varchar`
+--
+ALTER TABLE `payment_varchar`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `product_decimal`
+--
+ALTER TABLE `product_decimal`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product_int`
 --
 ALTER TABLE `product_int`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `product_media`
 --
 ALTER TABLE `product_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `product_text`
+--
+ALTER TABLE `product_text`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `product_varchar`
+--
+ALTER TABLE `product_varchar`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `quote`
+--
+ALTER TABLE `quote`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `quote_address`
+--
+ALTER TABLE `quote_address`
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `quote_item`
+--
+ALTER TABLE `quote_item`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `salesman`
 --
 ALTER TABLE `salesman`
-  MODIFY `salesman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `salesman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `salesman_address`
 --
 ALTER TABLE `salesman_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `salesman_price`
 --
 ALTER TABLE `salesman_price`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `shipping_decimal`
+--
+ALTER TABLE `shipping_decimal`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shipping_int`
+--
+ALTER TABLE `shipping_int`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `shipping_method`
 --
 ALTER TABLE `shipping_method`
-  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `shipping_text`
+--
+ALTER TABLE `shipping_text`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shipping_varchar`
+--
+ALTER TABLE `shipping_varchar`
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vendor`
@@ -711,6 +1468,20 @@ ALTER TABLE `vendor_address`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `category_varchar`
+--
+ALTER TABLE `category_varchar`
+  ADD CONSTRAINT `category_varchar_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `category_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`shipping_address_id`) REFERENCES `customer_address` (`address_id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`billing_address_id`) REFERENCES `customer_address` (`address_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `customer_address`
@@ -731,10 +1502,94 @@ ALTER TABLE `eav_attribute_option`
   ADD CONSTRAINT `eav_attribute_option_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `item_decimal`
+--
+ALTER TABLE `item_decimal`
+  ADD CONSTRAINT `item_decimal_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_decimal_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `item_int`
+--
+ALTER TABLE `item_int`
+  ADD CONSTRAINT `item_int_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_int_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `item_text`
+--
+ALTER TABLE `item_text`
+  ADD CONSTRAINT `item_text_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_text_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `item_varchar`
+--
+ALTER TABLE `item_varchar`
+  ADD CONSTRAINT `item_varchar_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_varchar_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payment_decimal`
+--
+ALTER TABLE `payment_decimal`
+  ADD CONSTRAINT `payment_decimal_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payment_decimal_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `payment_method` (`payment_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payment_int`
+--
+ALTER TABLE `payment_int`
+  ADD CONSTRAINT `payment_int_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payment_int_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `payment_method` (`payment_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payment_text`
+--
+ALTER TABLE `payment_text`
+  ADD CONSTRAINT `payment_text_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payment_text_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `payment_method` (`payment_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payment_varchar`
+--
+ALTER TABLE `payment_varchar`
+  ADD CONSTRAINT `payment_varchar_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payment_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `payment_method` (`payment_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_decimal`
+--
+ALTER TABLE `product_decimal`
+  ADD CONSTRAINT `product_decimal_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_decimal_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_int`
+--
+ALTER TABLE `product_int`
+  ADD CONSTRAINT `product_int_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_int_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `product_media`
 --
 ALTER TABLE `product_media`
   ADD CONSTRAINT `product_media_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_text`
+--
+ALTER TABLE `product_text`
+  ADD CONSTRAINT `product_text_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_text_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_varchar`
+--
+ALTER TABLE `product_varchar`
+  ADD CONSTRAINT `product_varchar_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `salesman_address`
@@ -748,6 +1603,34 @@ ALTER TABLE `salesman_address`
 ALTER TABLE `salesman_price`
   ADD CONSTRAINT `salesman_price_ibfk_2` FOREIGN KEY (`salesman_id`) REFERENCES `salesman` (`salesman_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `salesman_price_ibfk_3` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipping_decimal`
+--
+ALTER TABLE `shipping_decimal`
+  ADD CONSTRAINT `shipping_decimal_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipping_decimal_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `shipping_method` (`shipping_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipping_int`
+--
+ALTER TABLE `shipping_int`
+  ADD CONSTRAINT `shipping_int_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipping_int_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `shipping_method` (`shipping_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipping_text`
+--
+ALTER TABLE `shipping_text`
+  ADD CONSTRAINT `shipping_text_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipping_text_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `shipping_method` (`shipping_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipping_varchar`
+--
+ALTER TABLE `shipping_varchar`
+  ADD CONSTRAINT `shipping_varchar_ibfk_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipping_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `shipping_method` (`shipping_method_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `vendor_address`

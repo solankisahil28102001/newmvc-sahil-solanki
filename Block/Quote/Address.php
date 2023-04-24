@@ -10,18 +10,24 @@ class Block_Quote_Address extends Block_Core_Template
 		
 	public function getShippingAddress()
 	{
-		if ($customer = $this->getCustomer()) {
-			return Ccc::getModel('Customer_Address')->load($customer->shipping_address_id);
+		if ($quoteAddress = Ccc::getModel('Quote_Address')->load($this->getCustomer()->shipping_address_id, 'customer_address_id')) {
+			return $quoteAddress;
 		}
-		return Ccc::getModel('Customer_Address');
+		if ($customerAddress = Ccc::getModel('Customer_Address')->load($this->getCustomer()->shipping_address_id)) {
+			return $customerAddress;
+		}
+		return Ccc::getModel('Quote_Address');
 	}
 
 	public function getBillingAddress()
 	{
-		if ($customer = $this->getCustomer()) {
-			return Ccc::getModel('Customer_Address')->load($customer->billing_address_id);
+		if ($quoteAddress = Ccc::getModel('Quote_Address')->load($this->getCustomer()->billing_address_id, 'customer_address_id')) {
+			return $quoteAddress;
 		}
-		return Ccc::getModel('Customer_Address');	
+		if ($customerAddress = Ccc::getModel('Customer_Address')->load($this->getCustomer()->billing_address_id)) {
+			return $customerAddress;
+		}
+		return Ccc::getModel('Quote_Address');
 	}
 
 	public function getCustomer()
@@ -30,6 +36,6 @@ class Block_Quote_Address extends Block_Core_Template
 		if ($id) {
 			return Ccc::getModel('Customer')->load($id);
 		}
-		return null;
+		return Ccc::getModel('Customer');
 	}
 }

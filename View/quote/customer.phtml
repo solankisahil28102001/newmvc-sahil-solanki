@@ -1,9 +1,11 @@
-<?php $customers = $this->getCustomers(); ?>
+	<?php $customers = $this->getCustomers(); ?>
 <div align="right">
 <select class="form-select mb-3" style="width: 30%" name="customer" id="changeCustomer">
 	<option value="0">select customer</option>
 	<?php foreach($customers->getData() as $key => $customer): ?>
-	<option value="<?php echo $customer->customer_id; ?>"><?php echo $customer->first_name."-".$customer->customer_id; ?></option>
+	<option value="<?php echo $customer->customer_id; ?>" 
+		<?php echo ($this->getRequest()->getParam('customerId') == $customer->customer_id) ? 'selected' : ''; ?>>
+		<?php echo $customer->first_name."-".$customer->customer_id; ?></option>
 	<?php endforeach; ?>
 </select>
 </div>
@@ -11,7 +13,11 @@
 <script type="text/javascript">
 
 $("#changeCustomer").change(function() {
-	location.href = "?a=quote&c=quote&customerId="+$(this).val();
+	if ($(this).val() == 0) {
+		location.href = "?a=quote&c=quote";
+	}else {
+		location.href = "?a=quote&c=quote&customerId="+$(this).val();
+	}
 });
 
 </script>

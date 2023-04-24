@@ -2,23 +2,19 @@
 	<table class="mx-4 mt-3 table" style="width: 20%;border-radius: 10pz;">
 		<tr>
 			<th>SUB TOTAL:</th>
-			<td>1500</td>
+			<td><?php echo $subTotal = (int)$this->getTotal()->total; ?></td>
 		</tr>
 		<tr>
 			<th>SHIPPING:</th>
-			<td>100</td>
-		</tr>
-		<tr>
-			<th>TAX:</th>
-			<td>150</td>
+			<td><?php echo $shippingAmount = (int)$this->getShippingAmount(); ?></td>
 		</tr>
 		<tr>
 			<th>DISCOUNT:</th>
-			<td>50</td>
+			<td><?php echo $discount = round($this->getDiscountAmount(), 2); ?></td>
 		</tr>
 		<tr>
 			<th>GRAND TOTAL:</th>
-			<td>1700</td>
+			<td><?php echo $grandTotal = ($subTotal + $shippingAmount) - $discount ?></td>
 		</tr>
 		<tr>
 			<th></th>

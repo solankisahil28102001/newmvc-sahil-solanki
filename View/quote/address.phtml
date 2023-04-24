@@ -10,6 +10,9 @@
 			  	</div>
 				<div>
 			  	<table class="table mt-2">
+			  		<?php if ($billingAddress instanceof Model_Quote_Address) : ?>
+			  			<input type="hidden" name="billingAddress[address_id]" value="<?php echo $billingAddress->address_id ?>">
+			  		<?php endif; ?>
 					<tr>
 						<td>Address</td>
 						<td><input type="text" name="billingAddress[address]" class="form-control" value="<?php echo $billingAddress->address; ?>"></td>
@@ -61,6 +64,9 @@
 			  	</div>
 				<div>
 				<table class="table mt-2">
+					<?php if ($shippingAddress instanceof Model_Quote_Address) : ?>
+			  			<input type="hidden" name="shippingAddress[address_id]" value="<?php echo $shippingAddress->address_id ?>">
+			  		<?php endif; ?>
 					<tr>
 						<td>Address</td>
 						<td><input type="text" name="shippingAddress[address]" class="form-control"  value="<?php echo $shippingAddress->address; ?>"></td>

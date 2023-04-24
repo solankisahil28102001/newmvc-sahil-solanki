@@ -1,4 +1,6 @@
 <?php $shippingMethods = $this->getShippingMethods(); ?>
+<?php $quote = $this->getQuote(); ?>
+
 <form action="<?php echo $this->getUrl('saveShipping'); ?>" method="post">
 <div class="card mt-3 mb-2" style="width: 70%">
   <div class="card-header bg-dark text-white">
@@ -10,7 +12,8 @@
 			<?php if ($shippingMethods) : ?>
 			<?php foreach ($shippingMethods->getData() as $shippingMethod) : ?>
 		 	<li class="list-group-item">
-			    <input class="form-check-input me-1" type="radio" name="shipping" value="<?php echo $shippingMethod->shipping_method_id; ?>"><?php echo $shippingMethod->name." - ".$shippingMethod->amount; ?>
+			    <input class="form-check-input me-1" type="radio" name="shipping" value="<?php echo $shippingMethod->shipping_method_id; ?>" <?php echo ($shippingMethod->shipping_method_id == $quote->shipping_method_id) ? 'checked': ''; ?>><?php echo $shippingMethod->name." - ".$shippingMethod->amount; ?>
+
 		  	</li>
 		  	<?php endforeach; ?>
 			<?php endif; ?>

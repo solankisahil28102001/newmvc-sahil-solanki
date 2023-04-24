@@ -14,4 +14,12 @@ class Block_Quote_Shipping extends Block_Core_Template
 		$query = "SELECT * FROM `shipping_method` ORDER BY `shipping_method_id`";
 		return Ccc::getModel('Shipping')->fetchAll($query);
 	}
+
+	public function getQuote()
+	{
+		if ($quote = Ccc::getModel('Quote')->load($this->getRequest()->getParam('customerId'), 'customer_id')) {
+			return $quote;
+		}
+		return Ccc::getModel('Quote');
+	}
 }
