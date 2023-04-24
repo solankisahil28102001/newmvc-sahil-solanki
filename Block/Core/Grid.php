@@ -69,6 +69,18 @@ class Block_Core_Grid extends Block_Core_Template
 			return $row->getStatusText();
 		}
 
+		if ($key == 'color') {
+			return $row->getColor();
+		}
+
+		if ($key == 'material') {
+			return $row->getMaterial();
+		}
+
+		if ($key == 'entity_name') {
+			return $row->getEntityName();
+		}
+
 		if ($row instanceof Model_Category) {
 			if ($key == 'name') {
 				$pathCategories = $row->preparePathCategories();

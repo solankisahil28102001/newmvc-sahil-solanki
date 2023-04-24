@@ -2,13 +2,26 @@
 
 class Controller_Admin extends Controller_Core_Action
 {
+
+    public function indexAction()
+    {
+        try { 
+            $layout = $this->getLayout();
+            $this->_setTitle('Manage Categories');
+            $indexBlock = $layout->createBlock('Core_Template')->setTemplate('category/index.phtml');
+            $layout->getChild('content')->addChild('index', $indexBlock);
+            echo $layout->toHtml();
+        } catch (Exception $e) {
+            
+        }
+    }
+
     public function gridAction()
     {
         try {
-            $layout = $this->getLayout();
-            $grid = new Block_Admin_Grid();
-            $layout->getChild('content')->addChild('grid', $grid);
-            $layout->render();
+            $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
         }
@@ -17,18 +30,16 @@ class Controller_Admin extends Controller_Core_Action
     public function addAction()
     {
         try {
-            $layout = $this->getLayout();
-            $edit = new Block_Admin_Edit();
             if (!($admin = Ccc::getModel('Admin'))) {
                 throw new Exception("Invalid request.", 1);
             };
             
-            $edit->setData(['admin' => $admin]);
-            $layout->getChild('content')->addChild('edit', $edit);
-            $layout->render();
+            $addHtml = $this->getLayout()->createBlock('Admin_Edit')->setData(['admin' => $admin])->toHtml();
+            echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-            $this->redirect('grid',null,[],true);
+            $this->redirect('index');
         }    
     }
 
@@ -36,8 +47,6 @@ class Controller_Admin extends Controller_Core_Action
     public function editAction()
     {
         try {
-            $layout = $this->getLayout();
-            $edit = new Block_Admin_Edit();
             if (!($id = $this->getRequest()->getParam('id'))) {
                 throw new Exception("Invalid request.", 1);
             }
@@ -45,12 +54,12 @@ class Controller_Admin extends Controller_Core_Action
                 throw new Exception("Invalid Id.", 1);
             }
 
-            $edit->setData(['admin' => $admin]);
-            $layout->getChild('content')->addChild('edit', $edit);
-            $layout->render();
+            $editHtml = $this->getLayout()->createBlock('Admin_Edit')->setData(['admin' => $admin])->toHtml();
+            echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-            $this->redirect('grid',null,[],true);
+            $this->redirect('index');
         }
     }
 
@@ -82,11 +91,14 @@ class Controller_Admin extends Controller_Core_Action
             if (!$admin->save()) {
                 throw new Exception("Unable to save admin.", 1);
             }
-            $this->getMessage()->addMessage("Admin saved successfully.");
+
+            $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
+            header('Content-type: application/json');
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Admin saved successfully."]);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+            $this->redirect('index');
         }
-        $this->redirect('grid',null, [], true);
     }
 
 
@@ -103,13 +115,15 @@ class Controller_Admin extends Controller_Core_Action
 
             if (!$admin->delete()) {
                 throw new Exception("Unable to delete admin.", 1);
-                
             }
             
-            $this->getMessage()->addMessage("Admin deleted successfully.");
+            $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
+            header('Content-type: application/json');
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => "Admin deleted successfully."]);
+
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+            $this->redirect('index');
         }
-        $this->redirect('grid',null,[],true);
     }
 }

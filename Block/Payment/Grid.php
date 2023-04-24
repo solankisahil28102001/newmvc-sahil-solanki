@@ -60,7 +60,7 @@ class Block_Payment_Grid extends Block_Core_Grid
 	{
 		$this->addButton('add_payment_method', [
 			'title' => 'Add New',
-			'url' => $this->getUrl('add')
+			'url' => $this->getUrl('add', null, null, true)
 		]);
 		return parent::_prepareButtons();
 	}

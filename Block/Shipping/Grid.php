@@ -63,7 +63,7 @@ class Block_Shipping_Grid extends Block_Core_Grid
 	{
 		$this->addButton('add_shipping_method', [
 			'title' => 'Add New',
-			'url' => $this->getUrl('add')
+			'url' => $this->getUrl('add', null, null, true)
 		]);
 		return parent::_prepareButtons();
 	}

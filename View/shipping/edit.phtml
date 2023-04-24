@@ -4,16 +4,16 @@ $attributes = $this->getAttributes();
 $mode = ($shipping->shipping_method_id) ? 'Edit' : 'Add';
 ?>
 <div align="center" class="w-100 container">
-	<form method="POST" action="<?php echo $this->getUrl('save'); ?>">
+	<form method="POST" action="<?php echo $this->getUrl('save'); ?>" id="shipping-form">
 	<div class="w-50 align-items-center d-flex row">
 		<div align="left" class="col-8">
 			<h2><?php echo $mode." Shipping method"; ?></h2>
 		</div>
 		<div align="right" class="col-2">
-			<a href="<?php echo $this->getUrl('grid',null,[],true); ?>" class="btn btn-danger">Cancel</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('grid',null,[],true); ?>').call()" class="btn btn-danger">Cancel</a>
 		</div>
 		<div align="right" class="col-2">
-			<button class="btn btn-primary" name="submit">Save</button>
+			<input type="button" class="btn btn-primary" onclick="ajax.setForm('shipping-form').call()" value="Save">
 		</div>
 	</div>
 	<div class="w-50 mt-2">
