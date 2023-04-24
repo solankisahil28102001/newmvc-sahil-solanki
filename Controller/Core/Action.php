@@ -5,9 +5,28 @@ class Controller_Core_Action{
 	protected $message = null;
 	protected $adapter = null;
 	protected $request = null;
+	protected $response = null;
 	protected $url = null;
 	protected $view = null;
 	protected $layout = null;
+
+
+	protected function setResponse(Model_Core_Response $response)
+	{
+		$this->response = $response;
+		return $this;
+	}
+
+	public function getResponse()
+	{
+		if ($this->response) {
+			return $this->response;
+		}
+		$response = new Model_Core_Response();
+		$response->setController($this);
+		$this->setResponse($response);
+		return $response;
+	}
 
 	protected function _setTitle($title)
 	{
@@ -48,9 +67,9 @@ class Controller_Core_Action{
 		return $view;
 	}
 
-	public function render()
-	{
-		$this->getView()->render();
+	public function renderLayout()
+	{	
+		$this->getResponse()->setBody($this->getLayout()->toHtml());
 	}
 	
 	public function setMessage(Model_Core_Message $message)

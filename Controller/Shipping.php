@@ -10,7 +10,7 @@ class Controller_Shipping extends Controller_Core_Action
 			$this->_setTitle('Manage Shippings');
 			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('shipping/index.phtml');
 			$layout->getChild('content')->addChild('index', $indexBlock);
-			echo $layout->toHtml();
+			$this->renderLayout();
 		} catch (Exception $e) {
 			
 		}
@@ -62,8 +62,7 @@ class Controller_Shipping extends Controller_Core_Action
 		try {
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -115,11 +114,11 @@ class Controller_Shipping extends Controller_Core_Action
 					}
 				}
 			}
+			$this->getMessage()->addMessage("Shipping_method saved successfully.");
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
-			header('Content-type: application/json');
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Shipping_method saved successfully."]);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -143,10 +142,12 @@ class Controller_Shipping extends Controller_Core_Action
 				throw new Exception("Unable to delete payment_method", 1);
 			}
 
+			$this->getMessage()->addMessage("Shipping_method deleted successfully.");
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
-			header('Content-type: application/json');
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Shipping method deleted successfully."]);
+
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
+			
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');
