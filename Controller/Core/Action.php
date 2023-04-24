@@ -9,6 +9,12 @@ class Controller_Core_Action{
 	protected $view = null;
 	protected $layout = null;
 
+	protected function _setTitle($title)
+	{
+		$this->getLayout()->getChild('head')->setTitle($title);
+		return $this;
+	}
+
 	public function setLayout(Block_Core_Layout $layout)
 	{
 		$this->layout = $layout;

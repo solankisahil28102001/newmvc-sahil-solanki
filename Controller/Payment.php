@@ -2,21 +2,34 @@
 
 class Controller_Payment extends Controller_Core_Action
 {
+
+	public function indexAction()
+	{
+		try { 
+			$layout = $this->getLayout();
+			$this->_setTitle('Manage payments');
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('payment/index.phtml');
+			$layout->getChild('content')->addChild('index', $indexBlock);
+			echo $layout->toHtml();
+		} catch (Exception $e) {
+			
+		}
+	}
+
 	public function addAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Payment_Edit');
 			if (!$payment = Ccc::getModel('Payment')) {
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setData(['payment' => $payment]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $layout->createBlock('Payment_Edit')->setData(['payment' => $payment])->toHtml();
+			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index');
 		}
 	}
 
@@ -24,7 +37,6 @@ class Controller_Payment extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Payment_Edit');
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -33,12 +45,12 @@ class Controller_Payment extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['payment' => $payment]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $layout->createBlock('Payment_Edit')->setData(['payment' => $payment])->toHtml();
+			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index');
 		}
 	}
 
@@ -46,9 +58,9 @@ class Controller_Payment extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Payment_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$gridHtml = $layout->createBlock('Payment_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -99,11 +111,13 @@ class Controller_Payment extends Controller_Core_Action
 					}
 				}
 			}
-			$this->getMessage()->addMessage('Payment_method saved successfully.');
+			$gridHtml = $this->getLayout()->createBlock('Payment_Grid')->toHtml();
+			header('Content-type: application/json');
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Payment_method saved successfully."]);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index');
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -122,10 +136,13 @@ class Controller_Payment extends Controller_Core_Action
 				throw new Exception("Unable to delete payment_method", 1);
 			}
 
-			$this->getMessage()->addMessage("Payment_method deleted successfully.");
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Payment_Grid')->toHtml();
+			header('Content-type: application/json');
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Payment_method deleted successfully."]);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index');
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

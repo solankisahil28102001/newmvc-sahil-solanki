@@ -23,7 +23,6 @@ class Block_Category_Grid extends Block_Core_Grid
 			'title' => 'Category Id'
 		]);
 
-
 		$this->addColumn('name', [
 			'title' => 'Name'
 		]);
@@ -67,7 +66,7 @@ class Block_Category_Grid extends Block_Core_Grid
 	{
 		$this->addButton('add_category', [
 			'title' => 'Add New',
-			'url' => $this->getUrl('add')
+			'url' => $this->getUrl('add', null, null, true)
 		]);
 		return parent::_prepareButtons();
 	}

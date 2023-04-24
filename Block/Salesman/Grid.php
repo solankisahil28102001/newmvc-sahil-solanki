@@ -86,7 +86,7 @@ class Block_Salesman_Grid extends Block_Core_Grid
 	{
 		$this->addButton('add_salesman', [
 			'title' => 'Add New',
-			'url' => $this->getUrl('add')
+			'url' => $this->getUrl('add', null, null, true)
 		]);
 		return parent::_prepareButtons();
 	}

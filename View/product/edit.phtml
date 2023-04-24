@@ -3,17 +3,17 @@ $product = $this->getProduct();
 $attributes = $this->getAttributes();
 $mode = ($product->product_id) ? 'Edit' : 'Add';
 ?>
-<form action="<?php echo $this->getUrl('save'); ?>" method="POST">
+<form action="<?php echo $this->getUrl('save'); ?>" method="POST" id="product-form">
 <div align="center" class="w-100 container">
 	<div class="w-50 align-items-center row">
 		<div align="left" class="col-8">
 			<h2><?php echo $mode." product"; ?></h2>
 		</div>
 		<div align="right" class="col-2">
-			<a href="<?php echo $this->getUrl('grid',null,[],true); ?>" class="btn btn-danger">Cancel</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('grid',null,null,true); ?>').call()" class="btn btn-danger">Cancel</a>
 		</div>
 		<div align="right" class="col-2">
-			<button class="btn btn-primary" name="submit">Save</button>
+			<input class="btn btn-primary" type="button" value="Save" onclick="ajax.setForm('product-form').call()">
 		</div>
 	</div>
 	<div class="w-50 mt-2">

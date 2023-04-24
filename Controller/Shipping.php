@@ -2,6 +2,20 @@
 
 class Controller_Shipping extends Controller_Core_Action
 {
+
+	public function indexAction()
+	{
+		try { 
+			$layout = $this->getLayout();
+			$this->_setTitle('Manage Shippings');
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('shipping/index.phtml');
+			$layout->getChild('content')->addChild('index', $indexBlock);
+			echo $layout->toHtml();
+		} catch (Exception $e) {
+			
+		}
+	}
+
 	public function addAction()
 	{
 		try {
@@ -11,12 +25,12 @@ class Controller_Shipping extends Controller_Core_Action
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setData(['shipping' => $shipping]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$edit = $edit->setData(['shipping' => $shipping])->toHtml();
+			echo json_encode(['html' => $edit, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index');
 		}
 	}
 
@@ -34,12 +48,12 @@ class Controller_Shipping extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['shipping' => $shipping]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$edit = $edit->setData(['shipping' => $shipping])->toHtml();
+			echo json_encode(['html' => $edit, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index');
 		}
 	}
 
@@ -47,9 +61,9 @@ class Controller_Shipping extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Shipping_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -102,11 +116,15 @@ class Controller_Shipping extends Controller_Core_Action
 				}
 			}
 
-			$this->getMessage()->addMessage('Shipping_method saved successfully.');
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
+			header('Content-type: application/json');
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Shipping_method saved successfully."]);
+
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index');
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -125,10 +143,13 @@ class Controller_Shipping extends Controller_Core_Action
 				throw new Exception("Unable to delete payment_method", 1);
 			}
 
-			$this->getMessage()->addMessage("Payment_method deleted successfully.");
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
+			header('Content-type: application/json');
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Shipping method deleted successfully."]);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index');
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

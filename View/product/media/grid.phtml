@@ -10,20 +10,20 @@ $base_id = $this->getBase();
 	</div>
 </div>
 <?php require_once 'View/html/message.phtml'; ?>
-<form action="<?php echo $this->getUrl('media'); ?>" method="POST">
+<form action="<?php echo $this->getUrl('media'); ?>" method="POST" id="media-form">
 <div align="center" class="container mt-3" style="width: 100%">
 	<div class="align-items-center container d-flex" style="width: 80%">
 		<div align="left" style="width: 15%;">
-			<a href="<?php echo $this->getUrl('add'); ?>" class="btn btn-primary">Add media</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('add'); ?>').call()" class="btn btn-primary">Add media</a>
 		</div>
 		<div align="left" style="width: 35%;">
-			<a href="<?php echo $this->getUrl('grid','product',[],true); ?>" class="btn btn-danger">Back</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('grid','product', null, true); ?>').call()" class="btn btn-danger">Back</a>
 		</div>
 		<div align="right" style="width: 35%;">
-			<input type="submit" name="operation" value="Delete selected" class="btn btn-primary">
+			<input type="button" onclick="ajax.setForm('media-form').call()" name="operation" value="Delete selected" class="btn btn-primary">
 		</div>
 		<div align="right" style="width: 15%;">
-			<input type="submit" name="operation" value="Update" class="btn btn-primary">
+			<input type="button" onclick="ajax.setForm('media-form').call()" name="operation" value="Update" class="btn btn-primary">
 		</div>
 	</div>
 	<div class="mt-3 container" style="width: 80%">
