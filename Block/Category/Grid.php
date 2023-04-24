@@ -23,7 +23,6 @@ class Block_Category_Grid extends Block_Core_Grid
 			'title' => 'Category Id'
 		]);
 
-
 		$this->addColumn('name', [
 			'title' => 'Name'
 		]);

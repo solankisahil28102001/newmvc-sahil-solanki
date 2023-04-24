@@ -32,6 +32,24 @@ class Model_Product extends Model_Core_Table
 		return $statues[self::STATUS_DEFAULT];
 	}
 
+	public function getColor()
+	{
+		$color = ['1'=>'Brown','2'=>'Black','3'=>'White','4'=>'Red','5'=>'Silver','6'=>'Blue','7'=>'Green'];
+		if (array_key_exists($this->color, $color)) {
+		 	return $color[$this->color];
+		 } 
+		 return '';
+	}
+
+	public function getMaterial()
+	{
+		$material = ['1'=>'Plastic','2'=>'Glass','3'=>'Metals','4'=>'Wood','5'=>'Paper','6'=>'Fibers','7'=>'Ceramic'];
+		if (array_key_exists($this->material, $material)) {
+		 	return $material[$this->material];
+		 } 
+		 return '';
+	}
+
 	public function getStatus()
 	{
 		if ($this->status) {

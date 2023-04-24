@@ -35,7 +35,7 @@ $rows = $this->getCollection();
 				<?php endforeach; ?>
 
 				<?php foreach ($this->getActions() as $key => $action) : ?>
-				<td><a onclick="ajax.setUrl('<?php $method = $action['method']; echo $this->$method($row, $key); ?>').call()"><img height="25px" src="Resources/images/<?php echo (array_key_exists('name', $action)) ? $action['name'] : $key; ?>.png" alt="<?php echo $key; ?>"></a></td>
+				<td><a onclick="ajax.setUrl('<?php $method = $action['method']; echo $this->$method($row, $key); ?>').call()"><img height="30px" src="Resources/images/<?php echo (array_key_exists('name', $action)) ? $action['name'] : $key; ?>.png" alt="<?php echo $key; ?>"></a></td>
 				<?php endforeach; ?>
 			</tr>
 			<?php endforeach; ?>

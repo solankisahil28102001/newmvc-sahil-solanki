@@ -123,8 +123,7 @@ class Controller_Category extends Controller_Core_Action
 					}
 				}
 			}
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
+			$gridHtml = $this->getLayout()->createBlock('Category_Grid')->toHtml();
 			header('Content-type: application/json');
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Category saved successfully."]);
 		} 
@@ -148,9 +147,11 @@ class Controller_Category extends Controller_Core_Action
 
 			$query = "DELETE FROM `category` WHERE `path` LIKE '{$category->path}-%'";
 			$category->getResource()->getAdapter()->delete($query);
-			$category->delete();
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
+			if (!$category->delete()) {
+                throw new Exception("Unable to delete category.", 1);
+            }
+
+			$gridHtml = $this->getLayout()->createBlock('Category_Grid')->toHtml();
 			header('Content-type: application/json');
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => "Category deleted successfully."]);
 		} catch (Exception $e) {
