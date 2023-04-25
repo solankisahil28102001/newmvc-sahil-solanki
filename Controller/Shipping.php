@@ -27,7 +27,7 @@ class Controller_Shipping extends Controller_Core_Action
 
 			$edit = $edit->setData(['shipping' => $shipping])->toHtml();
 			echo json_encode(['html' => $edit, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');
@@ -50,7 +50,7 @@ class Controller_Shipping extends Controller_Core_Action
 
 			$edit = $edit->setData(['shipping' => $shipping])->toHtml();
 			echo json_encode(['html' => $edit, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');
@@ -147,7 +147,6 @@ class Controller_Shipping extends Controller_Core_Action
 			$gridHtml = $layout->createBlock('Shipping_Grid')->toHtml();
 
 			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
-			
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');
