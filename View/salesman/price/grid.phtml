@@ -5,17 +5,30 @@ $salesmanPrices = $this->getSalesmanPrices();
 $id = $this->getRequest()->getParam('id');
 ?>
 <script type="text/javascript">
-	function display() {
-		var id = document.getElementById('id').value;
-		location.href = "?a=grid&c=salesman_price&id="+id;
-	}
+	$('#select-salesman').change(function () {
+		var id = this.value;
+		ajax.setUrl('http://localhost/newmvc-sahil-solanki/index.php?a=grid&c=salesman_price&id='+id).call();
+	});
+
+	$('#update-button').click(function () {
+		var id = document.getElementById('select-salesman').value;
+		$('#salesmanPrice-form').attr('action', "http://localhost/newmvc-sahil-solanki/index.php?a=operation&c=salesman_price&submit="+"Update&id="+id);
+		ajax.setForm('salesmanPrice-form').call();
+	});
+
+	$('#delete-button').click(function () {
+		var id = document.getElementById('select-salesman').value;
+		$('#salesmanPrice-form').attr('action', "http://localhost/newmvc-sahil-solanki/index.php?a=operation&c=salesman_price&submit="+"Delete&id="+id); 
+		ajax.setForm('salesmanPrice-form').call();
+	});
+
 </script>
-<div align="center" class="w-100">
-	<form action="<?php echo $this->getUrl('operation'); ?>" method="POST">
-	<div class="w-80 d-flex align-items-center row">
+<div align="center" style="width: 80%;">
+	<form action="<?php echo $this->getUrl('operation'); ?>" method="POST" id="salesmanPrice-form">
+	<div class="w-80 d-flex align-items-center row" id="salesmanPrice-div">
 		<div align="left" class="col-2"><h5>Select Salesman:</h5></div>
 		<div align="left" class="col-6">&nbsp&nbsp
-			<select name="salesmanName" onchange="display()" id="id">
+			<select name="salesmanName" id="select-salesman">
 				<?php foreach($salesmanNames->getData() as $salesmanName): ?>
 				<option value="<?php echo $salesmanName->salesman_id; ?>"
 					<?php 
@@ -28,13 +41,13 @@ $id = $this->getRequest()->getParam('id');
 			</select>
 		</div>
 		<div align="right" class="col-2">
-			<a href="<?php echo $this->getUrl('grid','salesman', null,true); ?>" class="btn btn-danger">Cancel</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('grid','salesman', null,true); ?>').call()" class="btn btn-danger">Cancel</a>
 		</div>
 		<div align="right" class="col-1">
-			<button name="submit" value="Update" class="btn btn-primary">Update</button>
+			<input type="button" name="submit" value="Update" class="btn btn-primary" id="update-button">
 		</div>
 		<div align="right" class="col-1">
-			<button name="submit" class="btn btn-primary" value="Delete">Delete</button> 
+			<input type="button" name="submit" class="btn btn-primary" value="Delete" id="delete-button"> 
 		</div>
 	</div>
 	<div class="w-80 mt-2">

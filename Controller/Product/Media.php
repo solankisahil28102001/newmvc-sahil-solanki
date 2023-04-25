@@ -11,7 +11,7 @@ class Controller_Product_Media extends Controller_Core_Action{
 
 			$gridHtml = $this->getLayout()->createBlock('Product_Media_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', 'product', null, true);
@@ -30,7 +30,7 @@ class Controller_Product_Media extends Controller_Core_Action{
 
 			$addHtml = $layout->createBlock('Product_Media_Add')->toHtml();
 			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
 			// $this->redirect('index');
@@ -78,7 +78,7 @@ class Controller_Product_Media extends Controller_Core_Action{
 
 			$gridHtml = $this->getLayout()->createBlock('Product_Media_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);

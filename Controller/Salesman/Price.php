@@ -6,18 +6,17 @@ class Controller_Salesman_Price extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Salesman_Price_Grid');
-
 			if (!$id = (int)$this->getRequest()->getParam('id')){
 				throw new Exception("Invalid request.", 1);
 			}
-			Ccc::register('salesman_id', $id);
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+
+			$gridHtml = $this->getLayout()->createBlock('Salesman_Price_Grid');
+			$gridHtml->setSalesmanId($id);
+			$gridHtml = $gridHtml->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+       		@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid','salesman',null,true);
 		}
 	}
 
@@ -32,7 +31,7 @@ class Controller_Salesman_Price extends Controller_Core_Action
 				throw new Exception("Invalid request.", 1);
 			}
 
-			if (!$operation = $this->getRequest()->getPost('submit')) {
+			if (!$operation = $this->getRequest()->getParam('submit')) {
 				throw new Exception("Invalid request.", 1);
 			}
 
@@ -95,6 +94,6 @@ class Controller_Salesman_Price extends Controller_Core_Action
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-		$this->redirect('grid');	
+		$this->gridAction();	
 	}
 }

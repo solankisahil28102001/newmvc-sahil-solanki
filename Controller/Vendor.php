@@ -30,7 +30,7 @@ class Controller_Vendor extends Controller_Core_Action
 
 			$addHtml = $this->getLayout()->createBlock('Vendor_Edit')->setData(['vendor' => $vendor, 'vendorAddress' => $vendorAddress])->toHtml();
 			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -129,7 +129,7 @@ class Controller_Vendor extends Controller_Core_Action
 
 			$gridHtml = $this->getLayout()->createBlock('Vendor_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Vendor saved successfully.']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 			// $this->getMessage()->addMessage('Vendor saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -155,7 +155,7 @@ class Controller_Vendor extends Controller_Core_Action
 
 			$gridHtml = $this->getLayout()->createBlock('Vendor_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Vendor deleted successfully.']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 			// $this->getMessage()->addMessage("Vendor deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);

@@ -60,7 +60,7 @@ class Controller_Customer extends Controller_Core_Action{
 		try {
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -162,7 +162,7 @@ class Controller_Customer extends Controller_Core_Action{
 
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Customer saved successfully.']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 
 			// $this->getMessage()->addMessage('Customer saved successfully.');
 		} catch (Exception $e) {
@@ -188,7 +188,7 @@ class Controller_Customer extends Controller_Core_Action{
 
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Customer deleted successfully.']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 			// $this->getMessage()->addMessage("Customer deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
