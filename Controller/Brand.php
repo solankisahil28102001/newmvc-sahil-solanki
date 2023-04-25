@@ -2,29 +2,40 @@
 
 class Controller_Brand extends Controller_Core_Action
 {
+	public function indexAction()
+    {
+        try { 
+            $layout = $this->getLayout();
+            $this->_setTitle('Manage Brands');
+            $indexBlock = $layout->createBlock('Core_Template')->setTemplate('brand/index.phtml');
+            $layout->getChild('content')->addChild('index', $indexBlock);
+            echo $layout->toHtml();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Brand_Edit');
 			if (!$brand = Ccc::getModel('Brand')) {
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setRow($brand);
-			$layout->getChild('content')->addChild('edit', $edit);
-			echo $layout->toHtml();
+			$addHtml = $this->getLayout()->createBlock('Brand_Edit');
+			$addHtml->setRow($brand);
+			$addHtml = $addHtml->toHtml();
+			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function editAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Brand_Edit');
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -33,24 +44,26 @@ class Controller_Brand extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 			
-			$edit->setRow($brand);
-			$layout->getChild('content')->addChild('edit', $edit);
-			echo $layout->toHtml();
+			$editHtml = $this->getLayout()->createBlock('Brand_Edit');
+			$editHtml->setRow($brand);
+			$editHtml = $editHtml->toHtml();
+			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Brand_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			echo $layout->toHtml();
+			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -82,11 +95,15 @@ class Controller_Brand extends Controller_Core_Action
 				throw new Exception("Unable to save brand", 1);
 			}
 
-			$this->getMessage()->addMessage('Brand saved successfully.');
+			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Brand saved successfully.']);
+            header('Content-type: application/json');
+
+			// $this->getMessage()->addMessage('Brand saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -105,10 +122,13 @@ class Controller_Brand extends Controller_Core_Action
 				throw new Exception("Unable to delete Brand", 1);
 			}
 
-			$this->getMessage()->addMessage("Brand deleted successfully.");
+			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Brand deleted successfully.']);
+            header('Content-type: application/json');
+			// $this->getMessage()->addMessage("Brand deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

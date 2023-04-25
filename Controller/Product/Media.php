@@ -2,23 +2,9 @@
 
 class Controller_Product_Media extends Controller_Core_Action{
 
-	public function indexAction()
-	{
-		try { 
-			$layout = $this->getLayout();
-			$this->_setTitle('Manage Product Media');
-			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('product/media/index.phtml');
-			$layout->getChild('content')->addChild('index', $indexBlock);
-			echo $layout->toHtml();
-		} catch (Exception $e) {
-			
-		}
-	}
-
 	public function gridAction()
 	{
 		try {
-			$this->indexAction();
 			if (!$productId = $this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -28,7 +14,7 @@ class Controller_Product_Media extends Controller_Core_Action{
 			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', 'product', null, true);
+			$this->redirect('index', 'product', null, true);
 		}
 	}
 
@@ -44,21 +30,20 @@ class Controller_Product_Media extends Controller_Core_Action{
 
 			$addHtml = $layout->createBlock('Product_Media_Add')->toHtml();
 			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-			@header('Content-type: application/json');
+			header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
-			$this->redirect('index');
+			// $this->redirect('index');
 		}
 	}
 	
 	public function insertAction()
 	{
 		try {
-			if (!$status = $this->getRequest()->isPost()) {
+			if (!$this->getRequest()->isPost()) {
 				throw new Exception("Invalid request.", 1);
 			}
 			$name = $this->getRequest()->getPost('name');
-			$status = $this->getRequest()->getPost('status');
 			$filename = $_FILES['image']['name'];
 			
 			if (!$filename) {
@@ -68,8 +53,6 @@ class Controller_Product_Media extends Controller_Core_Action{
 			if (!$productId = $this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
-			var_dump($productId);
-			die();
 
 			$media = ['product_id'=>$productId,'name'=>$name,'image'=>$filename,'status'=>$status,'created_at'=>date("Y/m/d H:i:s")];
 			
@@ -87,18 +70,19 @@ class Controller_Product_Media extends Controller_Core_Action{
 				throw new Exception("Unable to save image.", 1);
 			}
 
-			;
 			if (!$result = Ccc::getModel('Product_Media')->setData(['image'=>$filename, 'media_id'=>$insert_id])->save()) {
 				throw new Exception("Unable to update filename.", 1);
 			}
 
+			$this->getMessage()->addMessage("Media added successfully.");
+
 			$gridHtml = $this->getLayout()->createBlock('Product_Media_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Media added successfully.']);
-			@header('Content-type: application/json');
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+			header('Content-type: application/json');
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('index');
+			// $this->redirect('index');
 		}
 	}
 

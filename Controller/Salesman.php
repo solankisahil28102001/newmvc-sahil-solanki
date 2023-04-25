@@ -2,11 +2,21 @@
 
 class Controller_Salesman extends Controller_Core_Action
 {
+	public function indexAction()
+    {
+        try { 
+            $this->_setTitle('Manage Salesman');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('salesman/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            echo $this->getLayout()->toHtml();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Salesman_Edit');
 			$salesman = Ccc::getModel('Salesman');		
 			if (!$salesman) {
 				throw new Exception("Invalid request.", 1);
@@ -17,21 +27,19 @@ class Controller_Salesman extends Controller_Core_Action
 			if (!$salesmanAddress) {
 				throw new Exception("Invalid request.", 1);
 			}
-			$edit->setData(['salesman' => $salesman, 'salesmanAddress' => $salesmanAddress]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+
+			$addHtml = $this->getLayout()->createBlock('Salesman_Edit')->setData(['salesman' => $salesman, 'salesmanAddress' => $salesmanAddress])->toHtml();
+			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+        	@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function editAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Salesman_Edit');
-			
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -47,24 +55,24 @@ class Controller_Salesman extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['salesman' => $salesman, 'salesmanAddress' => $salesmanAddress]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Salesman_Edit')->setData(['salesman' => $salesman, 'salesmanAddress' => $salesmanAddress])->toHtml();
+			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
+        	@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Salesman_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$gridHtml = $this->getLayout()->createBlock('Salesman_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+        	@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -117,11 +125,14 @@ class Controller_Salesman extends Controller_Core_Action
 				throw new Exception("Unable to save salesmanAddress", 1);
 			}
 
-			$this->getMessage()->addMessage('Salesman saved successfully.');
+			$gridHtml = $this->getLayout()->createBlock('Salesman_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => 'Salesman saved successfully.']);
+        	@header('Content-type: application/json');
+			// $this->getMessage()->addMessage('Salesman saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -140,11 +151,14 @@ class Controller_Salesman extends Controller_Core_Action
 				throw new Exception("Unable to delete salesman.", 1);
 			}
 
-			$this->getMessage()->addMessage("Salesman deleted successfully.");
+			$gridHtml = $this->getLayout()->createBlock('Salesman_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => 'Salesman deleted successfully.']);
+        	@header('Content-type: application/json');
+			// $this->getMessage()->addMessage("Salesman deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 	
 }
