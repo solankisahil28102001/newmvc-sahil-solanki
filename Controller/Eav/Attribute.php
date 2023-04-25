@@ -2,31 +2,41 @@
 
 class Controller_Eav_Attribute extends Controller_Core_Action
 {
+
+	public function indexAction()
+    {
+        try { 
+            $this->_setTitle('Manage Eav Attributes');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('eav/attribute/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            echo $this->getLayout()->toHtml();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Eav_Attribute_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
-			
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Eav_Attribute_Edit');
 			$attribute = Ccc::getModel('Eav_Attribute');
 			$options = Ccc::getModel('Eav_Attribute')->getCollection();
-			$edit->setData(['attribute' => $attribute, 'options' => $options]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
+			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -44,13 +54,12 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			
 			$query = "SELECT * FROM `eav_attribute_option` WHERE  `attribute_id` = '{$id}' ORDER BY `position`";
 			$options = Ccc::getModel('Eav_Attribute')->fetchAll($query);
-			$edit = $layout->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options]);
-
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
+			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -151,12 +160,14 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 					}
 				}
 			}
-
-			$this->getMessage()->addMessage('Attribute saved successfully.');
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Attribute saved successfully.']);
+            @header('Content-type: application/json');
+			// $this->getMessage()->addMessage('Attribute saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -175,10 +186,13 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				throw new Exception("Unable to delete attribute", 1);
 			}
 
-			$this->getMessage()->addMessage("Attribute deleted successfully.");
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Attribute deleted successfully.']);
+            @header('Content-type: application/json');
+			// $this->getMessage()->addMessage("Attribute deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

@@ -6,11 +6,10 @@ class Controller_Admin extends Controller_Core_Action
     public function indexAction()
     {
         try { 
-            $layout = $this->getLayout();
             $this->_setTitle('Manage Categories');
-            $indexBlock = $layout->createBlock('Core_Template')->setTemplate('category/index.phtml');
-            $layout->getChild('content')->addChild('index', $indexBlock);
-            echo $layout->toHtml();
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('category/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            echo $this->getLayout()->toHtml();
         } catch (Exception $e) {
             
         }
