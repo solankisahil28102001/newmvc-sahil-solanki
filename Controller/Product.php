@@ -2,7 +2,24 @@
 
 class Controller_Product extends Controller_Core_Action
 {
+	protected $pager = null;
 
+	public function setPager(Model_Core_Pager $pager)
+	{
+		$this->pager = $pager;
+		return $this;
+	}
+
+	public function getPager()
+	{
+		if ($this->pager) {
+			return $this->pager;
+		}
+		$pager = Ccc::getModel('Core_Pager');
+		$this->setPager($pager);
+		return $pager;
+	}
+	
 	public function indexAction()
 	{
 		try { 
@@ -15,7 +32,6 @@ class Controller_Product extends Controller_Core_Action
 			
 		}
 	}
-
 
 	public function addAction()
 	{
@@ -62,10 +78,15 @@ class Controller_Product extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
+			// $pager = new Model_Core_Pager(0,2);
+			// echo '<pre>';
+			// $pager->calculate();
+			// print_r($pager);
+			// die();
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -119,7 +140,7 @@ class Controller_Product extends Controller_Core_Action
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Product saved successfully."]);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -145,7 +166,7 @@ class Controller_Product extends Controller_Core_Action
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
-			header('Content-type: application/json');
+			@header('Content-type: application/json');
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Product deleted successfully."]);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);

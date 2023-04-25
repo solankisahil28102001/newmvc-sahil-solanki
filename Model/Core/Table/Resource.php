@@ -54,6 +54,16 @@ class Model_Core_Table_Resource
 		return $this->getAdapter()->fetchRow($query);
 	}
 
+	public function fetchOne($query)
+	{	
+		return $this->getAdapter()->fetchOne($query);
+	}
+
+	public function fetchPairs($query)
+	{	
+		return $this->getAdapter()->fetchPairs($query);
+	}
+
 	public function fetchAll($query)
 	{
 		return $this->getAdapter()->fetchAll($query);

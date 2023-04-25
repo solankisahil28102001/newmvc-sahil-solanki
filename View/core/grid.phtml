@@ -1,5 +1,6 @@
 <?php
 $rows = $this->getCollection();
+print_r($this->getPager());
 ?>
 <div style="width: 90%">
 	<div class="w-90 d-flex align-items-center row">
@@ -43,4 +44,16 @@ $rows = $this->getCollection();
 		</table>
 	</div>
 </div>
-	
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+   <!--  <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    </li> -->
+    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getStart()], true) ?>">start</a></li>
+    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getPrevious()], true) ?>">previous</a></li>
+    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getCurrentPage()], true) ?>">current</a></li>
+    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getNext()], true) ?>">next</a></li>
+    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getEnd()], true) ?>">end</a></li>
+  </ul>
+</nav>
+
