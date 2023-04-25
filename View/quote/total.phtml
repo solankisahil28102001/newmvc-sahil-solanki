@@ -1,0 +1,24 @@
+<div>
+	<table class="mx-4 mt-3 table" style="width: 20%;border-radius: 10pz;">
+		<tr>
+			<th>SUB TOTAL:</th>
+			<td><?php echo $subTotal = (int)$this->getTotal()->total; ?></td>
+		</tr>
+		<tr>
+			<th>SHIPPING:</th>
+			<td><?php echo $shippingAmount = (int)$this->getShippingAmount(); ?></td>
+		</tr>
+		<tr>
+			<th>DISCOUNT:</th>
+			<td><?php echo $discount = round($this->getDiscountAmount(), 2); ?></td>
+		</tr>
+		<tr>
+			<th>GRAND TOTAL:</th>
+			<td><?php echo $grandTotal = ($subTotal + $shippingAmount) - $discount ?></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><button class="btn btn-primary">Place order</button></td>
+		</tr>
+	</table>
+</div>

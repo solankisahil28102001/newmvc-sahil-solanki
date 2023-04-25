@@ -1,0 +1,118 @@
+<?php $billingAddress = $this->getBillingAddress(); ?>
+<?php $shippingAddress = $this->getShippingAddress(); ?>
+
+<form action="<?php echo $this->getUrl('saveAddress'); ?>" method="post">
+	<div class="row" align="center">
+		<div class="col-6">
+			<div class="card" style="width: 70%;margin: 10px;">
+			  	<div class="card-header bg-dark text-white">
+			    Billing address information
+			  	</div>
+				<div>
+			  	<table class="table mt-2">
+			  		<?php if ($billingAddress instanceof Model_Quote_Address) : ?>
+			  			<input type="hidden" name="billingAddress[address_id]" value="<?php echo $billingAddress->address_id ?>">
+			  		<?php endif; ?>
+					<tr>
+						<td>Address</td>
+						<td><input type="text" name="billingAddress[address]" class="form-control" value="<?php echo $billingAddress->address; ?>"></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input type="text" name="billingAddress[city]" class="form-control"  value="<?php echo $billingAddress->city; ?>"></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td><input type="text" name="billingAddress[state]" class="form-control"  value="<?php echo $billingAddress->state; ?>"></td>
+					</tr>
+					<tr>
+						<td>Country</td>
+						<td><input type="text" name="billingAddress[country]" class="form-control"  value="<?php echo $billingAddress->country; ?>"></td>
+					</tr>
+					<tr>
+						<td>zip code</td>
+						<td><input type="number" name="billingAddress[zip_code]" class="form-control"  value="<?php echo $billingAddress->zip_code; ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="form-check">
+								<input type="checkbox" name="billingAddressBook" id="billingAddressBook">
+								<label for="billingAddressBook">save to address book</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="form-check">
+								<input type="checkbox" name="markAsShipping" id="sameShippingAddress">
+								<label for="sameShippingAddress">mark as shipping</label>
+							</div>
+						</td>
+					</tr>
+			    </table>
+				</div>
+				<div align="right" class="mx-2 mb-3">
+			    <input type="submit" name="submit" value="Save Billing address" class="btn btn-success">
+			  </div>
+			</div>
+		</div>
+
+		<div id="shippingAddressTable" class="col-6">
+			<div class="card" style="width: 70%;margin: 10px;">
+			  	<div class="card-header bg-dark text-white">
+			    Shipping address information
+			  	</div>
+				<div>
+				<table class="table mt-2">
+					<?php if ($shippingAddress instanceof Model_Quote_Address) : ?>
+			  			<input type="hidden" name="shippingAddress[address_id]" value="<?php echo $shippingAddress->address_id ?>">
+			  		<?php endif; ?>
+					<tr>
+						<td>Address</td>
+						<td><input type="text" name="shippingAddress[address]" class="form-control"  value="<?php echo $shippingAddress->address; ?>"></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input type="text" name="shippingAddress[city]" class="form-control" value="<?php echo $shippingAddress->city; ?>"></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td><input type="text" name="shippingAddress[state]" class="form-control" value="<?php echo $shippingAddress->state; ?>"></td>
+					</tr>
+					<tr>
+						<td>Country</td>
+						<td><input type="text" name="shippingAddress[country]" class="form-control" value="<?php echo $shippingAddress->country; ?>"></td>
+					</tr>
+					<tr>
+						<td>zip code</td>
+						<td><input type="number" name="shippingAddress[zip_code]" class="form-control" value="<?php echo $shippingAddress->zip_code; ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="form-check">
+								<input type="checkbox" name="shippingAddressBook" id="shippingAddressBook">
+								<label for="shippingAddressBook">save to address book</label>
+							</div>
+						</td>
+					</tr>
+				</table>
+				</div>
+				<div align="right" class="mx-2 mb-3">
+			    <input type="submit" name="submit" value="Save Shipping address" class="btn btn-success">
+			  </div>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+
+$('#sameShippingAddress').change(function () {
+	if (this.checked) {
+		$('#shippingAddressTable').hide();
+	} else {
+		$('#shippingAddressTable').show();
+	}
+
+});	
+	
+</script>

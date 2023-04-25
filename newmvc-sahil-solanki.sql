@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2023 at 06:43 AM
+-- Generation Time: Apr 24, 2023 at 06:46 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -118,10 +118,14 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `parent_id`, `path`, `name`, `status`, `description`, `created_at`, `updated_at`) VALUES
 (1, 0, '1', 'Root', 1, '', '2023-04-03 00:00:00', NULL),
+<<<<<<< HEAD
+(157, 1, '1-157', 'p1', 2, '', '2023-04-23 17:58:07', '2023-04-23 18:12:14');
+=======
 (28, 1, '1-28', 'bedroom', 2, '', '2023-04-19 01:11:08', '2023-04-19 13:21:21'),
 (29, 28, '1-28-29', 'beds', 2, '', '2023-04-19 01:15:36', '2023-04-19 01:22:45'),
 (30, 29, '1-28-29-30', 'panel beds', 2, '', '2023-04-19 01:15:52', '2023-04-19 01:21:47'),
 (31, 1, '1-31', 'Living room', 1, '', '2023-04-19 01:22:07', NULL);
+>>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -135,6 +139,8 @@ CREATE TABLE `category_varchar` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+<<<<<<< HEAD
+=======
 
 --
 -- Dumping data for table `category_varchar`
@@ -145,6 +151,7 @@ INSERT INTO `category_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`
 (2, 29, 17, '12'),
 (3, 30, 17, '13'),
 (4, 31, 17, '14');
+>>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -200,8 +207,13 @@ CREATE TABLE `customer_address` (
 INSERT INTO `customer_address` (`address_id`, `customer_id`, `address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`) VALUES
 (19, 53, '2', '2', '2', '2', 2, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
 (20, 53, '1', '1', '1', '1', 1, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
+<<<<<<< HEAD
+(44, 70, '1', '1', '11', '66666', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
+(45, 70, '1', '1', '11', '55555', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
+=======
 (44, 70, '1', '1', '11', '22222', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
 (45, 70, '1', '11', '111', '11', 0, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
+>>>>>>> origin
 (80, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06'),
 (81, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06');
 
@@ -680,6 +692,18 @@ CREATE TABLE `quote` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+<<<<<<< HEAD
+--
+-- Dumping data for table `quote`
+--
+
+INSERT INTO `quote` (`order_id`, `customer_id`, `order_total`, `status`, `payment_method_id`, `shipping_method_id`, `shipping_amount`, `created_at`, `updated_at`) VALUES
+(2, 70, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 53, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 0, 0.00, 0, 0, 5, 1222.00, '0000-00-00 00:00:00', NULL);
+
+=======
+>>>>>>> origin
 -- --------------------------------------------------------
 
 --
@@ -696,6 +720,17 @@ CREATE TABLE `quote_address` (
   `zip_code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+<<<<<<< HEAD
+--
+-- Dumping data for table `quote_address`
+--
+
+INSERT INTO `quote_address` (`address_id`, `customer_address_id`, `address`, `city`, `state`, `country`, `zip_code`) VALUES
+(30, 44, '1', '1', '11', '66666', 1),
+(31, 45, '1', '1', '11', '55555', 1);
+
+=======
+>>>>>>> origin
 -- --------------------------------------------------------
 
 --
@@ -709,6 +744,17 @@ CREATE TABLE `quote_item` (
   `discount` int(3) NOT NULL,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+<<<<<<< HEAD
+
+--
+-- Dumping data for table `quote_item`
+--
+
+INSERT INTO `quote_item` (`item_id`, `product_id`, `quantity`, `discount`, `price`) VALUES
+(22, 4, 12, 0, 212.00),
+(23, 9, 12, 0, 20.00);
+=======
+>>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -827,7 +873,12 @@ CREATE TABLE `shipping_method` (
 --
 
 INSERT INTO `shipping_method` (`shipping_method_id`, `name`, `amount`, `status`, `created_at`, `updated_at`) VALUES
+<<<<<<< HEAD
+(5, 'S1', 1222.00, 1, '2023-04-12 23:42:24', '2023-04-19 13:46:54'),
+(6, 's2', 0.00, 2, '2023-04-23 22:42:56', NULL);
+=======
 (5, 'S1', 1222.00, 1, '2023-04-12 23:42:24', '2023-04-19 13:46:54');
+>>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -860,7 +911,12 @@ CREATE TABLE `shipping_varchar` (
 --
 
 INSERT INTO `shipping_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
+<<<<<<< HEAD
+(1, 5, 27, '11'),
+(3, 6, 27, '');
+=======
 (1, 5, 27, '11');
+>>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -1133,7 +1189,11 @@ ALTER TABLE `quote_address`
 -- Indexes for table `quote_item`
 --
 ALTER TABLE `quote_item`
+<<<<<<< HEAD
+  ADD PRIMARY KEY (`item_id`);
+=======
   ADD KEY `item_id` (`item_id`);
+>>>>>>> origin
 
 --
 -- Indexes for table `salesman`
@@ -1239,13 +1299,21 @@ ALTER TABLE `cart_item`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
+<<<<<<< HEAD
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+=======
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `category_varchar`
 --
 ALTER TABLE `category_varchar`
+<<<<<<< HEAD
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+=======
   MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -1377,13 +1445,27 @@ ALTER TABLE `product_varchar`
 -- AUTO_INCREMENT for table `quote`
 --
 ALTER TABLE `quote`
+<<<<<<< HEAD
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+=======
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `quote_address`
 --
 ALTER TABLE `quote_address`
+<<<<<<< HEAD
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `quote_item`
+--
+ALTER TABLE `quote_item`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+=======
   MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `salesman`
@@ -1419,7 +1501,11 @@ ALTER TABLE `shipping_int`
 -- AUTO_INCREMENT for table `shipping_method`
 --
 ALTER TABLE `shipping_method`
+<<<<<<< HEAD
+  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+=======
   MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `shipping_text`
@@ -1431,7 +1517,11 @@ ALTER TABLE `shipping_text`
 -- AUTO_INCREMENT for table `shipping_varchar`
 --
 ALTER TABLE `shipping_varchar`
+<<<<<<< HEAD
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+=======
   MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+>>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `vendor`
@@ -1572,6 +1662,8 @@ ALTER TABLE `product_varchar`
   ADD CONSTRAINT `product_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+<<<<<<< HEAD
+=======
 -- Constraints for table `quote_address`
 --
 ALTER TABLE `quote_address`
@@ -1584,6 +1676,7 @@ ALTER TABLE `quote_item`
   ADD CONSTRAINT `quote_item_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+>>>>>>> origin
 -- Constraints for table `salesman_address`
 --
 ALTER TABLE `salesman_address`

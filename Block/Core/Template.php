@@ -4,6 +4,19 @@ class Block_Core_Template extends Model_Core_View
 {
 	protected $children = [];
 	protected $layout = null;
+	protected $_quote = null;
+	
+
+	public function setQuote($quote)
+	{
+		$this->_quote = $quote;
+		return $this;
+	}
+
+	public function getQuote()
+	{
+		$this->_quote;
+	}
 
 	public function setLayout(Block_Core_Layout $layout)
 	{

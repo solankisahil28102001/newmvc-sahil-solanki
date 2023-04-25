@@ -56,4 +56,10 @@ class Model_Customer extends Model_Core_Table
 		}
 		return $billingAddress;
 	}
+
+	public function getCustomers()
+	{
+		$query = "SELECT * FROM `customer` ORDER BY `first_name`";
+		return $this->fetchAll($query);
+	}
 }
