@@ -17,7 +17,7 @@ class Block_Quote_Total extends Block_Core_Template
 
 	public function getTotal()
 	{
-		$query = "SELECT sum((P.`price` - ((QI.`discount` * P.`price`) / 100)) * QI.`quantity`) as total FROM `product` P LEFT JOIN `quote_item` QI ON P.`product_id` = QI.`product_id`";
+		$query = "SELECT sum(P.`price` * QI.`quantity`) as total FROM `product` P LEFT JOIN `quote_item` QI ON P.`product_id` = QI.`product_id`";
 		return Ccc::getModel('Quote_Item')->fetchRow($query);
 	}
 

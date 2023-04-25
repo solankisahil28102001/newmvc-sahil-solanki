@@ -43,7 +43,7 @@ class Model_Core_Response
 		$this->setJsonData($data);
 		$this->setMessageResponse();
 		echo json_encode($this->getJsonData());
-		header('Content-type: application/json');
+		@header('Content-type: application/json');
 	}
 
 	protected function setMessageResponse()

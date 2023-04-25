@@ -3,19 +3,6 @@
 class Controller_Shipping extends Controller_Core_Action
 {
 
-	public function indexAction()
-	{
-		try { 
-			$layout = $this->getLayout();
-			$this->_setTitle('Manage Shippings');
-			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('shipping/index.phtml');
-			$layout->getChild('content')->addChild('index', $indexBlock);
-			$this->renderLayout();
-		} catch (Exception $e) {
-			
-		}
-	}
-
 	public function addAction()
 	{
 		try {
