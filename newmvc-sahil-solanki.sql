@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2023 at 06:46 AM
+-- Generation Time: Apr 25, 2023 at 07:14 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,8 +42,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `name`, `email`, `password`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'sahil', 's@khksa.as', '121222', 1, '2023-04-01 17:23:40', '2023-04-03 15:12:11'),
-(9, 'manoj', 'm@gmail.om', '122121n', 2, '2023-04-03 15:11:58', '2023-04-03 15:12:04');
+(10, '1', 's@sas.sa', '122121', 1, '2023-04-24 15:22:23', '2023-04-24 15:23:08');
 
 -- --------------------------------------------------------
 
@@ -118,14 +117,7 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `parent_id`, `path`, `name`, `status`, `description`, `created_at`, `updated_at`) VALUES
 (1, 0, '1', 'Root', 1, '', '2023-04-03 00:00:00', NULL),
-<<<<<<< HEAD
-(157, 1, '1-157', 'p1', 2, '', '2023-04-23 17:58:07', '2023-04-23 18:12:14');
-=======
-(28, 1, '1-28', 'bedroom', 2, '', '2023-04-19 01:11:08', '2023-04-19 13:21:21'),
-(29, 28, '1-28-29', 'beds', 2, '', '2023-04-19 01:15:36', '2023-04-19 01:22:45'),
-(30, 29, '1-28-29-30', 'panel beds', 2, '', '2023-04-19 01:15:52', '2023-04-19 01:21:47'),
-(31, 1, '1-31', 'Living room', 1, '', '2023-04-19 01:22:07', NULL);
->>>>>>> origin
+(162, 1, '1-162', '', 2, '', '2023-04-25 11:04:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -139,19 +131,6 @@ CREATE TABLE `category_varchar` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-<<<<<<< HEAD
-=======
-
---
--- Dumping data for table `category_varchar`
---
-
-INSERT INTO `category_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(1, 28, 17, '12'),
-(2, 29, 17, '12'),
-(3, 30, 17, '13'),
-(4, 31, 17, '14');
->>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -179,8 +158,7 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`customer_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `shipping_address_id`, `billing_address_id`, `created_at`, `updated_at`) VALUES
 (53, 'Customer2', 'asas', 'asa@asasa', 1, 2121212, 2, 19, 20, '2023-04-11 17:28:38', '2023-04-20 14:45:55'),
-(70, 'customer1', 'sas', 'sasas@sas', 0, 0, 2, 45, 44, '2023-04-12 14:54:37', '2023-04-20 14:45:49'),
-(109, 'sahil', '', '', 0, 0, 2, 81, 80, '2023-04-21 09:45:06', NULL);
+(70, 'customer1', 'sas', 'sasas@sas', 0, 0, 2, 45, 44, '2023-04-12 14:54:37', '2023-04-20 14:45:49');
 
 -- --------------------------------------------------------
 
@@ -207,15 +185,8 @@ CREATE TABLE `customer_address` (
 INSERT INTO `customer_address` (`address_id`, `customer_id`, `address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`) VALUES
 (19, 53, '2', '2', '2', '2', 2, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
 (20, 53, '1', '1', '1', '1', 1, '2023-04-20 14:45:56', '0000-00-00 00:00:00'),
-<<<<<<< HEAD
 (44, 70, '1', '1', '11', '66666', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
-(45, 70, '1', '1', '11', '55555', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
-=======
-(44, 70, '1', '1', '11', '22222', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
-(45, 70, '1', '11', '111', '11', 0, '2023-04-20 14:45:49', '0000-00-00 00:00:00'),
->>>>>>> origin
-(80, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06'),
-(81, 109, '55', '5', '5', '5', 5, '0000-00-00 00:00:00', '2023-04-21 09:45:06');
+(45, 70, '1', '1', '11', '55555', 1, '2023-04-20 14:45:49', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -334,9 +305,7 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`entity_id`, `entity_type_id`, `sku`, `status`, `created_at`, `updated_at`) VALUES
-(26, 7, '3', 1, '2023-04-17 23:50:50', '2023-04-19 00:55:05'),
-(27, 7, '4', 1, '2023-04-18 09:44:26', '2023-04-19 00:52:45'),
-(29, 7, '12', 2, '2023-04-19 00:56:44', '2023-04-19 11:53:07');
+(26, 7, '22', 1, '2023-04-17 23:50:50', '2023-04-25 14:34:32');
 
 -- --------------------------------------------------------
 
@@ -356,12 +325,8 @@ CREATE TABLE `item_decimal` (
 --
 
 INSERT INTO `item_decimal` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(34, 27, 22, 200.00),
-(35, 27, 23, 50.00),
 (38, 26, 22, 233.00),
-(39, 26, 23, 50.00),
-(40, 29, 22, 121.00),
-(41, 29, 23, 11.00);
+(39, 26, 23, 50.00);
 
 -- --------------------------------------------------------
 
@@ -381,12 +346,8 @@ CREATE TABLE `item_int` (
 --
 
 INSERT INTO `item_int` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(91, 27, 18, 88),
-(94, 27, 20, 93),
 (97, 26, 18, 86),
-(98, 26, 20, 93),
-(99, 29, 18, 88),
-(105, 29, 20, 93);
+(98, 26, 20, 93);
 
 -- --------------------------------------------------------
 
@@ -406,7 +367,7 @@ CREATE TABLE `item_text` (
 --
 
 INSERT INTO `item_text` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(40, 29, 24, 'sahil');
+(46, 26, 24, '');
 
 -- --------------------------------------------------------
 
@@ -427,15 +388,8 @@ CREATE TABLE `item_varchar` (
 
 INSERT INTO `item_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
 (112, 26, 17, '13'),
-(114, 27, 19, '89,90'),
-(115, 27, 21, 'item 4'),
 (118, 26, 19, '90,91'),
-(119, 26, 21, 'item 3'),
-(121, 29, 21, 'sasas'),
-(122, 27, 17, ''),
-(139, 29, 17, '12'),
-(147, 29, 26, '94,95'),
-(148, 29, 19, '89,90');
+(119, 26, 21, 'item 3');
 
 -- --------------------------------------------------------
 
@@ -503,8 +457,9 @@ CREATE TABLE `payment_method` (
 --
 
 INSERT INTO `payment_method` (`payment_method_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'P1', 2, '2023-04-09 14:02:46', '2023-04-10 19:58:24'),
-(2, 'P2', 1, '2023-04-09 14:02:52', '2023-04-19 13:56:30');
+(8, 'Credit/debit card', 1, '2023-04-25 13:24:58', NULL),
+(9, 'Upi', 1, '2023-04-25 13:25:08', NULL),
+(10, 'cash', 2, '2023-04-25 13:25:16', NULL);
 
 -- --------------------------------------------------------
 
@@ -537,7 +492,9 @@ CREATE TABLE `payment_varchar` (
 --
 
 INSERT INTO `payment_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(1, 2, 28, '');
+(10, 8, 28, ''),
+(11, 9, 28, ''),
+(12, 10, 28, '');
 
 -- --------------------------------------------------------
 
@@ -568,8 +525,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `name`, `sku`, `cost`, `price`, `quantity`, `description`, `status`, `color`, `material`, `small_id`, `thumb_id`, `base_id`, `created_at`, `updated_at`) VALUES
-(4, '111', 'sa', 21.00, 212.00, 12, '121', 2, 1, 1, 16, 11, 16, '2023-04-12 12:23:17', '2023-04-19 13:20:35'),
-(9, 'Pen', 'p1', 10.00, 20.00, 100, 'good product', 1, 4, 1, 0, 0, 0, '2023-04-15 00:11:02', '2023-04-19 13:19:26');
+(4, '111', 'sa', 21.00, 212.00, 12, '121', 1, 1, 1, 16, 11, 16, '2023-04-12 12:23:17', '2023-04-25 22:27:07'),
+(11, 'sahil', '', 0.00, 0.00, 0, '', 1, 2, 2, 0, 0, 0, '2023-04-24 10:59:49', '2023-04-24 11:00:07'),
+(13, 'asdas', '', 0.00, 0.00, 0, '', 1, 1, 1, 0, 0, 0, '2023-04-25 18:50:31', '2023-04-25 22:27:01'),
+(14, 'sasas', '', 0.00, 0.00, 0, '', 1, 1, 1, 0, 0, 0, '2023-04-25 22:26:30', '2023-04-25 22:26:56');
 
 -- --------------------------------------------------------
 
@@ -602,10 +561,11 @@ CREATE TABLE `product_int` (
 --
 
 INSERT INTO `product_int` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(7, 9, 3, 73),
-(8, 9, 5, 55),
 (9, 4, 3, 73),
-(10, 4, 5, 50);
+(10, 4, 5, 50),
+(11, 11, 3, 73),
+(14, 13, 3, 73),
+(15, 14, 3, 73);
 
 -- --------------------------------------------------------
 
@@ -649,8 +609,10 @@ CREATE TABLE `product_text` (
 --
 
 INSERT INTO `product_text` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(1, 9, 4, '11'),
-(2, 4, 4, '12');
+(2, 4, 4, '12'),
+(3, 11, 4, ''),
+(6, 13, 4, ''),
+(7, 14, 4, '');
 
 -- --------------------------------------------------------
 
@@ -670,9 +632,10 @@ CREATE TABLE `product_varchar` (
 --
 
 INSERT INTO `product_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-(1, 9, 4, '11'),
-(3, 9, 25, '11'),
-(4, 4, 25, '21');
+(4, 4, 25, '21'),
+(5, 11, 25, ''),
+(8, 13, 25, ''),
+(9, 14, 25, '');
 
 -- --------------------------------------------------------
 
@@ -692,18 +655,17 @@ CREATE TABLE `quote` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD
 --
 -- Dumping data for table `quote`
 --
 
 INSERT INTO `quote` (`order_id`, `customer_id`, `order_total`, `status`, `payment_method_id`, `shipping_method_id`, `shipping_amount`, `created_at`, `updated_at`) VALUES
-(2, 70, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 70, 0.00, 0, 9, 15, 50.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (3, 53, 0.00, 0, 2, 5, 1222.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 0, 0.00, 0, 0, 5, 1222.00, '0000-00-00 00:00:00', NULL);
+(4, 0, 0.00, 0, 0, 5, 1222.00, '0000-00-00 00:00:00', NULL),
+(5, 0, 0.00, 0, 0, 5, 1222.00, '0000-00-00 00:00:00', NULL),
+(6, 0, 0.00, 0, 8, 0, 0.00, '0000-00-00 00:00:00', NULL);
 
-=======
->>>>>>> origin
 -- --------------------------------------------------------
 
 --
@@ -720,7 +682,6 @@ CREATE TABLE `quote_address` (
   `zip_code` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD
 --
 -- Dumping data for table `quote_address`
 --
@@ -729,8 +690,6 @@ INSERT INTO `quote_address` (`address_id`, `customer_address_id`, `address`, `ci
 (30, 44, '1', '1', '11', '66666', 1),
 (31, 45, '1', '1', '11', '55555', 1);
 
-=======
->>>>>>> origin
 -- --------------------------------------------------------
 
 --
@@ -744,17 +703,14 @@ CREATE TABLE `quote_item` (
   `discount` int(3) NOT NULL,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-<<<<<<< HEAD
 
 --
 -- Dumping data for table `quote_item`
 --
 
 INSERT INTO `quote_item` (`item_id`, `product_id`, `quantity`, `discount`, `price`) VALUES
-(22, 4, 12, 0, 212.00),
+(22, 4, 10, 100, 212.00),
 (23, 9, 12, 0, 20.00);
-=======
->>>>>>> origin
 
 -- --------------------------------------------------------
 
@@ -825,7 +781,7 @@ CREATE TABLE `salesman_price` (
 --
 
 INSERT INTO `salesman_price` (`entity_id`, `salesman_id`, `product_id`, `salesman_price`) VALUES
-(23, 1, 9, 12);
+(25, 2, 4, 12);
 
 -- --------------------------------------------------------
 
@@ -873,12 +829,8 @@ CREATE TABLE `shipping_method` (
 --
 
 INSERT INTO `shipping_method` (`shipping_method_id`, `name`, `amount`, `status`, `created_at`, `updated_at`) VALUES
-<<<<<<< HEAD
-(5, 'S1', 1222.00, 1, '2023-04-12 23:42:24', '2023-04-19 13:46:54'),
-(6, 's2', 0.00, 2, '2023-04-23 22:42:56', NULL);
-=======
-(5, 'S1', 1222.00, 1, '2023-04-12 23:42:24', '2023-04-19 13:46:54');
->>>>>>> origin
+(14, 'Normal', 0.00, 1, '2023-04-25 13:23:54', NULL),
+(15, 'Gold', 50.00, 1, '2023-04-25 13:24:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -911,12 +863,8 @@ CREATE TABLE `shipping_varchar` (
 --
 
 INSERT INTO `shipping_varchar` (`value_id`, `entity_id`, `attribute_id`, `value`) VALUES
-<<<<<<< HEAD
-(1, 5, 27, '11'),
-(3, 6, 27, '');
-=======
-(1, 5, 27, '11');
->>>>>>> origin
+(18, 14, 27, ''),
+(19, 15, 27, '');
 
 -- --------------------------------------------------------
 
@@ -1189,11 +1137,7 @@ ALTER TABLE `quote_address`
 -- Indexes for table `quote_item`
 --
 ALTER TABLE `quote_item`
-<<<<<<< HEAD
   ADD PRIMARY KEY (`item_id`);
-=======
-  ADD KEY `item_id` (`item_id`);
->>>>>>> origin
 
 --
 -- Indexes for table `salesman`
@@ -1275,13 +1219,13 @@ ALTER TABLE `vendor_address`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -1299,39 +1243,31 @@ ALTER TABLE `cart_item`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-<<<<<<< HEAD
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
-=======
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
->>>>>>> origin
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT for table `category_varchar`
 --
 ALTER TABLE `category_varchar`
-<<<<<<< HEAD
   MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-=======
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
->>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `eav_attribute`
 --
 ALTER TABLE `eav_attribute`
-  MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `eav_attribute_option`
@@ -1349,31 +1285,31 @@ ALTER TABLE `entity_type`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `item_decimal`
 --
 ALTER TABLE `item_decimal`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `item_int`
 --
 ALTER TABLE `item_int`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `item_text`
 --
 ALTER TABLE `item_text`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `item_varchar`
 --
 ALTER TABLE `item_varchar`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `payment_decimal`
@@ -1391,7 +1327,7 @@ ALTER TABLE `payment_int`
 -- AUTO_INCREMENT for table `payment_method`
 --
 ALTER TABLE `payment_method`
-  MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `payment_text`
@@ -1403,13 +1339,13 @@ ALTER TABLE `payment_text`
 -- AUTO_INCREMENT for table `payment_varchar`
 --
 ALTER TABLE `payment_varchar`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `product_decimal`
@@ -1421,7 +1357,7 @@ ALTER TABLE `product_decimal`
 -- AUTO_INCREMENT for table `product_int`
 --
 ALTER TABLE `product_int`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `product_media`
@@ -1433,29 +1369,24 @@ ALTER TABLE `product_media`
 -- AUTO_INCREMENT for table `product_text`
 --
 ALTER TABLE `product_text`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_varchar`
 --
 ALTER TABLE `product_varchar`
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `quote`
 --
 ALTER TABLE `quote`
-<<<<<<< HEAD
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-=======
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
->>>>>>> origin
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `quote_address`
 --
 ALTER TABLE `quote_address`
-<<<<<<< HEAD
   MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
@@ -1463,27 +1394,24 @@ ALTER TABLE `quote_address`
 --
 ALTER TABLE `quote_item`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-=======
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
->>>>>>> origin
 
 --
 -- AUTO_INCREMENT for table `salesman`
 --
 ALTER TABLE `salesman`
-  MODIFY `salesman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `salesman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `salesman_address`
 --
 ALTER TABLE `salesman_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `salesman_price`
 --
 ALTER TABLE `salesman_price`
-  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `entity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `shipping_decimal`
@@ -1501,11 +1429,7 @@ ALTER TABLE `shipping_int`
 -- AUTO_INCREMENT for table `shipping_method`
 --
 ALTER TABLE `shipping_method`
-<<<<<<< HEAD
-  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-=======
-  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
->>>>>>> origin
+  MODIFY `shipping_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `shipping_text`
@@ -1517,23 +1441,19 @@ ALTER TABLE `shipping_text`
 -- AUTO_INCREMENT for table `shipping_varchar`
 --
 ALTER TABLE `shipping_varchar`
-<<<<<<< HEAD
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-=======
-  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
->>>>>>> origin
+  MODIFY `value_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `vendor_address`
 --
 ALTER TABLE `vendor_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -1662,21 +1582,6 @@ ALTER TABLE `product_varchar`
   ADD CONSTRAINT `product_varchar_ibfk_2` FOREIGN KEY (`entity_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
-<<<<<<< HEAD
-=======
--- Constraints for table `quote_address`
---
-ALTER TABLE `quote_address`
-  ADD CONSTRAINT `quote_address_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `customer_address` (`address_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `quote_item`
---
-ALTER TABLE `quote_item`
-  ADD CONSTRAINT `quote_item_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`entity_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
->>>>>>> origin
 -- Constraints for table `salesman_address`
 --
 ALTER TABLE `salesman_address`
