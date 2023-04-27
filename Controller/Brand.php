@@ -26,7 +26,7 @@ class Controller_Brand extends Controller_Core_Action
 			$addHtml->setRow($brand);
 			$addHtml = $addHtml->toHtml();
 			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -48,7 +48,7 @@ class Controller_Brand extends Controller_Core_Action
 			$editHtml->setRow($brand);
 			$editHtml = $editHtml->toHtml();
 			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -58,9 +58,14 @@ class Controller_Brand extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Brand_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
             echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -97,7 +102,7 @@ class Controller_Brand extends Controller_Core_Action
 
 			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
             echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Brand saved successfully.']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 
 			// $this->getMessage()->addMessage('Brand saved successfully.');
 		} catch (Exception $e) {
@@ -124,7 +129,7 @@ class Controller_Brand extends Controller_Core_Action
 
 			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
             echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Brand deleted successfully.']);
-            header('Content-type: application/json');
+            @header('Content-type: application/json');
 			// $this->getMessage()->addMessage("Brand deleted successfully.");
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);

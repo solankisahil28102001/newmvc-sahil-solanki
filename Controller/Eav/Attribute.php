@@ -18,7 +18,17 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			if (!$currentPage = $this->getRequest()->getParam('p')) {
+				$currentPage = 1;
+			}
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid');
+			$gridHtml->setCurrentPage($currentPage);
+			if ($this->getRequest()->isPost()) {
+				if ($postData = $this->getRequest()->getPost('recordCount')) {
+					$gridHtml->setRecordPerPage((int)$postData);
+				}
+			}
+			$gridHtml = $gridHtml->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
             @header('Content-type: application/json');
 		} catch (Exception $e) {

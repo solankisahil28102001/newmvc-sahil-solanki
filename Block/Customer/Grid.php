@@ -2,16 +2,26 @@
 
 class Block_Customer_Grid extends Block_Core_Grid
 {
-	
 	function __construct()
 	{
 		parent::__construct();
 		$this->setTitle('Manage Customers');
 	}
-
+	
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `customer` ORDER BY `customer_id` DESC";
+		$query = "SELECT count(`customer_id`) FROM `customer`";
+		$tableRecordes = Ccc::getModel('Customer')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `customer` ORDER BY `customer_id` DESC LIMIT {$startLimit},{$recordPerPage}";
 		$customers = Ccc::getModel('Customer')->fetchAll($query);
 		return $customers;
 	}

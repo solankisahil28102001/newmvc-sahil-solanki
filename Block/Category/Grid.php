@@ -2,19 +2,29 @@
 
 class Block_Category_Grid extends Block_Core_Grid
 {
-	
 	function __construct()
 	{
 		parent::__construct();
 		$this->setTitle('Manage Categories');
 	}
-
+	
 	public function getCollection()
 	{
-		$category = Ccc::getModel('Category');
-		$query = "SELECT * FROM `category` WHERE `category_id` > 1 ORDER BY `path`";
-		$categories = $category->fetchAll($query);
+		$query = "SELECT count(`category_id`) FROM `category`";
+		$tableRecordes = Ccc::getModel('Category')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `category` ORDER BY `category_id` DESC LIMIT {$startLimit},{$recordPerPage}";
+		$categories = Ccc::getModel('Category')->fetchAll($query);
 		return $categories;
+		
 	}
 
 	protected function _prepareColumns()

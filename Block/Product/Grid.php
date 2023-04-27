@@ -2,18 +2,6 @@
 
 class Block_Product_Grid extends Block_Core_Grid
 {
-	protected $pager = null;
-
-	public function getPager()
-	{
-		return $this->pager;
-	}
-
-	public function setPager(Model_Core_Pager $pager)
-	{
-		$this->pager = $pager;
-	}
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -22,15 +10,19 @@ class Block_Product_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `product` ORDER BY `product_id` DESC";
-		$products = Ccc::getModel('Product')->fetchAll($query);
-
 		$query = "SELECT count(`product_id`) FROM `product`";
-		$tableRecores = Ccc::getModel('Product')->fetchOne($query);
-		$currentPage = $this->getRequest()->getParam('p');
-		var_dump($currentPage);
-		$pager = new Model_Core_Pager($tableRecores, $currentPage);
-		$this->setPager($pager);
+		$tableRecordes = Ccc::getModel('Product')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `product` ORDER BY `product_id` DESC LIMIT {$startLimit},{$recordPerPage}";
+		$products = Ccc::getModel('Product')->fetchAll($query);
 		return $products;
 	}
 
@@ -128,4 +120,7 @@ class Block_Product_Grid extends Block_Core_Grid
 		]);
 		return parent::_prepareButtons();
 	}
+
+    
+    
 }

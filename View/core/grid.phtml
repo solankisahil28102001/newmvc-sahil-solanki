@@ -1,6 +1,8 @@
 <?php
 $rows = $this->getCollection();
-print_r($this->getPager());
+$pager = $this->getPager();
+// echo '<pre>';
+// print_r($pager);
 ?>
 <div style="width: 90%">
 	<div class="w-90 d-flex align-items-center row">
@@ -44,16 +46,67 @@ print_r($this->getPager());
 		</table>
 	</div>
 </div>
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-   <!--  <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-    </li> -->
-    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getStart()], true) ?>">start</a></li>
-    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getPrevious()], true) ?>">previous</a></li>
-    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getCurrentPage()], true) ?>">current</a></li>
-    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getNext()], true) ?>">next</a></li>
-    <li class="page-item"><a class="page-link" href="<?php echo $this->getUrl('index', null, ['p' => $this->getPager()->getEnd()], true) ?>">end</a></li>
-  </ul>
-</nav>
+<div class="row" style="width: 90%; align-items: center;">
+	<div class="col-2" align="left"><?php echo "<b>Total Records : </b>".$pager->getTotalRecords(); ?></div>
+	<div class="col-3 d-flex align-items-center" align="left">
+		<div class="col-5" align="left"><b>Record count :</b></div>
+		<div class="col-3" align="left">
+			<form action="<?php echo $this->getUrl('grid'); ?>" method="post" id="change-record-count">
+				<select class="form-select col-2" name='rpp' id="show-record-count">
+					<?php $numberofRecords = ['10'=>10,'20'=>20,'50'=>50,'100'=>100,'200'=>200,'500'=>500]; ?>
+					<?php foreach($numberofRecords as $key => $value): ?>
+						<option value="<?php echo $key; ?>" 
+							<?php echo ($pager->getRecordPerPage() == $key) ? 'selected' : ''; ?>>
+							<?php echo $value; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<input type="hidden" name="p" id="page-no" value="<?php echo $pager->getCurrentPage(); ?>">
+			</form>
+		</div>
+	</div>
+	<div class="col-2" align="right">
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center mt-3">
+			    <li class="page-item <?php echo ($pager->getStart() == 0) ? 'disabled' : '';?>"><a id="page-link-start" class="page-link">start</a></li>
 
+			    <li class="page-item <?php echo ($pager->getPrevious() == 0) ? 'disabled' : '';?>"><a id="page-link-pre" class="page-link">
+			    	<span aria-hidden="true">&laquo;</span></a></li>
+
+			    <li class="page-item"><a id="page-link-current" class="page-link"><?php echo $pager->getCurrentPage(); ?></a></li>
+
+			    <li class="page-item <?php echo ($pager->getNext() == 0) ? 'disabled' : '';?>"><a id="page-link-next" class="page-link"><span aria-hidden="true">&raquo;</span></a></li>
+
+			    <li class="page-item <?php echo ($pager->getEnd() == 0) ? 'disabled' : '';?>"><a id="page-link-end" class="page-link">end</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="col-3">&nbsp;</div>
+	<div class="col-2">
+		<?php echo "showing <span class='fw-bold'>Page ".$pager->getCurrentPage()."</span> of <span class='fst-italic fw-bold'>Total ".$pager->getNumberOfPages()."</span>" ?>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#show-record-count').change(function () {
+		ajax.setForm('change-record-count').call();
+	});	
+	$('#page-link-start').click(function () {
+		$('#page-no').attr('value', <?php echo $pager->getStart(); ?>) ;
+		ajax.setForm('change-record-count').call();
+	});
+	$('#page-link-pre').click(function () {
+		$('#page-no').attr('value', <?php echo $pager->getPrevious(); ?>) ;
+		ajax.setForm('change-record-count').call();
+	});
+	$('#page-link-current').click(function () {
+		$('#page-no').attr('value', <?php echo $pager->getCurrentPage(); ?>) ;
+		ajax.setForm('change-record-count').call();
+	});
+	$('#page-link-next').click(function () {
+		$('#page-no').attr('value', <?php echo $pager->getNext(); ?>) ;
+		ajax.setForm('change-record-count').call();
+	});
+	$('#page-link-end').click(function () {
+		$('#page-no').attr('value', <?php echo $pager->getEnd(); ?>) ;
+		ajax.setForm('change-record-count').call();
+	});
+</script>

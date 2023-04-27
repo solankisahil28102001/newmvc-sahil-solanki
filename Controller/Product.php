@@ -2,24 +2,6 @@
 
 class Controller_Product extends Controller_Core_Action
 {
-	protected $pager = null;
-
-	public function setPager(Model_Core_Pager $pager)
-	{
-		$this->pager = $pager;
-		return $this;
-	}
-
-	public function getPager()
-	{
-		if ($this->pager) {
-			return $this->pager;
-		}
-		$pager = Ccc::getModel('Core_Pager');
-		$this->setPager($pager);
-		return $pager;
-	}
-	
 	public function indexAction()
 	{
 		try { 
@@ -78,13 +60,12 @@ class Controller_Product extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			// $pager = new Model_Core_Pager(0,2);
-			// echo '<pre>';
-			// $pager->calculate();
-			// print_r($pager);
-			// die();
+			$currentPage = $this->getRequest()->getPost('p',1);
+			$recordPerPage = $this->getRequest()->getPost('rpp',10);
 			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+			$gridHtml = $layout->createBlock('Product_Grid');
+			$gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+			$gridHtml = $gridHtml->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
 			@header('Content-type: application/json');
 		} catch (Exception $e) {

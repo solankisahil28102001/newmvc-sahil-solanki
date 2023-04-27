@@ -2,37 +2,62 @@
 
 class Model_Core_Pager
 {
-	public $totalRecords = 0;
-	public $recordPerPage = 10;
-	public $currentPage = 0;
-	public $numberOfPages = 0;
-	public $start = 1;
-	public $previous = 0;
-	public $next = 0;
-	public $end = 0;
-	public $startLimit = 0;
+	protected $totalRecords = 0;
+	protected $recordPerPage = 10;
+	protected $currentPage = 0;
+	protected $numberOfPages = 0;
+	protected $start = 1;
+	protected $previous = 0;
+	protected $next = 0;
+	protected $end = 0;
+	protected $startLimit = 0;
 
-	public function __construct($totalRecords, $currentPage)
+	public function __construct()
 	{
-		$this->totalRecords = $totalRecords;
-		if ($currentPage == 0) {
-			$this->currentPage = 1;
-		}
-		else{
-			$this->currentPage = $currentPage;
-		}
+		
 	}
 
 	public function calculate()
 	{
-		// calculate start
-		if (($this->numberOfPages = ceil($this->totalRecords / $this->recordPerPage)) == 0) {
-			$this->numberOfPages = 1;
-		};
-		$this->previous = $this->currentPage - 1;
-		$this->next = ($this->currentPage == $this->numberOfPages) ? $this->currentPage : $this->currentPage + 1;
-		$this->end = $this->numberOfPages;
-		$this->startLimit = ($this->currentPage == 1) ? 1 : ($this->currentPage * $this->numberOfPages) - 9;
+        //numberofpages
+        if (($this->numberOfPages = ceil($this->getTotalRecords() / $this->getRecordPerPage())) == 0) {
+            $this->currentPage = 0;
+        };
+        if ($this->getNumberOfPages() == 1 || ($this->getNumberOfPages() > 1 && $this->getCurrentPage() <= 0)) {
+            $this->currentPage = 1;
+        }
+        if ($this->getCurrentPage() > $this->getNumberOfPages()) {
+            $this->currentPage = $this->getNumberOfPages();
+        }
+
+        //start
+        if (!$this->getNumberOfPages()) {
+            $this->start = 0;
+        }
+        if ($this->getCurrentPage() == 1) {
+            $this->start = 0;
+        }
+
+        //end
+        $this->end = $this->getNumberOfPages();
+        if ($this->getCurrentPage() == $this->getNumberOfPages()) {
+            $this->end = 0;
+        }
+
+        //previous
+        $this->previous = $this->getCurrentPage() - 1;
+        if ($this->getCurrentPage() <= 1) {
+            $this->previous = 0;    
+        }
+        
+        //next
+        $this->next = $this->getCurrentPage() + 1;
+        if ($this->getCurrentPage() >= $this->getNumberOfPages()) {
+            $this->next = 0;
+        }
+
+        //start limit
+        $this->startLimit = ($this->getCurrentPage() - 1) * $this->getRecordPerPage(); 
 	}
 
     public function getTotalRecords()

@@ -67,9 +67,14 @@ class Controller_Salesman extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$gridHtml = $this->getLayout()->createBlock('Salesman_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-        	@header('Content-type: application/json');
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Salesman_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);

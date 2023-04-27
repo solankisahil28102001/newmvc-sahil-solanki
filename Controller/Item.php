@@ -16,9 +16,14 @@ class Controller_Item extends Controller_Core_Action
 
 	public function gridAction()
 	{
-		$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
-		echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-        header('Content-type: application/json');
+		$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Item_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 	}
 
 	public function editAction()

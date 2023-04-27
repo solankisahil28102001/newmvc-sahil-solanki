@@ -7,11 +7,21 @@ class Block_Payment_Grid extends Block_Core_Grid
 		parent::__construct();
 		$this->setTitle('Manage Payment Method');
 	}
-
-
+	
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `payment_method` ORDER BY `payment_method_id` DESC";
+		$query = "SELECT count(`payment_method_id`) FROM `payment_method`";
+		$tableRecordes = Ccc::getModel('Payment')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `payment_method` ORDER BY `payment_method_id` DESC LIMIT {$startLimit},{$recordPerPage}";
 		$payments = Ccc::getModel('Payment')->fetchAll($query);
 		return $payments;
 	}

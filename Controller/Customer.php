@@ -13,6 +13,9 @@ class Controller_Customer extends Controller_Core_Action{
 	public function addAction()
 	{
 		try {
+			if (!$currentPage = $this->getRequest()->getParam('p')) {
+				$currentPage = 1;
+			}
 			if (!$customer = Ccc::getModel('Customer')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -58,9 +61,14 @@ class Controller_Customer extends Controller_Core_Action{
 	public function gridAction()
 	{
 		try {
-			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Customer_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
