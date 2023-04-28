@@ -10,7 +10,7 @@ class Controller_Quote extends Controller_Core_Action
 		$this->loadByCustomerId();
 
 		$layout->getChild('content')->addChild('quote', $quote);
-		$layout->render();
+		$this->renderLayout();
 	}
 
 

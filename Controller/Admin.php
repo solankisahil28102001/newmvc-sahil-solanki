@@ -38,6 +38,7 @@ class Controller_Admin extends Controller_Core_Action
             };
             
             $addHtml = $this->getLayout()->createBlock('Admin_Edit')->setData(['admin' => $admin])->toHtml();
+            $this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
             $this->redirect('index');
@@ -115,6 +116,7 @@ class Controller_Admin extends Controller_Core_Action
             if (!$admin->delete()) {
                 throw new Exception("Unable to delete admin.", 1);
             }
+            $this->getMessage()->addMessage("Admin deleted successfully.");
             
             $this->getMessage()->addMessage("Admin deleted successfully.");
             $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
