@@ -57,6 +57,9 @@ class Model_Core_Pager
         }
 
         //start limit
+        if ($this->getCurrentPage() == 0) {
+            $this->setCurrentPage(1);
+        }
         $this->startLimit = ($this->getCurrentPage() - 1) * $this->getRecordPerPage(); 
 	}
 

@@ -12,7 +12,6 @@ class Block_Category_Grid extends Block_Core_Grid
 	{
 		$query = "SELECT count(`category_id`) FROM `category`";
 		$tableRecordes = Ccc::getModel('Category')->fetchOne($query);
-
 		$pager = $this->getPager();
 		$pager->setCurrentPage($this->getCurrentPage())
 			->setTotalRecords($tableRecordes)
