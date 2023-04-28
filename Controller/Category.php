@@ -18,10 +18,14 @@ class Controller_Category extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			@header('Content-type: application/json');
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Category_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
+            @header('Content-type: application/json');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');

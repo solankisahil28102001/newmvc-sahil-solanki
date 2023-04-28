@@ -2,7 +2,6 @@
 
 class Controller_Product extends Controller_Core_Action
 {
-
 	public function indexAction()
 	{
 		try { 
@@ -16,6 +15,53 @@ class Controller_Product extends Controller_Core_Action
 		}
 	}
 
+	public function exportAction()
+	{
+		@header('Content-Type: text/csv; charset=utf-8');  
+      	@header('Content-Disposition: attachment; filename=data.csv');  
+      	$output = fopen("php://output", "w");  
+      	fputcsv($output, array('product_id', 'name', 'sku', 'cost', 'price', 'quantity', 'description', 'status', 'color', 'material', 'small_id', 'thumb_id', 'base_id', 'created_at', 'updated_at'));  
+      	$query = "SELECT * from product ORDER BY product_id DESC";  
+      	$result = Ccc::getModel('Product')->getResource()->getAdapter()->query($query); 
+      	foreach($result as $row)
+     	{  
+           fputcsv($output, $row);  
+      	}  
+      	fclose($output); 
+	}
+
+	public function importAction()
+	{
+		$layout = $this->getLayout();
+		$indexBlock = $layout->createBlock('Core_Template')->setTemplate('product/import.phtml');
+		$layout->getChild('content')->addChild('index', $indexBlock);
+		echo $layout->toHtml();
+	}
+
+	public function saveImportAction()
+	{
+		try {
+			$upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
+			$rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
+
+			foreach ($rows as $key => &$array) {
+				unset($array['product_id']);
+				unset($array['created_at']);
+				unset($array['updated_at']);
+			}
+
+			$product = Ccc::getModel('Product');
+			foreach ($rows as $key => $row) {
+				$uniqueColumns = ['sku' => $row['sku']];
+				$product->getResource()->insertUpdateOnDuplicate($row, $uniqueColumns);
+			}
+
+			$this->getMessage()->addMessage("Data inserted successfully.");
+		} catch (Exception $e) {
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+		}
+		$this->redirect('index');
+	}
 
 	public function addAction()
 	{
@@ -62,8 +108,12 @@ class Controller_Product extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
+			$currentPage = $this->getRequest()->getPost('p',1);
+			$recordPerPage = $this->getRequest()->getPost('rpp',10);
 			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+			$gridHtml = $layout->createBlock('Product_Grid');
+			$gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+			$gridHtml = $gridHtml->toHtml();
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
 			@header('Content-type: application/json');
 		} catch (Exception $e) {

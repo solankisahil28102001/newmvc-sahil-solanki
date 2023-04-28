@@ -190,6 +190,16 @@ class Model_Core_Table
 		return $this;
 	}
 
+	public function fetchOne($query)
+	{
+		return $this->getResource()->fetchOne($query);
+	}
+
+	public function fetchPairs($query)
+	{
+		return $this->getResource()->fetchPairs($query);
+	}
+
 
 	public function load($id, $column=null)
 	{

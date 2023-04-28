@@ -6,6 +6,9 @@ class Block_Core_Grid extends Block_Core_Template
 	protected $_buttons = [];
 	protected $_actions = [];
 	protected $_title = null;
+	protected $pager = null;
+	protected $currentPage = null;
+	protected $recordPerPage = 10;
 
 	function __construct()
 	{
@@ -15,6 +18,44 @@ class Block_Core_Grid extends Block_Core_Template
 		$this->_prepareButtons();
 		$this->_prepareColumns();
 	}
+	
+	public function getPager()
+	{
+		if ($this->pager) {
+			return $this->pager;
+		}
+		$pager = new Model_Core_Pager();
+		$this->setPager($pager);
+		return $pager;
+	}
+
+	public function setPager(Model_Core_Pager $pager)
+	{
+		$this->pager = $pager;
+		return $this;
+	}
+
+	public function setRecordPerPage($recordPerPage)
+	{
+		$this->recordPerPage = $recordPerPage;
+		return $this;
+	}
+
+	public function getRecordPerPage()
+	{
+		return $this->recordPerPage;
+	}
+
+	public function getCurrentPage()
+    {
+        return $this->currentPage;
+    }
+
+    public function setCurrentPage($currentPage)
+    {
+        $this->currentPage = $currentPage;
+        return $this;
+    }
 
 	public function getTitle()
 	{
