@@ -9,7 +9,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
             $this->_setTitle('Manage Eav Attributes');
             $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('eav/attribute/index.phtml');
             $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
-            echo $this->getLayout()->toHtml();
+            $this->renderLayout();
         } catch (Exception $e) {
             
         }
@@ -19,8 +19,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	{
 		try {
 			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-            @header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->redirect('index', null, null, true);
 		}
@@ -32,8 +31,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$attribute = Ccc::getModel('Eav_Attribute');
 			$options = Ccc::getModel('Eav_Attribute')->getCollection();
 			$addHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
-			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-            @header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -55,8 +53,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$query = "SELECT * FROM `eav_attribute_option` WHERE  `attribute_id` = '{$id}' ORDER BY `position`";
 			$options = Ccc::getModel('Eav_Attribute')->fetchAll($query);
 			$editHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
-			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
-            @header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -160,10 +157,10 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 					}
 				}
 			}
+			$this->getMessage()->addMessage('Attribute saved successfully.');
+			
 			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Attribute saved successfully.']);
-            @header('Content-type: application/json');
-			// $this->getMessage()->addMessage('Attribute saved successfully.');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -185,11 +182,10 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			if(!$attribute->delete()){
 				throw new Exception("Unable to delete attribute", 1);
 			}
+			$this->getMessage()->addMessage("Attribute deleted successfully.");
 
 			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Attribute deleted successfully.']);
-            @header('Content-type: application/json');
-			// $this->getMessage()->addMessage("Attribute deleted successfully.");
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);

@@ -7,7 +7,7 @@ class Controller_Customer extends Controller_Core_Action{
 		$this->_setTitle('Manage customers');
 		$indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('customer/index.phtml');
 		$this->getLayout()->getChild('content')->addChild('index', $indexBlock);
-		echo $this->getLayout()->toHtml();
+		$this->renderLayout();
 	}
 
 	public function addAction()
@@ -18,8 +18,7 @@ class Controller_Customer extends Controller_Core_Action{
 			}
 
 			$addHtml = $this->getLayout()->createBlock('Customer_Edit')->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer])->toHtml();
-			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-			@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -47,8 +46,7 @@ class Controller_Customer extends Controller_Core_Action{
 			}
 
 			$editHtml = $this->getLayout()->createBlock('Customer_Edit')->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer])->toHtml();
-			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
-			@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -59,8 +57,7 @@ class Controller_Customer extends Controller_Core_Action{
 	{
 		try {
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -159,12 +156,11 @@ class Controller_Customer extends Controller_Core_Action{
 			if (!$customer->save()) {
 				throw new Exception("Unable to save customer", 1);
 			}
+			$this->getMessage()->addMessage('Customer saved successfully.');
 
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Customer saved successfully.']);
-			@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 
-			// $this->getMessage()->addMessage('Customer saved successfully.');
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
@@ -185,11 +181,10 @@ class Controller_Customer extends Controller_Core_Action{
 			if (!$customer->delete()){
 				throw new Exception("Unable to delete customer.", 1);
 			}
+			$this->getMessage()->addMessage("Customer deleted successfully.");
 
 			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Customer deleted successfully.']);
-			@header('Content-type: application/json');
-			// $this->getMessage()->addMessage("Customer deleted successfully.");
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);

@@ -8,7 +8,7 @@ class Controller_Item extends Controller_Core_Action
             $this->_setTitle('Manage Items');
             $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('item/index.phtml');
             $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
-            echo $this->getLayout()->toHtml();
+            $this->renderLayout();
         } catch (Exception $e) {
             
         }
@@ -17,8 +17,7 @@ class Controller_Item extends Controller_Core_Action
 	public function gridAction()
 	{
 		$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
-		echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-        @header('Content-type: application/json');
+		$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 	}
 
 	public function editAction()
@@ -33,8 +32,7 @@ class Controller_Item extends Controller_Core_Action
 			}
 
 			$editHtml = $this->getLayout()->createBlock('Item_Edit')->setData(['item' => $item])->toHtml();
-			echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
-        	@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
 			$this->redirect('index', null, null, true);
@@ -47,8 +45,7 @@ class Controller_Item extends Controller_Core_Action
 			$item = Ccc::getModel('Item');
 
 			$addHtml = $this->getLayout()->createBlock('Item_Edit')->setData(['item' => $item])->toHtml();
-			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-        	@header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
 			$this->redirect('index', null, null, true);
@@ -69,11 +66,10 @@ class Controller_Item extends Controller_Core_Action
 			if (!$item->delete()){
 				throw new Exception("Unable to delete item.", 1);
 			}
+			$this->getMessage()->addMessage('Item deleted successfully.');
 
 			$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Item deleted successfully.']);
-	        @header('Content-type: application/json');
-			// $this->getMessage()->addMessage('Item deleted successfully.');
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
@@ -126,10 +122,10 @@ class Controller_Item extends Controller_Core_Action
 					}
 				}
 			}
+			$this->getMessage()->addMessage("Item saved successfully.");
+			
 			$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => 'Item saved successfully.']);
-	        @header('Content-type: application/json');
-			// $this->getMessage()->addMessage("Item saved successfully.");
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);
