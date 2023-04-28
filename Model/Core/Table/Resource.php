@@ -78,6 +78,19 @@ class Model_Core_Table_Resource
 		return $this->getAdapter()->insert($query);
 	}
 
+	public function insetMultiple($rows)
+	{
+		foreach ($rows as $key => $row) {
+			$keys = "`".implode('`,`', array_keys($row))."`";
+			$values = "'".implode("','", array_values($row))."'";
+			
+			$created_at = date('Y-m-d H:i:s');
+			$query = "INSERT INTO `{$this->getTableName()}` ($keys, `created_at`) VALUES ($values, '$created_at')";
+			$this->getAdapter()->insert($query);
+		}
+		return $this;
+	}
+
 	public function insertUpdateOnDuplicate($arrayData, $uniqueColumns)
 	{
 		$keyString = "`".implode('`,`', array_keys($arrayData))."`";
@@ -92,6 +105,8 @@ class Model_Core_Table_Resource
 		$keyValue = rtrim($keyValue, ",");
 		
 		$query = "INSERT INTO `{$this->getTableName()}` ($keyString) VALUES ($values) ON DUPLICATE KEY UPDATE $keyValue ";
+		echo $query;
+		echo '<br>';
 		return $this->getAdapter()->query($query);
 	}
 

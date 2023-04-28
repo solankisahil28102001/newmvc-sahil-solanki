@@ -13,10 +13,12 @@ $pager = $this->getPager();
 			<?php foreach ($this->getButtons() as $key => $button) : ?>
 				<a onclick="ajax.setUrl('<?php echo $button['url']; ?>').call()" class="btn btn-primary"><?php echo $button['title']; ?></a>
 			<?php endforeach; ?>
+			<!-- <a href="<?php echo $this->getUrl('export', 'product', null, true); ?>" class="btn btn-primary">Export</a>
+			<a href="<?php echo $this->getUrl('import', 'product', null, true); ?>" class="btn btn-primary">Import</a> -->
 		</div>
 	</div>
 	<div class="mt-2 w-90">
-		<table class="w-90 table table-striped table-hover">
+		<table class="w-90 table table-striped table-hover" border="1">
 			<?php if(!$rows): ?>
 			<tr>
 				<td align="center" colspan="7"><h3>There is no record</h3></td>
