@@ -3,6 +3,7 @@
 class Controller_Core_Action{
 
 	protected $message = null;
+	protected $session = null;
 	protected $adapter = null;
 	protected $request = null;
 	protected $response = null;
@@ -86,6 +87,22 @@ class Controller_Core_Action{
 		$message = new Model_Core_Message();
 		$this->setMessage($message);
 		return $message;
+	}
+
+	public function setSession(Model_Core_Session $session)
+	{
+		$this->session = $session;
+		return $this;
+	}
+
+	public function getSession()
+	{
+		if ($this->session) {
+			return $this->session;
+		}
+		$session = new Model_Core_Session();
+		$this->setSession($session);
+		return $session;
 	}
 	
 	public function setUrlObj(Model_Core_Url $url)

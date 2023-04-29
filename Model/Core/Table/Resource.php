@@ -96,6 +96,13 @@ class Model_Core_Table_Resource
 		$keyString = "`".implode('`,`', array_keys($arrayData))."`";
 		$values = "'".implode("','", array_values($arrayData))."'";
 
+		$query = "SHOW COLUMNS FROM `{$this->getTableName()}` LIKE 'created_at'";
+		$result = $this->getAdapter()->query($query);
+		if ($result->num_rows > 0) {
+			$keyString = $keyString.", `created_at`";
+			$values = $values.", '".date('Y-m-d H:i:s')."'";
+		}
+
 		$keys = array_keys($uniqueColumns);
 
 		$keyValue = "";
@@ -105,8 +112,6 @@ class Model_Core_Table_Resource
 		$keyValue = rtrim($keyValue, ",");
 		
 		$query = "INSERT INTO `{$this->getTableName()}` ($keyString) VALUES ($values) ON DUPLICATE KEY UPDATE $keyValue ";
-		echo $query;
-		echo '<br>';
 		return $this->getAdapter()->query($query);
 	}
 

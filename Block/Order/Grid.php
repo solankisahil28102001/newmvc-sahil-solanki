@@ -11,7 +11,18 @@ class Block_Order_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `orders` ORDER BY `order_id` DESC";
+		$query = "SELECT count(`order_id`) FROM `orders`";
+		$tableRecordes = Ccc::getModel('Order')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `orders` ORDER BY `order_id` DESC LIMIT {$startLimit},{$recordPerPage}";
 		$orders = Ccc::getModel('Order')->fetchAll($query);
 		return $orders;
 	}

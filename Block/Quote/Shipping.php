@@ -17,9 +17,6 @@ class Block_Quote_Shipping extends Block_Core_Template
 
 	public function getQuote()
 	{
-		if ($quote = Ccc::getModel('Quote')->load($this->getRequest()->getParam('customerId'), 'customer_id')) {
-			return $quote;
-		}
-		return Ccc::getModel('Quote');
+		return Ccc::getModel('Quote')->getQuote();
 	}
 }

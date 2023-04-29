@@ -1,7 +1,7 @@
 <?php $shippingMethods = $this->getShippingMethods(); ?>
 <?php $quote = $this->getQuote(); ?>
 
-<form action="<?php echo $this->getUrl('saveShipping'); ?>" method="post">
+<form action="<?php echo $this->getUrl('saveShipping'); ?>" method="post" id="shipping-form">
 <div class="card mt-3 mb-2" style="width: 70%">
   <div class="card-header bg-dark text-white">
     Shipping Method
@@ -19,7 +19,7 @@
 			<?php endif; ?>
 		</ul>
     </p>
-    <button class="btn btn-primary">Update</button>
+    <input type="button" class="btn btn-primary" onclick="ajax.setForm('shipping-form').call()" value="Update">
   </div>
 </div>
 </form>

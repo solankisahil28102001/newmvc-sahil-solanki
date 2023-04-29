@@ -20,11 +20,15 @@ class Controller_Product extends Controller_Core_Action
 		@header('Content-Type: text/csv; charset=utf-8');  
       	@header('Content-Disposition: attachment; filename=data.csv');  
       	$output = fopen("php://output", "w");  
-      	fputcsv($output, array('product_id', 'name', 'sku', 'cost', 'price', 'quantity', 'description', 'status', 'color', 'material', 'small_id', 'thumb_id', 'base_id', 'created_at', 'updated_at'));  
       	$query = "SELECT * from product ORDER BY product_id DESC";  
       	$result = Ccc::getModel('Product')->getResource()->getAdapter()->query($query); 
+      	$header = [];
       	foreach($result as $row)
      	{  
+     		if (!$header) {
+     			$header = array_keys($row);
+     			fputcsv($output, $header);
+     		}
            fputcsv($output, $row);  
       	}  
       	fclose($output); 
@@ -33,9 +37,9 @@ class Controller_Product extends Controller_Core_Action
 	public function importAction()
 	{
 		$layout = $this->getLayout();
-		$indexBlock = $layout->createBlock('Core_Template')->setTemplate('product/import.phtml');
-		$layout->getChild('content')->addChild('index', $indexBlock);
-		echo $layout->toHtml();
+		$importBlock = $layout->createBlock('Core_Template')->setTemplate('product/import.phtml');
+		$layout->getChild('content')->addChild('import', $importBlock);
+		$this->renderLayout();
 	}
 
 	public function saveImportAction()
@@ -57,7 +61,7 @@ class Controller_Product extends Controller_Core_Action
 			}
 
 			$this->getMessage()->addMessage("Data inserted successfully.");
-		} catch (Exception $e) {
+			} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		$this->redirect('index');
@@ -165,8 +169,7 @@ class Controller_Product extends Controller_Core_Action
 			}
 			$this->getMessage()->addMessage("Product saved successfully.");
 			
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+			$gridHtml = $this->getLayout()->createBlock('Product_Grid')->toHtml();
 			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -191,8 +194,7 @@ class Controller_Product extends Controller_Core_Action
 			}
 			$this->getMessage()->addMessage("Product deleted successfully.");
 
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+			$gridHtml = $this->getLayout()->createBlock('Product_Grid')->toHtml();
 			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);

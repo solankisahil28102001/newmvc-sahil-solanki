@@ -1,8 +1,6 @@
 <?php
 $rows = $this->getCollection();
 $pager = $this->getPager();
-// echo '<pre>';
-// print_r($pager);
 ?>
 <div style="width: 90%">
 	<div class="w-90 d-flex align-items-center row">
@@ -13,8 +11,8 @@ $pager = $this->getPager();
 			<?php foreach ($this->getButtons() as $key => $button) : ?>
 				<a onclick="ajax.setUrl('<?php echo $button['url']; ?>').call()" class="btn btn-primary"><?php echo $button['title']; ?></a>
 			<?php endforeach; ?>
-			<!-- <a href="<?php echo $this->getUrl('export', 'product', null, true); ?>" class="btn btn-primary">Export</a>
-			<a href="<?php echo $this->getUrl('import', 'product', null, true); ?>" class="btn btn-primary">Import</a> -->
+			<a href="<?php echo $this->getUrl('export', null, null, true); ?>" class="btn btn-primary">Export</a>
+			<a href="<?php echo $this->getUrl('import', null, null, true); ?>" class="btn btn-primary">Import</a>
 		</div>
 	</div>
 	<div class="mt-2 w-90">
@@ -84,7 +82,8 @@ $pager = $this->getPager();
 	</div>
 	<div class="col-3">&nbsp;</div>
 	<div class="col-2">
-		<?php echo "showing <span class='fw-bold'>Page ".$pager->getCurrentPage()."</span> of <span class='fst-italic fw-bold'>Total ".$pager->getNumberOfPages()."</span>" ?>
+		<?php $totalPages = ($pager->getNumberOfPages() == 0) ? '1' : $pager->getNumberOfPages(); ?>
+		<?php echo "showing <span class='fw-bold'>Page ".$pager->getCurrentPage()."</span> of <span class='fst-italic fw-bold'>Total ".$totalPages."</span>"; ?>
 	</div>
 </div>
 <script type="text/javascript">
