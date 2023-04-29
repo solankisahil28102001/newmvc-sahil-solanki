@@ -1,10 +1,10 @@
 <?php $items = $this->getItems(); ?>
 <?php $quoteItems = $this->getQuoteItems(); ?>
 <div id="itemTable">
-<form action="<?php echo $this->getUrl('itemsSave'); ?>" method="post">
+<form action="<?php echo $this->getUrl('itemsSave'); ?>" method="post" id="items-from">
 	<div class="row" style="width: 80%;margin: 10px;">
 		<div class="col-10" align="right"><a class="btn btn-danger" id="cancelItemTable">Cancel</a></div>
-		<div class="col-2" align="right"><button class="btn btn-primary">Add selected item</button></div>
+		<div class="col-2" align="right"><input type="button" value="Add selected item" class="btn btn-primary" onclick="ajax.setForm('items-from').call()"></div>
 	</div>
 	<div style="width: 80%" class="mt-3">
 		<table class="table table-bordered text-center"  border="2px">
@@ -35,9 +35,9 @@
 </form>
 </div>
 <div id="quoteItemTable">
-<form action="<?php echo $this->getUrl('quoteItemsUpdate'); ?>" method="post">
+<form action="<?php echo $this->getUrl('quoteItemsUpdate'); ?>" method="post" id="quote-item-form">
 	<div class="row mt-3" style="width: 80%;">
-		<div class="col-10" align="right"><input type="submit" value="Update" class="btn btn-primary"></div>
+		<div class="col-10" align="right"><input type="button" value="Update" class="btn btn-primary" onclick="ajax.setForm('quote-item-form').call()"></div>
 		<div class="col-2" align="left"><input type="button" class="btn btn-primary" value="New item" id="addNewItems"></div>
 	</div>
 	<div style="width: 80%" class="mt-3">
@@ -65,12 +65,12 @@
 				<td><?php echo $quoteItem->price; ?></td>
 				<td><?php $discountAmount = ($quoteItem->discount * $quoteItem->price)/100; 
 						echo ($quoteItem->price - $discountAmount) * $quoteItem->quantity;?></td>
-				<td><a href="<?php echo $this->getUrl('deleteQuoteItem', null, ['item_id' => $quoteItem->getId()], true); ?>"><img src="Resources/images/delete.png" height="25px"></a></td>
+				<td><a onclick="ajax.setUrl('<?php echo $this->getUrl('deleteQuoteItem', null, ['item_id' => $quoteItem->getId()]); ?>').call()"><img src="Resources/images/delete.png" height="25px"></a></td>
 			</tr>
 			<?php endforeach; ?>
 			<tr>
 				<td colspan="4"></td>
-				<th colspan="4"><?php echo round($this->getTotal()->total,2); ?></th>
+				<th colspan="4"><?php echo ($this->getTotal()->total) ? round($this->getTotal()->total,2) : 0; ?></th>
 			</tr>
 			<?php endif; ?>
 		</table>

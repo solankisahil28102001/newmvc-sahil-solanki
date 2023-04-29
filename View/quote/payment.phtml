@@ -1,6 +1,6 @@
 <?php $payment_methods = $this->getPaymentMethods(); ?>
 <?php $quote = $this->getQuote(); ?>
-<form action="<?php echo $this->getUrl('savePayment'); ?>" method="post">
+<form action="<?php echo $this->getUrl('savePayment'); ?>" method="post" id="payment-form">
 <div class="card" style="width: 70%;margin: 10px;">
   <div class="card-header bg-dark text-white">
     Payment Method
@@ -17,7 +17,7 @@
 	  	<?php endif; ?>
 		</ul>
     </p>
-    <button class="btn btn-primary">Update</button>
+    <input type="button" class="btn btn-primary" onclick="ajax.setForm('payment-form').call()" value="Update">
   </div>
 </div>
 </form>

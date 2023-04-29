@@ -32,7 +32,7 @@ class Block_Quote_Address extends Block_Core_Template
 
 	public function getCustomer()
 	{
-		$id = $this->getRequest()->getParam('customerId');
+		$id = Ccc::getModel('Core_Session')->get('customer_id');
 		if ($id) {
 			return Ccc::getModel('Customer')->load($id);
 		}

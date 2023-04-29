@@ -1,7 +1,7 @@
 <?php $billingAddress = $this->getBillingAddress(); ?>
 <?php $shippingAddress = $this->getShippingAddress(); ?>
 
-<form action="<?php echo $this->getUrl('saveAddress'); ?>" method="post">
+<form action="<?php echo $this->getUrl('saveAddress'); ?>" method="post" id="address-form">
 	<div class="row" align="center">
 		<div class="col-6">
 			<div class="card" style="width: 70%;margin: 10px;">
@@ -52,7 +52,7 @@
 			    </table>
 				</div>
 				<div align="right" class="mx-2 mb-3">
-			    <input type="submit" name="submit" value="Save Billing address" class="btn btn-success">
+			    <input type="button" id="billing-save" value="Save Billing address" class="btn btn-success">
 			  </div>
 			</div>
 		</div>
@@ -98,11 +98,13 @@
 				</table>
 				</div>
 				<div align="right" class="mx-2 mb-3">
-			    <input type="submit" name="submit" value="Save Shipping address" class="btn btn-success">
+			    <input type="button" id="shipping-save" value="Save Shipping address" class="btn btn-success">
 			  </div>
 			</div>
 		</div>
 	</div>
+	<input type="hidden" name="submit" value="" id="button-name">
+	<input type="hidden" value="<?php echo $this->getMessage()->getSession()->get('customer_id'); ?>" id="customer-id">
 </form>
 <script type="text/javascript">
 
@@ -114,5 +116,20 @@ $('#sameShippingAddress').change(function () {
 	}
 
 });	
+
+$('#shipping-save').click(function () {
+	$('#button-name').attr('value', '<?php echo 'Save Shipping address' ?>');
+	var id = $('#customer-id').attr('value');
+	$('#address-form').attr('action', "http://localhost/newmvc-sahil-solanki/index.php?a=saveAddress&c=quote&customerId="+id); 
+	ajax.setForm('address-form').call();
+});
+
+$('#billing-save').click(function () {
+	$('#button-name').attr('value', '<?php echo 'Save Billing address' ?>');
+	var id = $('#customer-id').attr('value');
+	$('#address-form').attr('action', "http://localhost/newmvc-sahil-solanki/index.php?a=saveAddress&c=quote&customerId="+id); 
+	ajax.setForm('address-form').call();
+});
+
 	
 </script>
