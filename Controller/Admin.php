@@ -6,11 +6,10 @@ class Controller_Admin extends Controller_Core_Action
     public function indexAction()
     {
         try { 
-            $layout = $this->getLayout();
             $this->_setTitle('Manage Categories');
-            $indexBlock = $layout->createBlock('Core_Template')->setTemplate('category/index.phtml');
-            $layout->getChild('content')->addChild('index', $indexBlock);
-            echo $layout->toHtml();
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('category/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            $this->renderLayout();
         } catch (Exception $e) {
             
         }
@@ -19,9 +18,13 @@ class Controller_Admin extends Controller_Core_Action
     public function gridAction()
     {
         try {
-            $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
-            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            $currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Admin_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
         }
@@ -35,8 +38,7 @@ class Controller_Admin extends Controller_Core_Action
             };
             
             $addHtml = $this->getLayout()->createBlock('Admin_Edit')->setData(['admin' => $admin])->toHtml();
-            echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            $this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
             $this->redirect('index');
@@ -55,8 +57,7 @@ class Controller_Admin extends Controller_Core_Action
             }
 
             $editHtml = $this->getLayout()->createBlock('Admin_Edit')->setData(['admin' => $admin])->toHtml();
-            echo json_encode(['html' => $editHtml, 'element' => 'content-grid']);
-            header('Content-type: application/json');
+            $this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
             $this->redirect('index');
@@ -91,10 +92,9 @@ class Controller_Admin extends Controller_Core_Action
             if (!$admin->save()) {
                 throw new Exception("Unable to save admin.", 1);
             }
-
+            $this->getMessage()->addMessage("Admin saved successfully.");
             $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
-            header('Content-type: application/json');
-            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Admin saved successfully."]);
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
             $this->redirect('index');
@@ -116,11 +116,11 @@ class Controller_Admin extends Controller_Core_Action
             if (!$admin->delete()) {
                 throw new Exception("Unable to delete admin.", 1);
             }
+            $this->getMessage()->addMessage("Admin deleted successfully.");
             
+            $this->getMessage()->addMessage("Admin deleted successfully.");
             $gridHtml = $this->getLayout()->createBlock('Admin_Grid')->toHtml();
-            header('Content-type: application/json');
-            echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => "Admin deleted successfully."]);
-
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
         } catch (Exception $e) {
             $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
             $this->redirect('index');

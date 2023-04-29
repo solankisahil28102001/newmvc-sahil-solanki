@@ -9,7 +9,7 @@ class Controller_Category extends Controller_Core_Action
 			$this->_setTitle('Manage Categories');
 			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('category/index.phtml');
 			$layout->getChild('content')->addChild('index', $indexBlock);
-			echo $layout->toHtml();
+			$this->renderLayout();
 		} catch (Exception $e) {
 			
 		}
@@ -18,10 +18,13 @@ class Controller_Category extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Category_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index');
@@ -40,8 +43,7 @@ class Controller_Category extends Controller_Core_Action
 				->setData(['category' => $category,'pathCategories' => $pathCategories])
 				->toHtml();
 
-			header('Content-type: application/json');
-			echo json_encode(['html' => $addHtml, 'element' => 'content-grid']);
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -66,8 +68,7 @@ class Controller_Category extends Controller_Core_Action
 
 			$layout->getChild('content')->addChild('edit', $edit);
 			$edit = $edit->toHtml();
-			echo json_encode(['html' => $edit, 'element' => 'content-grid']);
-			header('Content-type: application/json');
+			$this->getResponse()->jsonResponse(['html' => $edit, 'element' => 'content-grid']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -123,9 +124,10 @@ class Controller_Category extends Controller_Core_Action
 					}
 				}
 			}
+			$this->getMessage()->addMessage("Category saved successfully.");
+
 			$gridHtml = $this->getLayout()->createBlock('Category_Grid')->toHtml();
-			header('Content-type: application/json');
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid', 'message' => "Category saved successfully."]);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} 
 		catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
@@ -150,10 +152,10 @@ class Controller_Category extends Controller_Core_Action
 			if (!$category->delete()) {
                 throw new Exception("Unable to delete category.", 1);
             }
+            $this->getMessage()->addMessage("Category deleted successfully.");
 
 			$gridHtml = $this->getLayout()->createBlock('Category_Grid')->toHtml();
-			header('Content-type: application/json');
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-grid','message' => "Category deleted successfully."]);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('index');

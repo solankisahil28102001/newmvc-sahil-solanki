@@ -2,19 +2,32 @@
 
 class Controller_Item extends Controller_Core_Action
 {
-	
+	public function indexAction()
+    {
+        try { 
+            $this->_setTitle('Manage Items');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('item/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            $this->renderLayout();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function gridAction()
 	{
-		$layout = $this->getLayout();
-		$grid = $layout->createBlock('Item_Grid');
-		$layout->getChild('content')->addChild('grid', $grid);
-		$layout->render();
+		$currentPage = $this->getRequest()->getPost('p',1);
+        $recordPerPage = $this->getRequest()->getPost('rpp',10);
+        $layout = $this->getLayout();
+        $gridHtml = $layout->createBlock('Item_Grid');
+        $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+        $gridHtml = $gridHtml->toHtml();
+		$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 	}
 
 	public function editAction()
 	{
 		try {
-			$layout = $this->getLayout();
 			if (!$id = $this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request", 1);
 			}
@@ -23,29 +36,24 @@ class Controller_Item extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit = $layout->createBlock('Item_Edit');
-			$edit->setData(['item' => $item]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Item_Edit')->setData(['item' => $item])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
-			$this->redirect('grid', null, null, true);			
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
 			$item = Ccc::getModel('Item');
 
-			$edit = $layout->createBlock('Item_Edit');
-			$edit->setData(['item' => $item]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $this->getLayout()->createBlock('Item_Edit')->setData(['item' => $item])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
-			$this->redirect('grid', null, null, true);			
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -63,13 +71,15 @@ class Controller_Item extends Controller_Core_Action
 			if (!$item->delete()){
 				throw new Exception("Unable to delete item.", 1);
 			}
-
 			$this->getMessage()->addMessage('Item deleted successfully.');
+
+			$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);			
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);			
 	}
 
 	public function saveAction()
@@ -118,9 +128,12 @@ class Controller_Item extends Controller_Core_Action
 				}
 			}
 			$this->getMessage()->addMessage("Item saved successfully.");
+			
+			$gridHtml = $this->getLayout()->createBlock('Item_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

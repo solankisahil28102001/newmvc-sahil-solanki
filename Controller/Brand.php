@@ -2,29 +2,39 @@
 
 class Controller_Brand extends Controller_Core_Action
 {
+	public function indexAction()
+    {
+        try { 
+            $layout = $this->getLayout();
+            $this->_setTitle('Manage Brands');
+            $indexBlock = $layout->createBlock('Core_Template')->setTemplate('brand/index.phtml');
+            $layout->getChild('content')->addChild('index', $indexBlock);
+            $this->renderLayout();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Brand_Edit');
 			if (!$brand = Ccc::getModel('Brand')) {
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setRow($brand);
-			$layout->getChild('content')->addChild('edit', $edit);
-			echo $layout->toHtml();
+			$addHtml = $this->getLayout()->createBlock('Brand_Edit');
+			$addHtml->setRow($brand);
+			$addHtml = $addHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function editAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Brand_Edit');
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -33,24 +43,29 @@ class Controller_Brand extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 			
-			$edit->setRow($brand);
-			$layout->getChild('content')->addChild('edit', $edit);
-			echo $layout->toHtml();
+			$editHtml = $this->getLayout()->createBlock('Brand_Edit');
+			$editHtml->setRow($brand);
+			$editHtml = $editHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Brand_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			echo $layout->toHtml();
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Brand_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -81,12 +96,14 @@ class Controller_Brand extends Controller_Core_Action
 			if (!$brand->save()) {
 				throw new Exception("Unable to save brand", 1);
 			}
-
 			$this->getMessage()->addMessage('Brand saved successfully.');
+
+			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -104,11 +121,13 @@ class Controller_Brand extends Controller_Core_Action
 			if(!$brand->delete()){
 				throw new Exception("Unable to delete Brand", 1);
 			}
-
 			$this->getMessage()->addMessage("Brand deleted successfully.");
+
+			$gridHtml = $this->getLayout()->createBlock('Brand_Grid')->toHtml();
+            $this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

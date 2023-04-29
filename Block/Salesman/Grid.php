@@ -2,16 +2,26 @@
 
 class Block_Salesman_Grid extends Block_Core_Grid
 {
-	
 	function __construct()
 	{
 		parent::__construct();
 		$this->setTitle('Manage Salesmen');
 	}
-
+	
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `salesman` ORDER BY `salesman_id` DESC";
+		$query = "SELECT count(`salesman_id`) FROM `salesman`";
+		$tableRecordes = Ccc::getModel('Salesman')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `salesman` ORDER BY `salesman_id` DESC LIMIT {$startLimit},{$recordPerPage}";
 		$salesmen = Ccc::getModel('Salesman')->fetchAll($query);
 		return $salesmen;
 	}

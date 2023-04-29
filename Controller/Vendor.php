@@ -2,12 +2,21 @@
 
 class Controller_Vendor extends Controller_Core_Action
 {
+	public function indexAction()
+    {
+        try { 
+            $this->_setTitle('Manage Categories');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('vendor/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            $this->renderLayout();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Vendor_Edit');
-			
 			$vendor = Ccc::getModel('Vendor');		
 			if (!$vendor) {
 				throw new Exception("Invalid request.", 1);
@@ -19,13 +28,11 @@ class Controller_Vendor extends Controller_Core_Action
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setData(['vendor' => $vendor, 'vendorAddress' => $vendorAddress]);
-			
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $this->getLayout()->createBlock('Vendor_Edit')->setData(['vendor' => $vendor, 'vendorAddress' => $vendorAddress])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -33,8 +40,6 @@ class Controller_Vendor extends Controller_Core_Action
 	public function editAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Vendor_Edit');
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -50,13 +55,11 @@ class Controller_Vendor extends Controller_Core_Action
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['vendor' => $vendor, 'vendorAddress' => $vendorAddress]);
-			
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Vendor_Edit')->setData(['vendor' => $vendor, 'vendorAddress' => $vendorAddress])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -64,12 +67,16 @@ class Controller_Vendor extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
+			$currentPage = $this->getRequest()->getPost('p',1);
+			$recordPerPage = $this->getRequest()->getPost('rpp',10);
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Vendor_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$gridHtml = $layout->createBlock('Vendor_Grid');
+			$gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+			$gridHtml = $gridHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -121,12 +128,14 @@ class Controller_Vendor extends Controller_Core_Action
 			if (!$vendorAddress->save()) {
 				throw new Exception("Unable to save vendorAddress", 1);
 			}
-
 			$this->getMessage()->addMessage('Vendor saved successfully.');
+
+			$gridHtml = $this->getLayout()->createBlock('Vendor_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -144,11 +153,13 @@ class Controller_Vendor extends Controller_Core_Action
 			if (!$vendor->delete()){
 				throw new Exception("Unable to delete vendor.", 1);
 			}
-
 			$this->getMessage()->addMessage("Vendor deleted successfully.");
+
+			$gridHtml = $this->getLayout()->createBlock('Vendor_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

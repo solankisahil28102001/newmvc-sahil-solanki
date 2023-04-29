@@ -2,31 +2,49 @@
 
 class Controller_Eav_Attribute extends Controller_Core_Action
 {
+
+	public function indexAction()
+    {
+        try { 
+            $this->_setTitle('Manage Eav Attributes');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('eav/attribute/index.phtml');
+            $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+            $this->renderLayout();
+        } catch (Exception $e) {
+            
+        }
+    }
+
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Eav_Attribute_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			if (!$currentPage = $this->getRequest()->getParam('p')) {
+				$currentPage = 1;
+			}
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid');
+			$gridHtml->setCurrentPage($currentPage);
+			if ($this->getRequest()->isPost()) {
+				if ($postData = $this->getRequest()->getPost('recordCount')) {
+					$gridHtml->setRecordPerPage((int)$postData);
+				}
+			}
+			$gridHtml = $gridHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
-			
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Eav_Attribute_Edit');
 			$attribute = Ccc::getModel('Eav_Attribute');
 			$options = Ccc::getModel('Eav_Attribute')->getCollection();
-			$edit->setData(['attribute' => $attribute, 'options' => $options]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -44,13 +62,11 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			
 			$query = "SELECT * FROM `eav_attribute_option` WHERE  `attribute_id` = '{$id}' ORDER BY `position`";
 			$options = Ccc::getModel('Eav_Attribute')->fetchAll($query);
-			$edit = $layout->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options]);
-
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Eav_Attribute_Edit')->setData(['attribute' => $attribute, 'options' => $options])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -151,12 +167,14 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 					}
 				}
 			}
-
 			$this->getMessage()->addMessage('Attribute saved successfully.');
+			
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 
@@ -174,11 +192,13 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			if(!$attribute->delete()){
 				throw new Exception("Unable to delete attribute", 1);
 			}
-
 			$this->getMessage()->addMessage("Attribute deleted successfully.");
+
+			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

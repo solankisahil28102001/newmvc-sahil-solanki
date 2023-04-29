@@ -35,7 +35,7 @@ class Model_Core_Response
 	public function setBody($content)
 	{
 		echo $content;
-		header('Content-type: text/html');
+		@header('Content-type: text/html');
 	}
 
 	public function jsonResponse($data)

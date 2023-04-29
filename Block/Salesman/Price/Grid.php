@@ -2,16 +2,28 @@
 
 class Block_Salesman_Price_Grid extends Block_Core_Template
 {
-	
+	private $salesmanId = null;
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->setTemplate('salesman/price/grid.phtml');
 	}
 
+	 public function getSalesmanId()
+    {
+        return $this->salesmanId;
+    }
+
+    public function setSalesmanId($salesmanId)
+    {
+        $this->salesmanId = $salesmanId;
+        return $this;
+    }
+
 	public function fetchData()
 	{
-		$id = Ccc::getRegistry('salesman_id');
+		$id = $this->getSalesmanId();
 		$query = "SELECT * FROM `salesman` ORDER BY `first_name`";
 		$salesmanNames = Ccc::getModel('Salesman_Price')->fetchAll($query);
 
@@ -31,4 +43,5 @@ class Block_Salesman_Price_Grid extends Block_Core_Template
 	{	
 		return $this->salesmanPrices;
 	}
+   
 }

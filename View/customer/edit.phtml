@@ -5,17 +5,17 @@ $shippingAddress = $this->getShippingAddress();
 $billingAddress = $this->getBillingAddress();
 $mode = ($customer->customer_id) ? 'Edit' : 'Add';
 ?>
-<form action="<?php echo $this->getUrl('save'); ?>" method="POST">
+<form action="<?php echo $this->getUrl('save'); ?>" method="POST" id="customer-form">
 <div align="center" class="w-100 container">
 	<div class="w-50 align-items-center d-flex row">
 		<div align="left" class="col-8">
 			<h2><?php echo $mode." customer"; ?></h2>
 		</div>
 		<div align="right" class="col-2">
-			<a href="<?php echo $this->getUrl('grid',null,[],true); ?>" class="btn btn-danger">Cancel</a>
+			<a onclick="ajax.setUrl('<?php echo $this->getUrl('grid',null,[],true); ?>').call()" class="btn btn-danger">Cancel</a>
 		</div>
 		<div align="right" class="col-2">
-			<button class="btn btn-primary" name="submit">Save</button>
+			<input type="button" class="btn btn-primary" name="submit" onclick="ajax.setForm('customer-form').call()" value="Save">
 		</div>
 	</div>
 	<div class="w-50 mt-2">

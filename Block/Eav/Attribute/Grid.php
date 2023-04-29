@@ -2,7 +2,6 @@
 
 class Block_Eav_Attribute_Grid extends Block_Core_Grid
 {
-	
 	function __construct()
 	{
 		parent::__construct();
@@ -11,7 +10,18 @@ class Block_Eav_Attribute_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `eav_attribute` ORDER BY `attribute_id` DESC";
+		$query = "SELECT count(`attribute_id`) FROM `eav_attribute`";
+		$tableRecordes = Ccc::getModel('Eav_Attribute')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `eav_attribute` ORDER BY `attribute_id` DESC LIMIT {$startLimit},{$recordPerPage}";
 		$attributes = Ccc::getModel('Eav_Attribute')->fetchAll($query);
 		return $attributes;
 	}

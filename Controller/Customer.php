@@ -2,21 +2,29 @@
 
 class Controller_Customer extends Controller_Core_Action{
 
+	public function indexAction()
+	{
+		$this->_setTitle('Manage customers');
+		$indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('customer/index.phtml');
+		$this->getLayout()->getChild('content')->addChild('index', $indexBlock);
+		$this->renderLayout();
+	}
+
 	public function addAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Customer_Edit');
+			if (!$currentPage = $this->getRequest()->getParam('p')) {
+				$currentPage = 1;
+			}
 			if (!$customer = Ccc::getModel('Customer')) {
 				throw new Exception("Invalid request.", 1);
 			}
 
-			$edit->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$addHtml = $this->getLayout()->createBlock('Customer_Edit')->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $addHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
@@ -24,8 +32,6 @@ class Controller_Customer extends Controller_Core_Action{
 	public function editAction()
 	{	
 		try {
-			$layout = $this->getLayout();
-			$edit = $layout->createBlock('Customer_Edit');
 			if (!$id = (int)$this->getRequest()->getParam('id')) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -42,22 +48,24 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("Invalid Id.", 1);
 			}
 
-			$edit->setData(['customer' => $customer, 'shippingAddress' => $shippingAddress, 'billingAddress' => $billingAddress]);
-			$layout->getChild('content')->addChild('edit', $edit);
-			$layout->render();
+			$editHtml = $this->getLayout()->createBlock('Customer_Edit')->setData(['customer' => $customer, 'shippingAddress' => $customer, 'billingAddress' => $customer])->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null, null, true);
+			$this->redirect('index', null, null, true);
 		}
 	}
 
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Customer_Grid');
-			$layout->getChild('content')->addChild('grid', $grid);
-			$layout->render();
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Customer_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -156,12 +164,15 @@ class Controller_Customer extends Controller_Core_Action{
 			if (!$customer->save()) {
 				throw new Exception("Unable to save customer", 1);
 			}
-
 			$this->getMessage()->addMessage('Customer saved successfully.');
+
+			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
+
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(),Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 
 	public function deleteAction()
@@ -178,11 +189,13 @@ class Controller_Customer extends Controller_Core_Action{
 			if (!$customer->delete()){
 				throw new Exception("Unable to delete customer.", 1);
 			}
-
 			$this->getMessage()->addMessage("Customer deleted successfully.");
+
+			$gridHtml = $this->getLayout()->createBlock('Customer_Grid')->toHtml();
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+			$this->redirect('index', null, null, true);
 		}
-		$this->redirect('grid', null, null, true);
 	}
 }

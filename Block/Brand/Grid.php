@@ -7,10 +7,22 @@ class Block_Brand_Grid extends Block_Core_Grid
 		parent::__construct();
 		$this->setTitle('Manage Brands');
 	}
+	
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `brand` ORDER BY `brand_id` DESC";
+		$query = "SELECT count(`brand_id`) FROM `brand`";
+		$tableRecordes = Ccc::getModel('Brand')->fetchOne($query);
+
+		$pager = $this->getPager();
+		$pager->setCurrentPage($this->getCurrentPage())
+			->setTotalRecords($tableRecordes)
+			->setRecordPerPage($this->getRecordPerPage())
+			->calculate();
+		$startLimit = $pager->getStartLimit();
+		$recordPerPage = $pager->getRecordPerPage();
+		
+		$query = "SELECT * FROM `brand` ORDER BY `brand_id` LIMIT {$startLimit},{$recordPerPage}";
 		$brands = Ccc::getModel('Brand')->fetchAll($query);
 		return $brands;
 	}
