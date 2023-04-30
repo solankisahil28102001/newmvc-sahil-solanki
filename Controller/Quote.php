@@ -14,8 +14,6 @@ class Controller_Quote extends Controller_Core_Action
 			}
 			$quoteHtml = $this->getLayout()->createBlock('Quote_Quote')->toHtml();
 			$this->getResponse()->jsonResponse(['html' => $quoteHtml, 'element' => 'content-grid']);
-			// $layout->getChild('content')->addChild('quote', $quote);
-			// $this->renderLayout();
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 			$this->redirect('index', null, null, true);			

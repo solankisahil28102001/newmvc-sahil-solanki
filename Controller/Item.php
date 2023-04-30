@@ -14,6 +14,98 @@ class Controller_Item extends Controller_Core_Action
         }
     }
 
+    public function exportAction()
+	{
+		@header('Content-Type: text/csv; charset=utf-8');  
+      	@header('Content-Disposition: attachment; filename=data.csv');  
+      	$output = fopen("php://output", "w");  
+
+      	$item = Ccc::getModel('Item');
+      	if ($query = $this->buildEavAttributeQuery($item)) {
+      		$query = $query;
+      	}
+      	else{
+      		$query = "SELECT * from `item` ORDER BY `item_id` DESC";  
+      	}
+      	
+      	$result = $item->getResource()->fetchAll($query);
+      	$header = [];
+      	if ($result) {
+            foreach($result as &$row)
+            {  
+	      		unset($row['created_at']);
+				unset($row['updated_at']);
+				if (array_key_exists('status', $row)) {
+					$row['status'] = ($row['status'] == 1) ? 'Active' : 'Inactive';
+				}
+                if (!$header) {
+                    $header = array_keys($row);
+                    fputcsv($output, $header);
+                }
+               fputcsv($output, $row);  
+            }  
+        }
+      	fclose($output);  
+	}
+
+	public function importAction()
+    {
+        $layout = $this->getLayout();
+        $importBlock = $layout->createBlock('Core_Template')->setTemplate('item/import.phtml');
+        $layout->getChild('content')->addChild('import', $importBlock);
+        $this->renderLayout();
+    }
+
+    public function saveImportAction()
+	{
+		try {
+			$upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
+			$rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
+
+			$item = Ccc::getModel('Item');
+			$attributes = [];
+			foreach ($rows as $key => &$row) {
+				foreach (array_keys($row) as $value) {
+					$query = "SHOW COLUMNS FROM `item` LIKE '".$value."'";
+					$result = Ccc::getModel('Item')->getResource()->getAdapter()->query($query);
+					if ($result->num_rows == 0) {
+						$attributes[$row['item_id']][$value] = $row[$value]; 
+						unset($row[$value]);  
+					}
+				}
+			}
+
+			foreach ($rows as $key => $array) {
+	      		unset($array['item_id']);
+	      		$array['status'] = ($array['status'] == 'Active') ? 1 : 2;
+				$uniqueColumns = ['sku' => $array['sku']];
+				$item->getResource()->insertUpdateOnDuplicate($array, $uniqueColumns);
+			}
+
+			if ($attributes) {
+				foreach ($attributes as $itemId => $attributeArray) {
+					if ($item->load($itemId)) {
+						foreach ($attributeArray as $key => $value) {
+							$attribute = Ccc::getModel('Eav_Attribute')->fetchRow("SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 7 AND `code` = '{$key}'");
+							$model = Ccc::getModel('Core_Table');
+							$model->getResource()->setTableName("item_{$attribute->backend_type}")->setPrimaryKey('value_id');
+							$arrayData = ['entity_id' => $itemId,'attribute_id' => $attribute->attribute_id,'value' => $value];
+							$uniqueColumns = ['value' => $value];
+							if (!$result = $model->getResource()->insertUpdateOnDuplicate($arrayData, $uniqueColumns)) {
+								throw new Exception("Unable to save item_{$attribute->backend_type}", 1);
+							}
+						}
+					}
+				}
+			}
+			$this->getMessage()->addMessage("Data inserted successfully.");
+		} catch (Exception $e) {
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+		}
+		$this->redirect('index');
+	}
+
+
 	public function gridAction()
 	{
 		$currentPage = $this->getRequest()->getPost('p',1);

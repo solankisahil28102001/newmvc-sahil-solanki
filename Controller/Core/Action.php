@@ -161,5 +161,24 @@ class Controller_Core_Action{
 		exit();
 	}
 
+	public function buildEavAttributeQuery($obj)
+	{
+		if ($attributes = $obj->getAttributes()) {
+			$tableName = $obj->getTableName();
+			$primaryKey = $obj->getPrimaryKey();
+			$query = "SELECT ";
+			$columNames = "`$tableName`.*, ";
+			$from = " FROM `$tableName`";
+			$leftJoin = '';
+		  	foreach ($attributes->getData() as $attribute) {
+		  		$columNames .= "$attribute->code.`value` as $attribute->code, ";
+		  		$leftJoin .= " LEFT JOIN `{$tableName}_{$attribute->backend_type}` as $attribute->code ON `$tableName`.`$primaryKey` = $attribute->code.`entity_id` AND $attribute->code.`attribute_id` = {$attribute->attribute_id}";
+		  	}
+		  	$columNames = rtrim($columNames," ,");
+		  	return $query.$columNames.$from.$leftJoin." ORDER BY `$primaryKey` DESC";
+		}
+		return null;
+	}
+
 }
 

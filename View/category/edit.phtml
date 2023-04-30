@@ -40,6 +40,7 @@ $mode = ($category->category_id) ? 'Edit' : 'Add';
 			<td>
 				<select name="category[parent_id]" class="form-select">
 					<option value="1">Root</option>
+					<?php if ($pathCategories) : ?>
 					<?php foreach ($categories as $key => $value): 
 						if (array_key_exists($key, $pathCategories)): ?>
 						<option value="<?php echo $key; ?>"
@@ -49,7 +50,7 @@ $mode = ($category->category_id) ? 'Edit' : 'Add';
 							}
 							?>>
 							<?php echo $pathCategories[$key]; ?></option>
-					<?php endif; endforeach; ?>
+					<?php endif; endforeach; endif;?>
 				</select>
 			</td>
 		</tr>

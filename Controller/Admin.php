@@ -6,13 +6,71 @@ class Controller_Admin extends Controller_Core_Action
     public function indexAction()
     {
         try { 
-            $this->_setTitle('Manage Categories');
-            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('category/index.phtml');
+            $this->_setTitle('Manage Admins');
+            $indexBlock = $this->getLayout()->createBlock('Core_Template')->setTemplate('admin/index.phtml');
             $this->getLayout()->getChild('content')->addChild('index', $indexBlock);
             $this->renderLayout();
         } catch (Exception $e) {
             
         }
+    }
+
+    public function exportAction()
+    {
+        @header('Content-Type: text/csv; charset=utf-8');  
+        @header('Content-Disposition: attachment; filename=data.csv');  
+        $output = fopen("php://output", "w");  
+
+        $admin = Ccc::getModel('Admin');
+        $query = "SELECT * from `admin` ORDER BY `admin_id` DESC";  
+        
+        $result = $admin->getResource()->fetchAll($query);
+        $header = [];
+        if ($result) {
+            foreach($result as &$row)
+            {  
+                unset($row['created_at']);
+                unset($row['updated_at']);
+                if (array_key_exists('status', $row)) {
+                    $row['status'] = ($row['status'] == 1) ? 'Active' : 'Inactive';
+                }
+                if (!$header) {
+                    $header = array_keys($row);
+                    fputcsv($output, $header);
+                }
+               fputcsv($output, $row);  
+            }  
+        }
+        fclose($output);  
+    }
+
+    public function importAction()
+    {
+        $layout = $this->getLayout();
+        $importBlock = $layout->createBlock('Core_Template')->setTemplate('admin/import.phtml');
+        $layout->getChild('content')->addChild('import', $importBlock);
+        $this->renderLayout();
+    }
+
+    public function saveImportAction()
+    {
+        try {
+            $upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
+            $rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
+
+            $admin = Ccc::getModel('Admin');
+            foreach ($rows as $key => $row) {
+                unset($row['admin_id']);
+                $row['status'] = ($row['status'] == 'Active') ? 1 : 2;
+                $uniqueColumns = ['email' => $row['email']];
+                $admin->getResource()->insertUpdateOnDuplicate($row, $uniqueColumns);
+            }
+
+            $this->getMessage()->addMessage("Data inserted successfully.");
+        } catch (Exception $e) {
+            $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+        }
+        $this->redirect('index');
     }
 
     public function gridAction()

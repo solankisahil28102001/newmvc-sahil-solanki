@@ -39,4 +39,13 @@ class Model_Vendor extends Model_Core_Table
 		return self::STATUS_DEFAULT;
 	}
 
+	public function getVendorAddress()
+	{
+		$vendorAddress = Ccc::getModel('Vendor_Address');
+		if (!$address = $vendorAddress->load($this->vendor_address_id)){
+			return $vendorAddress;	
+		}
+		return $address;
+	}
+
 }
