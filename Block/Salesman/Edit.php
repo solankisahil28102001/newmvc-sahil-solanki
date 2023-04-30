@@ -18,4 +18,9 @@ class Block_Salesman_Edit extends Block_Core_Template
 	{
 		return $this->salesmanAddress;
 	}
+
+	public function getAttributes()
+	{
+		return Ccc::getModel('Salesman')->getAttributes();
+	}
 }

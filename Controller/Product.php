@@ -20,19 +20,35 @@ class Controller_Product extends Controller_Core_Action
 		@header('Content-Type: text/csv; charset=utf-8');  
       	@header('Content-Disposition: attachment; filename=data.csv');  
       	$output = fopen("php://output", "w");  
-      	$query = "SELECT * from product ORDER BY product_id DESC";  
-      	$result = Ccc::getModel('Product')->getResource()->getAdapter()->query($query); 
+
+      	$product = Ccc::getModel('Product');
+      	if ($query = $this->buildEavAttributeQuery($product)) {
+      		$query = $query;
+      	}
+      	else{
+      		$query = "SELECT * from `product` ORDER BY `product_id` DESC";  
+      	}
+      	$result = $product->getResource()->fetchAll($query);
       	$header = [];
-      	foreach($result as $row)
-     	{  
-     		if (!$header) {
-     			$header = array_keys($row);
-     			fputcsv($output, $header);
-     		}
-           fputcsv($output, $row);  
-      	}  
+      	if ($result) {
+            foreach($result as &$row)
+            {  
+	      		unset($row['created_at']);
+				unset($row['updated_at']);
+				if (array_key_exists('status', $row)) {
+					$row['status'] = ($row['status'] == 1) ? 'Active' : 'Inactive';
+				}
+                if (!$header) {
+                    $header = array_keys($row);
+                    fputcsv($output, $header);
+                }
+               fputcsv($output, $row);  
+            }  
+        }
       	fclose($output); 
 	}
+
+	
 
 	public function importAction()
 	{
@@ -48,20 +64,44 @@ class Controller_Product extends Controller_Core_Action
 			$upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
 			$rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
 
-			foreach ($rows as $key => &$array) {
-				unset($array['product_id']);
-				unset($array['created_at']);
-				unset($array['updated_at']);
-			}
-
 			$product = Ccc::getModel('Product');
-			foreach ($rows as $key => $row) {
-				$uniqueColumns = ['sku' => $row['sku']];
-				$product->getResource()->insertUpdateOnDuplicate($row, $uniqueColumns);
+			$attributes = [];
+			foreach ($rows as $key => &$row) {
+				foreach (array_keys($row) as $value) {
+					$query = "SHOW COLUMNS FROM `product` LIKE '".$value."'";
+					$result = Ccc::getModel('Product')->getResource()->getAdapter()->query($query);
+					if ($result->num_rows == 0) {
+						$attributes[$row['product_id']][$value] = $row[$value]; 
+						unset($row[$value]);  
+					}
+				}
 			}
 
+			foreach ($rows as $key => $array) {
+	      		unset($array['product_id']);
+	      		$array['status'] = ($array['status'] == 'Active') ? 1 : 2;
+				$uniqueColumns = ['sku' => $array['sku']];
+				$product->getResource()->insertUpdateOnDuplicate($array, $uniqueColumns);
+			}
+
+			if ($attributes) {
+				foreach ($attributes as $productId => $attributeArray) {
+					foreach ($attributeArray as $key => $value) {
+						if ($product->load($productId)) {
+							$attribute = Ccc::getModel('Eav_Attribute')->fetchRow("SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 2 AND `code` = '{$key}'");
+							$model = Ccc::getModel('Core_Table');
+							$model->getResource()->setTableName("product_{$attribute->backend_type}")->setPrimaryKey('value_id');
+							$arrayData = ['entity_id' => $productId,'attribute_id' => $attribute->attribute_id,'value' => $value];
+							$uniqueColumns = ['value' => $value];
+							if (!$result = $model->getResource()->insertUpdateOnDuplicate($arrayData, $uniqueColumns)) {
+								throw new Exception("Unable to save product_{$attribute->backend_type}", 1);
+							}
+						}
+					}
+				}
+			}
 			$this->getMessage()->addMessage("Data inserted successfully.");
-			} catch (Exception $e) {
+		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		$this->redirect('index');

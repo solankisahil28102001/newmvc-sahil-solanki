@@ -32,6 +32,10 @@ class Block_Vendor_Grid extends Block_Core_Grid
 			'title' => 'Vendor Id'
 		]);
 
+		$this->addColumn('vendor_address_id', [
+			'title' => 'Vendor Address Id'
+		]);
+
 		$this->addColumn('first_name', [
 			'title' => 'First name'
 		]);

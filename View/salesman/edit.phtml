@@ -1,5 +1,6 @@
 <?php 
 $salesman = $this->getSalesman();
+$attributes = $this->getAttributes();
 $salesmanAddress = $this->getSalesmanAddress();
 $mode = ($salesman->salesman_id) ? 'Edit' : 'Add';
 ?>
@@ -80,6 +81,18 @@ $mode = ($salesman->salesman_id) ? 'Edit' : 'Add';
 				<td>Company</td>
 				<td><input type="text" name="salesman[company]" class="form-control" value="<?php echo $salesman->company; ?>"></td>
 			</tr>
+			<?php if ($attributes) : ?>
+			<?php foreach($attributes->getData() as $key => $attribute): ?>
+			<tr>
+				<td>
+					<?php echo $attribute->name; ?>
+				</td>
+				<td>
+					<?php $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($salesman)->render(); ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 	</div>
 	<div style="width:50%;margin-top: 50px" align="left">

@@ -39,4 +39,24 @@ class Model_Salesman extends Model_Core_Table
 		return self::STATUS_DEFAULT;
 	}
 
+	public function getAttributes()
+	{
+		$query = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 5 AND `status` = '".self::STATUS_ACTIVE."'";
+		return Ccc::getModel('Eav_Attribute')->fetchAll($query);
+	}
+
+	public function getAttributeValue($attribute)
+	{
+		$query = "SELECT `value` FROM `salesman_{$attribute->backend_type}` WHERE `entity_id` = '{$this->getId()}' AND `attribute_id` = '{$attribute->getId()}'";
+		return $this->getResource()->getAdapter()->fetchOne($query);
+	}
+
+	public function getSalesmanAddress()
+	{
+		$salesmanAddress = Ccc::getModel('Salesman_Address');
+		if (!$address = $salesmanAddress->load($this->salesman_address_id)){
+			return $salesmanAddress;	
+		}
+		return $address;
+	}
 }

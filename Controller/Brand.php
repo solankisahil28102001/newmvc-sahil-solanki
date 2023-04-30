@@ -15,6 +15,63 @@ class Controller_Brand extends Controller_Core_Action
         }
     }
 
+    public function exportAction()
+	{
+		@header('Content-Type: text/csv; charset=utf-8');  
+      	@header('Content-Disposition: attachment; filename=data.csv');  
+      	$output = fopen("php://output", "w");  
+
+      	$brand = Ccc::getModel('Brand');
+      	$query = "SELECT * from `brand` ORDER BY `brand_id` DESC";  
+      	
+      	$result = $brand->getResource()->fetchAll($query);
+      	$header = [];
+      	if ($result) {
+            foreach($result as &$row)
+            {  
+	      		unset($row['created_at']);
+				unset($row['updated_at']);
+				if (array_key_exists('status', $row)) {
+					$row['status'] = ($row['status'] == 1) ? 'Active' : 'Inactive';
+				}
+                if (!$header) {
+                    $header = array_keys($row);
+                    fputcsv($output, $header);
+                }
+               fputcsv($output, $row);  
+            }  
+        }
+      	fclose($output);  
+	}
+
+	public function importAction()
+    {
+        $layout = $this->getLayout();
+        $importBlock = $layout->createBlock('Core_Template')->setTemplate('brand/import.phtml');
+        $layout->getChild('content')->addChild('import', $importBlock);
+        $this->renderLayout();
+    }
+
+    public function saveImportAction()
+    {
+        try {
+            $upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
+            $rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
+
+            $brand = Ccc::getModel('Brand');
+            foreach ($rows as $key => $row) {
+                unset($row['brand_id']);
+                $uniqueColumns = ['name' => $row['name']];
+                $brand->getResource()->insertUpdateOnDuplicate($row, $uniqueColumns);
+            }
+
+            $this->getMessage()->addMessage("Data inserted successfully.");
+        } catch (Exception $e) {
+            $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+        }
+        $this->redirect('index');
+    }
+
 	public function addAction()
 	{
 		try {

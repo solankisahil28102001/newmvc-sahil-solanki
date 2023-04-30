@@ -15,20 +15,72 @@ class Controller_Eav_Attribute extends Controller_Core_Action
         }
     }
 
+    public function exportAction()
+	{
+		@header('Content-Type: text/csv; charset=utf-8');  
+      	@header('Content-Disposition: attachment; filename=data.csv');  
+      	$output = fopen("php://output", "w");  
+
+      	$attribute = Ccc::getModel('Eav_Attribute');
+      	$query = "SELECT * from `eav_attribute` ORDER BY `attribute_id` DESC";  
+      	
+      	$result = $attribute->getResource()->fetchAll($query);
+      	$header = [];
+      	if ($result) {
+            foreach($result as &$row)
+            {  
+	      		unset($row['created_at']);
+				unset($row['updated_at']);
+				if (array_key_exists('status', $row)) {
+					$row['status'] = ($row['status'] == 1) ? 'Active' : 'Inactive';
+				}
+                if (!$header) {
+                    $header = array_keys($row);
+                    fputcsv($output, $header);
+                }
+               fputcsv($output, $row);  
+            }  
+        }
+      	fclose($output);  
+	}
+
+	public function importAction()
+    {
+        $layout = $this->getLayout();
+        $importBlock = $layout->createBlock('Core_Template')->setTemplate('eav/attribute/import.phtml');
+        $layout->getChild('content')->addChild('import', $importBlock);
+        $this->renderLayout();
+    }
+
+    public function saveImportAction()
+    {
+        try {
+            $upload = Ccc::getModel('Core_File_Upload')->setPath($_FILES['file']['full_path'])->setFile('file');
+            $rows = Ccc::getModel('Core_File_Csv')->setFileName($upload->getFileName())->setPath($upload->getFileName())->read()->getRows();
+
+            $attribute = Ccc::getModel('Eav_Attribute');
+            foreach ($rows as $key => $row) {
+                unset($row['attribute_id']);
+                $uniqueColumns = ['entity_type_id' => $row['entity_type_id']];
+                $attribute->getResource()->insertUpdateOnDuplicate($row, $uniqueColumns);
+            }
+
+            $this->getMessage()->addMessage("Data inserted successfully.");
+        } catch (Exception $e) {
+            $this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::FAILURE);
+        }
+        $this->redirect('index');
+    }
+
 	public function gridAction()
 	{
 		try {
-			if (!$currentPage = $this->getRequest()->getParam('p')) {
-				$currentPage = 1;
-			}
-			$gridHtml = $this->getLayout()->createBlock('Eav_Attribute_Grid');
-			$gridHtml->setCurrentPage($currentPage);
-			if ($this->getRequest()->isPost()) {
-				if ($postData = $this->getRequest()->getPost('recordCount')) {
-					$gridHtml->setRecordPerPage((int)$postData);
-				}
-			}
-			$gridHtml = $gridHtml->toHtml();
+			$currentPage = $this->getRequest()->getPost('p',1);
+            $recordPerPage = $this->getRequest()->getPost('rpp',10);
+            $layout = $this->getLayout();
+            $gridHtml = $layout->createBlock('Eav_Attribute_Grid');
+            $gridHtml->setCurrentPage($currentPage)->setRecordPerPage($recordPerPage);
+            $gridHtml = $gridHtml->toHtml();
 			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-grid']);
 		} catch (Exception $e) {
 			$this->redirect('index', null, null, true);

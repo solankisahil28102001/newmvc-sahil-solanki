@@ -23,4 +23,9 @@ class Block_Customer_Edit extends Block_Core_Template
 	{
 		return $this->billingAddress;
 	}
+
+	public function getAttributes()
+	{
+		return Ccc::getModel('Customer')->getAttributes();
+	}
 }

@@ -32,6 +32,10 @@ class Block_Salesman_Grid extends Block_Core_Grid
 			'title' => 'Salesman Id'
 		]);
 
+		$this->addColumn('salesman_address_id', [
+			'title' => 'Salesman Address Id'
+		]);
+
 		$this->addColumn('first_name', [
 			'title' => 'First name'
 		]);

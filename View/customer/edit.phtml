@@ -1,5 +1,6 @@
 <?php 
 $customer = $this->getCustomer();
+$attributes = $this->getAttributes();
 // $customerAddress = $this->getCustomerAddress();
 $shippingAddress = $this->getShippingAddress();
 $billingAddress = $this->getBillingAddress();
@@ -92,6 +93,18 @@ $mode = ($customer->customer_id) ? 'Edit' : 'Add';
 					</select>
 				</td>
 			</tr>
+			<?php if ($attributes) : ?>
+			<?php foreach($attributes->getData() as $key => $attribute): ?>
+			<tr>
+				<td>
+					<?php echo $attribute->name; ?>
+				</td>
+				<td>
+					<?php $this->getLayout()->createBlock('Eav_Attribute_InputType')->setAttribute($attribute)->setRow($customer)->render(); ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 	</div>
 

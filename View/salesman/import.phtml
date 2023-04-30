@@ -1,0 +1,4 @@
+<form action="<?php echo $this->getUrl('saveImport', 'salesman', null, true); ?>" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
+    <input type="submit" name="save" class="btn btn-primary">
+</form>
